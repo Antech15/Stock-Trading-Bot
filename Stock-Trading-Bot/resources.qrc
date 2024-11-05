@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/images">
+        <file>images/yapdolla.png</file>
+    </qresource>
+</RCC>

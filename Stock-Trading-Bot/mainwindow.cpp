@@ -9,15 +9,12 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    QString test = QCoreApplication::applicationFilePath();
-
-    qDebug() << "\nThe path is: " << test << Qt::endl;
-
-    QFile file(":/images/yapdolla.png");
+    QFile file(":/images/images/yapdolla.png");
     if (!file.exists()) {
         qDebug() << "File does not exist at the specified path";
     } else {
-        QPixmap pix{":/images/yapdolla.png"};
+        QPixmap pix{":/images/images/yapdolla.png"};
+        pix = pix.scaled(ui->imageLabel->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
         ui->imageLabel->setPixmap(pix);
     }
 }
