@@ -20,6 +20,14 @@ public:
 private slots:
     void on_chooseStocksButton_clicked();
 
+    void on_bankButton_clicked();
+
+    void on_nextDayButton_clicked();
+
+    void on_goBackButton_clicked();
+
+    void on_goBackButton_2_clicked();
+
 private:
     Ui::MainWindow *ui;
 };
