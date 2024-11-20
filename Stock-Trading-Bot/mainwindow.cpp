@@ -38,7 +38,8 @@ void MainWindow::on_bankButton_clicked()
 
 void MainWindow::on_nextDayButton_clicked()
 {
-    ui->stackedWidget->setCurrentIndex(3);
+    dayCounter++;
+    ui->dayLabel->setText(QString("Day: %1").arg(dayCounter));
 }
 
 void MainWindow::on_goBackButton_clicked()
@@ -50,5 +51,11 @@ void MainWindow::on_goBackButton_clicked()
 void MainWindow::on_goBackButton_2_clicked()
 {
     ui->stackedWidget->setCurrentIndex(0);
+}
+
+
+void MainWindow::on_dayLabel_linkActivated(const QString &link)
+{
+
 }
 

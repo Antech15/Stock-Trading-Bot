@@ -28,7 +28,11 @@ private slots:
 
     void on_goBackButton_2_clicked();
 
+    void on_dayLabel_linkActivated(const QString &link);
+
 private:
     Ui::MainWindow *ui;
+    int dayCounter = 0;
+
 };
 #endif // MAINWINDOW_H
