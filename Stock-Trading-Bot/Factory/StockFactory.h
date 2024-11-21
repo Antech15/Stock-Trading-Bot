@@ -1,13 +1,11 @@
-// StockFactory.h
-#ifndef STOCK_FACTORY_H
-#define STOCK_FACTORY_H
+#ifndef STOCKFACTORY_H
+#define STOCKFACTORY_H
 
-#include "../Observer/Stock.h"
+#include "../Stock/Stock.h"
 
 class StockFactory {
 public:
-    virtual Stock* createStock() = 0;  // Abstract method to create stock
-    virtual ~StockFactory() {}
+    virtual Stock* createStock() = 0;  // Pure virtual method to create stock
 };
 
-#endif // STOCK_FACTORY_H
+#endif

@@ -12,18 +12,27 @@ int main(int argc, char *argv[])
 // main.cpp
 #include <iostream>
 #include "Facade/TradingFacade.h"
+#include "TradingBot.h"
+#include "Strategy/RiskAverseStrategy.h"
+#include "Strategy/GrowthStrategy.h"
 
 int main() {
-    // Create a trading facade
     TradingFacade facade;
 
-    // Simulate a few days of trading
-    facade.simulateNextDay();
-    facade.performTrade();
+    // Create the TradingBot
+    TradingBot* bot = new TradingBot();
 
-    // Simulate another day of trading
+    // Set the trading strategy
+    bot->setStrategy(new RiskAverseStrategy());  // Set to RiskAverseStrategy or GrowthStrategy
+
+    // Add the TradingBot as an observer to the facade
     facade.simulateNextDay();
-    facade.performTrade();
+
+    // Simulate the trading bot action
+    bot->update();
+
+    // Cleanup
+    delete bot;
 
     return 0;
 }

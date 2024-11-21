@@ -1,18 +1,27 @@
-// TradingBot.h
-#ifndef TRADING_BOT_H
-#define TRADING_BOT_H
+#ifndef TRADINGBOT_H
+#define TRADINGBOT_H
 
-#include "Strategy/InvestmentStrategy.h"
+#include "Observer/Observer.h"
+#include "Strategy/TradingStrategy.h"
+#include <iostream>
 
-class TradingBot {
+class TradingBot : public Observer {
 private:
-    InvestmentStrategy* strategy;
+    TradingStrategy* strategy;
 
 public:
-    TradingBot();
-    void setStrategy(InvestmentStrategy* newStrategy);
-    void executeStrategy();
-    ~TradingBot();
+    void setStrategy(TradingStrategy* newStrategy) {
+        strategy = newStrategy;
+    }
+
+    void update() {
+        if (strategy) {
+            std::cout << "Executing trading strategy..." << std::endl;
+            strategy->execute();
+        } else {
+            std::cout << "No strategy set." << std::endl;
+        }
+    }
 };
 
-#endif // TRADING_BOT_H
+#endif

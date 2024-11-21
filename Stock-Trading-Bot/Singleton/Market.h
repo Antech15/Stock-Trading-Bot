@@ -1,29 +1,37 @@
-// Market.h
 #ifndef MARKET_H
 #define MARKET_H
+
+#include <vector>
+#include "../Stock/Stock.h"
 
 class Market {
 private:
     static Market* instance;
-    float marketCapitalization;
+    std::vector<Stock*> stocks;
 
-    Market() : marketCapitalization(1000000.0) {}  // Default market cap
+    Market() {}  // Private constructor to prevent instantiation outside the class
 
 public:
     static Market* getInstance() {
-        if (!instance) {
-            instance = new Market();
-        }
+        if (!instance)
+            instance = new Market();  // Only create the instance once
         return instance;
     }
 
-    void setMarketCapitalization(float newCapitalization) {
-        marketCapitalization = newCapitalization;
+    void addStock(Stock* stock) {
+        stocks.push_back(stock);  // Add a stock to the market
     }
 
     float getMarketCapitalization() const {
-        return marketCapitalization;
+        float total = 0;
+        for (auto stock : stocks) {
+            total += stock->getPrice();  // Sum the price of all stocks
+        }
+        return total;
     }
 };
 
-#endif // MARKET_H
+// Initialize the static instance to nullptr
+Market* Market::instance = nullptr;
+
+#endif
