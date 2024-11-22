@@ -12,10 +12,15 @@ TARGET = Stock-Trading-Bot  # Adjust this if needed
 
 SOURCES += \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    simulationmanager.cpp
 
 HEADERS += \
-    mainwindow.h
+    bot.h \
+    mainwindow.h \
+    simulationmanager.h \
+    stock.h \
+    stockfactory.h
 
 FORMS += \
     mainwindow.ui
