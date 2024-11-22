@@ -52,10 +52,3 @@ void MainWindow::on_goBackButton_2_clicked()
 {
     ui->stackedWidget->setCurrentIndex(0);
 }
-
-
-void MainWindow::on_dayLabel_linkActivated(const QString &link)
-{
-
-}
-
