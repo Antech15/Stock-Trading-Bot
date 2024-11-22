@@ -9,7 +9,7 @@ class Bot : public Observer {
 public:
     enum class Strategy { Daily, BiDaily }; // Declare Strategy enum here
 
-    static Bot &getInstance() {
+    static Bot &getInstance() { //Apparently this is SINGLETON
         static Bot instance;
         return instance;
     }

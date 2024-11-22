@@ -176,9 +176,9 @@
      <widget class="QLabel" name="stockLabel1">
       <property name="geometry">
        <rect>
-        <x>70</x>
+        <x>40</x>
         <y>260</y>
-        <width>111</width>
+        <width>131</width>
         <height>61</height>
        </rect>
       </property>
@@ -189,9 +189,9 @@
      <widget class="QLabel" name="stockLabel2">
       <property name="geometry">
        <rect>
-        <x>240</x>
+        <x>210</x>
         <y>260</y>
-        <width>91</width>
+        <width>131</width>
         <height>61</height>
        </rect>
       </property>
@@ -202,9 +202,9 @@
      <widget class="QLabel" name="stockLabel4">
       <property name="geometry">
        <rect>
-        <x>570</x>
+        <x>550</x>
         <y>260</y>
-        <width>81</width>
+        <width>121</width>
         <height>61</height>
        </rect>
       </property>
@@ -215,9 +215,9 @@
      <widget class="QLabel" name="stockLabel3">
       <property name="geometry">
        <rect>
-        <x>410</x>
+        <x>390</x>
         <y>260</y>
-        <width>81</width>
+        <width>121</width>
         <height>61</height>
        </rect>
       </property>
@@ -245,12 +245,12 @@
        <rect>
         <x>270</x>
         <y>100</y>
-        <width>111</width>
+        <width>131</width>
         <height>61</height>
        </rect>
       </property>
       <property name="text">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:18pt;&quot;&gt;Amount: $100&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:18pt;&quot;&gt;Amount: $1000&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
      </widget>
      <widget class="QLabel" name="bankLabel_2">

@@ -11,6 +11,7 @@ class SimulationManager : public QObject {
 
 public:
     SimulationManager(QObject *parent = nullptr) : QObject(parent) {}
+    const std::vector<std::shared_ptr<Stock>>& getStocks() const { return stocks; }
 
     void addStock(std::shared_ptr<Stock> stock) {
         stocks.push_back(stock);

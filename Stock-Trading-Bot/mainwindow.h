@@ -39,6 +39,8 @@ private:
     std::shared_ptr<Stock> healthStock;
     std::shared_ptr<Stock> financeStock;
     std::shared_ptr<Stock> energyStock;
+
+    void initializeStockPrices();
 };
 
 #endif // MAINWINDOW_H

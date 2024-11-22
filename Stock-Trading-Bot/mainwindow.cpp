@@ -29,7 +29,8 @@ MainWindow::MainWindow(QWidget *parent)
     // Create stocks and add to simulation
     std::shared_ptr<Bot> bot = std::shared_ptr<Bot>(&Bot::getInstance(), [](Bot*) {});
 
-    Bot::getInstance().setStrategy(Bot::Strategy::Daily); // For daily
+    Bot::getInstance().setStrategy(Bot::Strategy::Daily);   // For daily trading
+    //Bot::getInstance().setStrategy(Bot::Strategy::BiDaily); // For bi-daily trading
 
     techStock = StockFactory::createStock(("Tech"));
     healthStock = StockFactory::createStock("Health");
@@ -45,11 +46,26 @@ MainWindow::MainWindow(QWidget *parent)
     simulationManager->addStock(healthStock);
     simulationManager->addStock(financeStock);
     simulationManager->addStock(energyStock);
+
+    initializeStockPrices();
+
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::initializeStockPrices() {
+    // Assuming you use QLabel widgets like stockLabel1, stockLabel2, etc.
+    auto stocks = simulationManager->getStocks(); // Add a getter for stocks in SimulationManager
+
+    if (!stocks.empty()) {
+        ui->stockLabel1->setText(QString("Tech: $%1").arg(stocks[0]->getPrice()));
+        ui->stockLabel2->setText(QString("Health: $%1").arg(stocks[1]->getPrice()));
+        ui->stockLabel3->setText(QString("Finance: $%1").arg(stocks[2]->getPrice()));
+        ui->stockLabel4->setText(QString("Energy: $%1").arg(stocks[3]->getPrice()));
+    }
 }
 
 void MainWindow::updateStocks() {
