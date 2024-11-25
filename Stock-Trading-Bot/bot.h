@@ -17,20 +17,18 @@ public:
     }
 
     void onPriceUpdate(const QString &stockName, double newPrice) override {
-        double bestDifference = 0;
-        QString bestStock;
         if(stockCounter <= 0)
         {
             counter--; // Decrement counter
             if (counter <= 0) { // If counter is 0 or negative, make a decision
-                if(day1 == true)
+                    if(day1 == true)
                 {
                     int idx = rand() % 4; // Generates a random number between 0 and 3
                     bestStock = stockNames[idx];
-                    newPrice = stockPrices[idx];
+                    bestPrice = stockPrices[idx];
                     day1 = false;
                 }
-                makeDecision(bestStock, newPrice); // Make a decision
+                makeDecision(stockName, newPrice); // Make a decision
 
                 // Reset the counter based on the strategy
                 if (strategy == Strategy::Daily) {
@@ -46,21 +44,18 @@ public:
 
             stockCounter = 4;
         }
-        stockCounter--;
 
-        if(day1 == false)
-        {
-            if(double(stockPrices[stockCounter]) / double(newPrice) > bestDifference)
-            {
-                bestDifference = double(stockPrices[stockCounter]) / double(newPrice);
-                bestStock = stockName;
-            }
-        }
+
+
+        stockCounter--;
 
 
         stockNames[stockCounter] = stockName;
         stockPrices[stockCounter] = newPrice;
-    }
+
+
+
+}
 
     double getBalance() const { return balance; }
     void setStrategy(Strategy newStrategy) { strategy = newStrategy; } // No more error
@@ -72,24 +67,27 @@ private:
     Bot(const Bot &) = delete;
     void operator=(const Bot &) = delete;
 
-    void makeDecision(const QString &stockName, double currentPrice) {
+    void makeDecision( QString stockNameThang, double currentPrice) {
         if (ownedStock.isEmpty()) {
             // Buy stock if none is currently owned
             if (balance >= currentPrice) {
                 balance -= currentPrice;
-                ownedStock = stockName;
+                ownedStock = stockNameThang;
                 purchasePrice = currentPrice;
-                qDebug() << "Bought 1 share of" << stockName << "at $" << currentPrice;
+                qDebug() << "Bought 1 share of" << stockNameThang << "at $" << currentPrice;
+                currentStock = true;
+                day1 = false;
             }
-        } else if (ownedStock == stockName) {
+        } else  {
             // Check if we should sell
             if (currentPrice > purchasePrice) {
                 balance += currentPrice;
-                qDebug() << "Sold 1 share of" << stockName << "at $" << currentPrice;
+                qDebug() << "Sold 1 share of" << stockNameThang << "at $" << currentPrice;
                 ownedStock = ""; // No stock owned now
+                currentStock = false;
                 purchasePrice = 0.0;
             } else {
-                qDebug() << "Holding" << stockName << "at $" << currentPrice << ". Purchase price was $" << purchasePrice;
+                qDebug() << "Holding" << stockNameThang << "at $" << currentPrice << ". Purchase price was $" << purchasePrice;
             }
         }
     }
@@ -103,6 +101,10 @@ private:
     QString stockNames [4];
     int stockPrices[4];
     bool day1 = true;
+    double bestDifference;
+    QString bestStock;
+    double bestPrice;
+    bool currentStock = false;
 };
 
 #endif // BOT_H
