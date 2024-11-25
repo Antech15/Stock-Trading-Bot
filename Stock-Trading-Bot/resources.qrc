@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/images">
         <file>images/yapdolla.png</file>
+        <file>images/speech-bubble-png-15286.png</file>
     </qresource>
 </RCC>

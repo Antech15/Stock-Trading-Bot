@@ -22,6 +22,15 @@ MainWindow::MainWindow(QWidget *parent)
         ui->imageLabel->setPixmap(pix);
     }
 
+    QFile file2(":/images/images/speech-bubble-png-15286.png");
+    if (!file2.exists()) {
+        qDebug() << "File does not exist at the specified path";
+    } else {
+        QPixmap pix{":/images/images/speech-bubble-png-15286.png"};
+        pix = pix.scaled(ui->speechLabel->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+        ui->speechLabel->setPixmap(pix);
+    }
+
     ui->stackedWidget->setCurrentIndex(1);
 
     // Connect SimulationManager signals to MainWindow slots
@@ -99,6 +108,9 @@ void MainWindow::on_bankButton_clicked()
 void MainWindow::on_nextDayButton_clicked() {
     simulationManager->nextDay();
     dayCounter++;
+    ui->consoleLabel->setText(QString("This is a placeholder"));
+    //I think make the string a variable and retreieve it here like in lines 83-86
+    ui->consoleLabel->setStyleSheet("color: black;");
     ui->dayLabel->setText(QString("Day: %1").arg(dayCounter));
 }
 
