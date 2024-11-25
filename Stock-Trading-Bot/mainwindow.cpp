@@ -22,7 +22,7 @@ MainWindow::MainWindow(QWidget *parent)
         ui->imageLabel->setPixmap(pix);
     }
 
-    ui->stackedWidget->setCurrentIndex(0);
+    ui->stackedWidget->setCurrentIndex(1);
 
     // Connect SimulationManager signals to MainWindow slots
     connect(simulationManager.get(), &SimulationManager::stocksUpdated, this, &MainWindow::updateStocks);
@@ -32,7 +32,7 @@ MainWindow::MainWindow(QWidget *parent)
     std::shared_ptr<Bot> bot = std::shared_ptr<Bot>(&Bot::getInstance(), [](Bot*) {});
 
     //Bot::getInstance().setStrategy(Bot::Strategy::Daily);   // For daily trading
-    Bot::getInstance().setStrategy(Bot::Strategy::Weekly); // For bi-daily trading
+    //Bot::getInstance().setStrategy(Bot::Strategy::Weekly); // For bi-daily trading
 
     techStock = StockFactory::createStock(("Tech"));
     healthStock = StockFactory::createStock("Health");
@@ -85,13 +85,13 @@ void MainWindow::updateBankBalance(double newBalance) {
 
 void MainWindow::on_chooseStocksButton_clicked()
 {
-    ui->stackedWidget->setCurrentIndex(1);
+    ui->stackedWidget->setCurrentIndex(2);
 }
 
 
 void MainWindow::on_bankButton_clicked()
 {
-    ui->stackedWidget->setCurrentIndex(2);
+    ui->stackedWidget->setCurrentIndex(3);
 }
 
 
@@ -112,3 +112,19 @@ void MainWindow::on_goBackButton_2_clicked()
 {
     ui->stackedWidget->setCurrentIndex(0);
 }
+
+void MainWindow::on_dailyButton_clicked()
+{
+    //set the strategy
+    Bot::getInstance().setStrategy(Bot::Strategy::Daily);
+    ui->stackedWidget->setCurrentIndex(0);
+}
+
+
+void MainWindow::on_weeklyButton_clicked()
+{
+    //set the strategy
+    Bot::getInstance().setStrategy(Bot::Strategy::Weekly);
+    ui->stackedWidget->setCurrentIndex(0);
+}
+
