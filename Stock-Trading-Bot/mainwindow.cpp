@@ -22,6 +22,8 @@ MainWindow::MainWindow(QWidget *parent)
         ui->imageLabel->setPixmap(pix);
     }
 
+    ui->stackedWidget->setCurrentIndex(0);
+
     // Connect SimulationManager signals to MainWindow slots
     connect(simulationManager.get(), &SimulationManager::stocksUpdated, this, &MainWindow::updateStocks);
     connect(simulationManager.get(), &SimulationManager::bankBalanceUpdated, this, &MainWindow::updateBankBalance);
