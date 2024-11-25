@@ -2,6 +2,7 @@
 #define STOCK_H
 
 #include <QString>
+#include <QtCore/qdebug.h>
 #include <vector>
 #include <memory>
 #include <cstdlib> // For rand()

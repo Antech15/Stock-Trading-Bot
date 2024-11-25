@@ -29,8 +29,8 @@ MainWindow::MainWindow(QWidget *parent)
     // Create stocks and add to simulation
     std::shared_ptr<Bot> bot = std::shared_ptr<Bot>(&Bot::getInstance(), [](Bot*) {});
 
-    Bot::getInstance().setStrategy(Bot::Strategy::Daily);   // For daily trading
-    //Bot::getInstance().setStrategy(Bot::Strategy::BiDaily); // For bi-daily trading
+    //Bot::getInstance().setStrategy(Bot::Strategy::Daily);   // For daily trading
+    Bot::getInstance().setStrategy(Bot::Strategy::Weekly); // For bi-daily trading
 
     techStock = StockFactory::createStock(("Tech"));
     healthStock = StockFactory::createStock("Health");
