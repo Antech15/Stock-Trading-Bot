@@ -22,7 +22,16 @@ MainWindow::MainWindow(QWidget *parent)
         ui->imageLabel->setPixmap(pix);
     }
 
-    ui->stackedWidget->setCurrentIndex(0);
+    QFile file2(":/images/images/speech-bubble-png-15286.png");
+    if (!file2.exists()) {
+        qDebug() << "File does not exist at the specified path";
+    } else {
+        QPixmap pix{":/images/images/speech-bubble-png-15286.png"};
+        pix = pix.scaled(ui->speechLabel->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+        ui->speechLabel->setPixmap(pix);
+    }
+
+    ui->stackedWidget->setCurrentIndex(1);
 
     // Connect SimulationManager signals to MainWindow slots
     connect(simulationManager.get(), &SimulationManager::stocksUpdated, this, &MainWindow::updateStocks);
@@ -32,7 +41,7 @@ MainWindow::MainWindow(QWidget *parent)
     std::shared_ptr<Bot> bot = std::shared_ptr<Bot>(&Bot::getInstance(), [](Bot*) {});
 
     //Bot::getInstance().setStrategy(Bot::Strategy::Daily);   // For daily trading
-    Bot::getInstance().setStrategy(Bot::Strategy::Weekly); // For bi-daily trading
+    //Bot::getInstance().setStrategy(Bot::Strategy::Weekly); // For bi-daily trading
 
     techStock = StockFactory::createStock(("Tech"));
     healthStock = StockFactory::createStock("Health");
@@ -85,13 +94,13 @@ void MainWindow::updateBankBalance(double newBalance) {
 
 void MainWindow::on_chooseStocksButton_clicked()
 {
-    ui->stackedWidget->setCurrentIndex(1);
+    ui->stackedWidget->setCurrentIndex(2);
 }
 
 
 void MainWindow::on_bankButton_clicked()
 {
-    ui->stackedWidget->setCurrentIndex(2);
+    ui->stackedWidget->setCurrentIndex(3);
 }
 
 
@@ -99,6 +108,9 @@ void MainWindow::on_bankButton_clicked()
 void MainWindow::on_nextDayButton_clicked() {
     simulationManager->nextDay();
     dayCounter++;
+    ui->consoleLabel->setText(QString("This is a placeholder"));
+    //I think make the string a variable and retreieve it here like in lines 83-86
+    ui->consoleLabel->setStyleSheet("color: black;");
     ui->dayLabel->setText(QString("Day: %1").arg(dayCounter));
 }
 
@@ -112,3 +124,19 @@ void MainWindow::on_goBackButton_2_clicked()
 {
     ui->stackedWidget->setCurrentIndex(0);
 }
+
+void MainWindow::on_dailyButton_clicked()
+{
+    //set the strategy
+    Bot::getInstance().setStrategy(Bot::Strategy::Daily);
+    ui->stackedWidget->setCurrentIndex(0);
+}
+
+
+void MainWindow::on_weeklyButton_clicked()
+{
+    //set the strategy
+    Bot::getInstance().setStrategy(Bot::Strategy::Weekly);
+    ui->stackedWidget->setCurrentIndex(0);
+}
+

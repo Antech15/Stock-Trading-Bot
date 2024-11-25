@@ -30,6 +30,10 @@ private slots:
     void on_goBackButton_clicked();
     void on_goBackButton_2_clicked();
 
+    void on_dailyButton_clicked();
+
+    void on_weeklyButton_clicked();
+
 private:
     Ui::MainWindow *ui;
     int dayCounter = 0;
