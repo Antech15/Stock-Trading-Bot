@@ -32,14 +32,38 @@ public:
     }
 
     QString getBotBubble() {
-        QString temp = "";
-        if(ownedStock != "")
-            temp = "I currently own " + ownedStock + " at " + QString::number(ownedStockPrice) + "!!";
-        else
-            temp = "Which one should I buy next??";
-        return temp;
+        QString temp = "I currently own ";
+        bool firstStock = false;
 
+        if (!ownedStock.isEmpty()) {
+            temp += ownedStock + " at " + QString::number(ownedStockPrice);
+            firstStock = true;
+        }
+
+        if (!ownedStock2.isEmpty()) {
+            if (firstStock) {
+                temp += ",\nand ";
+            }
+            temp += ownedStock2 + " at " + QString::number(ownedStockPrice2);
+            firstStock = true;
+        }
+
+        if (!ownedStock3.isEmpty()) {
+            if (firstStock) {
+                temp += ",\nand ";
+            }
+            temp += ownedStock3 + " at " + QString::number(ownedStockPrice3);
+        }
+
+        if (temp == "I currently own ") {
+            temp = "Which one should I buy next??";
+        } else {
+            temp += "!!";
+        }
+
+        return temp;
     }
+
 
 
     double getBalance() const { return balance; }
