@@ -311,10 +311,10 @@
      <widget class="QPushButton" name="goBackButton_2">
       <property name="geometry">
        <rect>
-        <x>20</x>
-        <y>20</y>
-        <width>100</width>
-        <height>32</height>
+        <x>40</x>
+        <y>270</y>
+        <width>101</width>
+        <height>91</height>
        </rect>
       </property>
       <property name="text">
@@ -345,6 +345,71 @@
       </property>
       <property name="text">
        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:48pt;&quot;&gt;BANK&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="tenButton">
+      <property name="geometry">
+       <rect>
+        <x>430</x>
+        <y>200</y>
+        <width>81</width>
+        <height>71</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>$10</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="twentyButton">
+      <property name="geometry">
+       <rect>
+        <x>520</x>
+        <y>200</y>
+        <width>81</width>
+        <height>71</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>$20</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="fiftyButton">
+      <property name="geometry">
+       <rect>
+        <x>430</x>
+        <y>270</y>
+        <width>81</width>
+        <height>71</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>$50</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="hundredButton">
+      <property name="geometry">
+       <rect>
+        <x>520</x>
+        <y>270</y>
+        <width>81</width>
+        <height>71</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>$100</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="bankLabel_3">
+      <property name="geometry">
+       <rect>
+        <x>480</x>
+        <y>150</y>
+        <width>61</width>
+        <height>61</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:18pt;&quot;&gt;Deposit&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
      </widget>
     </widget>

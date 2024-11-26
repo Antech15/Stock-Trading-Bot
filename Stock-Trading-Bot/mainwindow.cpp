@@ -108,7 +108,10 @@ void MainWindow::on_bankButton_clicked()
 void MainWindow::on_nextDayButton_clicked() {
     simulationManager->nextDay();
     dayCounter++;
-    ui->consoleLabel->setText(QString("This is a placeholder"));
+
+    QString temp = Bot::getInstance().getBotBubble();
+    ui->consoleLabel->setText(temp);
+
     //I think make the string a variable and retreieve it here like in lines 83-86
     ui->consoleLabel->setStyleSheet("color: black;");
     ui->dayLabel->setText(QString("Day: %1").arg(dayCounter));
@@ -138,5 +141,45 @@ void MainWindow::on_weeklyButton_clicked()
     //set the strategy
     Bot::getInstance().setStrategy(Bot::Strategy::Weekly);
     ui->stackedWidget->setCurrentIndex(0);
+}
+
+
+void MainWindow::on_tenButton_clicked()
+{
+    Bot::getInstance().deposit(10.0);
+
+    double balance = Bot::getInstance().getBalance();
+
+    updateBankBalance(balance);
+}
+
+
+void MainWindow::on_twentyButton_clicked()
+{
+    Bot::getInstance().deposit(20.0);
+
+    double balance = Bot::getInstance().getBalance();
+
+    updateBankBalance(balance);
+}
+
+
+void MainWindow::on_fiftyButton_clicked()
+{
+    Bot::getInstance().deposit(50.0);
+
+    double balance = Bot::getInstance().getBalance();
+
+    updateBankBalance(balance);
+}
+
+
+void MainWindow::on_hundredButton_clicked()
+{
+    Bot::getInstance().deposit(100.0);
+
+    double balance = Bot::getInstance().getBalance();
+
+    updateBankBalance(balance);
 }
 

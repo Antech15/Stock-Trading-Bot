@@ -34,6 +34,14 @@ private slots:
 
     void on_weeklyButton_clicked();
 
+    void on_tenButton_clicked();
+
+    void on_twentyButton_clicked();
+
+    void on_fiftyButton_clicked();
+
+    void on_hundredButton_clicked();
+
 private:
     Ui::MainWindow *ui;
     int dayCounter = 0;

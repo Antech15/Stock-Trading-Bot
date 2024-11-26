@@ -89,6 +89,21 @@ public:
 
 }
 
+    void deposit(double num) {
+        balance += num;
+    }
+
+    QString getBotBubble() {
+        QString temp = "";
+        if(ownedStock != "")
+            temp = "I currently own " + ownedStock + " at " + QString::number(ownedStockPrice) + "!!";
+        else
+            temp = "Which one should I buy next??";
+        return temp;
+
+    }
+
+
     double getBalance() const { return balance; }
     void setStrategy(Strategy newStrategy) { strategy = newStrategy; } // No more error
 
@@ -105,6 +120,7 @@ private:
             if (balance >= currentPrice) {
                 balance -= currentPrice;
                 ownedStock = stockNameThang;
+                ownedStockPrice = currentPrice;
                 purchasePrice = currentPrice;
                 qDebug() << "Bought 1 share of" << stockNameThang << "at $" << currentPrice;
                 currentStock = true;
