@@ -17,18 +17,45 @@ public:
     }
 
     void onPriceUpdate(const QString &stockName, double newPrice) override {
+        if(day1){
+            stockNames[stockCounter] = stockName;
+            stockPrices[stockCounter] = newPrice;}
+        else{
+            qDebug() << stockName << " " << newPrice << " / " << stockPrices[stockCounter] << " = " << newPrice/stockPrices[stockCounter];
+
+            if(newPrice/stockPrices[stockCounter] < bestChange){
+                bestChange = newPrice/stockPrices[stockCounter];
+                bestStock = stockName;
+                bestPrice = newPrice;
+            }
+            stockNames[stockCounter] = stockName;
+            stockPrices[stockCounter] = newPrice;
+            if(stockName == ownedStock)
+            {
+                ownedStockPrice = newPrice;
+            }
+        }
+
         if(stockCounter <= 0)
         {
             counter--; // Decrement counter
             if (counter <= 0) { // If counter is 0 or negative, make a decision
-                    if(day1 == true)
+                if(day1 == true)
                 {
                     int idx = rand() % 4; // Generates a random number between 0 and 3
                     bestStock = stockNames[idx];
                     bestPrice = stockPrices[idx];
                     day1 = false;
                 }
-                makeDecision(stockName, newPrice); // Make a decision
+                if(currentStock == true)
+                {
+                    makeDecision(ownedStock, ownedStockPrice); // Make a decision
+                }
+                else{
+                    makeDecision(bestStock, bestPrice); // Make a decision
+
+                }
+
 
                 // Reset the counter based on the strategy
                 if (strategy == Strategy::Daily) {
@@ -43,16 +70,12 @@ public:
             }
 
             stockCounter = 4;
+
         }
 
 
 
-        stockCounter--;
-
-
-        stockNames[stockCounter] = stockName;
-        stockPrices[stockCounter] = newPrice;
-
+            stockCounter--;
 
 
 }
@@ -76,6 +99,7 @@ private:
                 purchasePrice = currentPrice;
                 qDebug() << "Bought 1 share of" << stockNameThang << "at $" << currentPrice;
                 currentStock = true;
+                bestChange = 2;
                 day1 = false;
             }
         } else  {
@@ -83,6 +107,7 @@ private:
             if (currentPrice > purchasePrice) {
                 balance += currentPrice;
                 qDebug() << "Sold 1 share of" << stockNameThang << "at $" << currentPrice;
+                bestChange = 2;
                 ownedStock = ""; // No stock owned now
                 currentStock = false;
                 purchasePrice = 0.0;
@@ -99,12 +124,14 @@ private:
     Strategy strategy;   // Current strategy (Daily or Bi-Daily)
     int stockCounter;
     QString stockNames [4];
-    int stockPrices[4];
+    double stockPrices[4];
     bool day1 = true;
     double bestDifference;
     QString bestStock;
     double bestPrice;
     bool currentStock = false;
+    double bestChange = 2;
+    double ownedStockPrice;
 };
 
 #endif // BOT_H
