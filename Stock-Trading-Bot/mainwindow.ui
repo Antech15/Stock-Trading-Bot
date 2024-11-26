@@ -24,7 +24,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>2</number>
     </property>
     <widget class="QWidget" name="page">
      <widget class="QLabel" name="label">
@@ -232,7 +232,7 @@
       <property name="geometry">
        <rect>
         <x>40</x>
-        <y>160</y>
+        <y>90</y>
         <width>131</width>
         <height>101</height>
        </rect>
@@ -242,7 +242,7 @@
       <property name="geometry">
        <rect>
         <x>210</x>
-        <y>160</y>
+        <y>90</y>
         <width>131</width>
         <height>101</height>
        </rect>
@@ -252,7 +252,7 @@
       <property name="geometry">
        <rect>
         <x>380</x>
-        <y>160</y>
+        <y>90</y>
         <width>131</width>
         <height>101</height>
        </rect>
@@ -261,8 +261,8 @@
      <widget class="QGraphicsView" name="graphicsView_5">
       <property name="geometry">
        <rect>
-        <x>540</x>
-        <y>160</y>
+        <x>550</x>
+        <y>90</y>
         <width>131</width>
         <height>101</height>
        </rect>
@@ -272,7 +272,7 @@
       <property name="geometry">
        <rect>
         <x>40</x>
-        <y>260</y>
+        <y>190</y>
         <width>131</width>
         <height>61</height>
        </rect>
@@ -285,7 +285,7 @@
       <property name="geometry">
        <rect>
         <x>210</x>
-        <y>260</y>
+        <y>190</y>
         <width>131</width>
         <height>61</height>
        </rect>
@@ -298,7 +298,7 @@
       <property name="geometry">
        <rect>
         <x>550</x>
-        <y>260</y>
+        <y>190</y>
         <width>121</width>
         <height>61</height>
        </rect>
@@ -311,13 +311,105 @@
       <property name="geometry">
        <rect>
         <x>390</x>
-        <y>260</y>
+        <y>190</y>
         <width>121</width>
         <height>61</height>
        </rect>
       </property>
       <property name="text">
        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:18pt;&quot;&gt;Amount3&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+     </widget>
+     <widget class="QGraphicsView" name="graphicsView_6">
+      <property name="geometry">
+       <rect>
+        <x>40</x>
+        <y>250</y>
+        <width>131</width>
+        <height>101</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QGraphicsView" name="graphicsView_7">
+      <property name="geometry">
+       <rect>
+        <x>200</x>
+        <y>250</y>
+        <width>131</width>
+        <height>101</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QGraphicsView" name="graphicsView_8">
+      <property name="geometry">
+       <rect>
+        <x>550</x>
+        <y>240</y>
+        <width>131</width>
+        <height>101</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QGraphicsView" name="graphicsView_9">
+      <property name="geometry">
+       <rect>
+        <x>370</x>
+        <y>250</y>
+        <width>131</width>
+        <height>101</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLabel" name="stockLabel5">
+      <property name="geometry">
+       <rect>
+        <x>40</x>
+        <y>350</y>
+        <width>131</width>
+        <height>61</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:18pt;&quot;&gt;Amount1&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="stockLabel6">
+      <property name="geometry">
+       <rect>
+        <x>210</x>
+        <y>350</y>
+        <width>131</width>
+        <height>61</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:18pt;&quot;&gt;Amount1&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="stockLabel7">
+      <property name="geometry">
+       <rect>
+        <x>370</x>
+        <y>350</y>
+        <width>131</width>
+        <height>61</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:18pt;&quot;&gt;Amount1&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="stockLabel8">
+      <property name="geometry">
+       <rect>
+        <x>560</x>
+        <y>350</y>
+        <width>131</width>
+        <height>61</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:18pt;&quot;&gt;Amount1&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
      </widget>
     </widget>
