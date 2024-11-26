@@ -21,12 +21,21 @@ public:
             stockNames[stockCounter] = stockName;
             stockPrices[stockCounter] = newPrice;}
         else{
-            qDebug() << stockName << " " << newPrice << " / " << stockPrices[stockCounter] << " = " << newPrice/stockPrices[stockCounter];
+            qDebug() << stockName << " | stockCounter: " << stockCounter << " " << newPrice << " / " << stockPrices[stockCounter] << " = " << newPrice/stockPrices[stockCounter];
 
-            if(newPrice/stockPrices[stockCounter] < bestChange){
-                bestChange = newPrice/stockPrices[stockCounter];
-                bestStock = stockName;
-                bestPrice = newPrice;
+            if(strategy == Strategy::Daily){
+                if(newPrice/stockPrices[stockCounter] < bestChange){
+                    bestChange = newPrice/stockPrices[stockCounter];
+                    bestStock = stockName;
+                    bestPrice = newPrice;
+                }
+            }
+            if (strategy == Strategy::Weekly && counter <= 1){
+                if(newPrice/stockPrices[stockCounter] < bestChange){
+                    bestChange = newPrice/stockPrices[stockCounter];
+                    bestStock = stockName;
+                    bestPrice = newPrice;
+                }
             }
             stockNames[stockCounter] = stockName;
             stockPrices[stockCounter] = newPrice;
