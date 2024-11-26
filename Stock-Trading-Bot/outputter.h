@@ -61,6 +61,10 @@ public:
         days++;
     }
 
+    double getTally(QString stockName) {
+        return stockTally[stockName];
+    }
+
 private:
     QFile logFile;
     int days;
