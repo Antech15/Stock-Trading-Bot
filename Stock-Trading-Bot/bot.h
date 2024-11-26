@@ -112,6 +112,7 @@ public:
                 bestChange = 2;
                 bestChange2 = 2;
                 bestChange3 = 2;
+                bestChange4 = 2;
                 day1 = false;
             }
         } else  {
@@ -120,9 +121,12 @@ public:
                 balance += currentPrice;
                 qDebug() << "Sold 1 share of" << stockNameThang << "at $" << currentPrice;
                 bestChange = 2;
+                bestChange4 = 2;
+
                 ownedStock = ""; // No stock owned now
                 //currentStock = false;
                 purchasePrice = 0.0;
+                logger_->logSell(stockNameThang, currentPrice);
             } else if(!ownedStock.isEmpty()){
                 qDebug() << "Holding" << stockNameThang << "at $" << currentPrice << ". Purchase price was $" << purchasePrice;
             }
@@ -132,9 +136,13 @@ public:
                 balance += currentPrice2;
                 qDebug() << "Sold 1 share of" << stockNameThang2 << "at $" << currentPrice2;
                 bestChange2 = 2;
+                bestChange4 = 2;
+
                 ownedStock2 = ""; // No stock owned now
                 //currentStock = false;
                 purchasePrice2 = 0.0;
+                logger_->logSell(stockNameThang2, currentPrice2);
+
             } else if(!ownedStock2.isEmpty()){
                 qDebug() << "Holding" << stockNameThang2 << "at $" << currentPrice2 << ". Purchase price was $" << purchasePrice2;
             }
@@ -144,9 +152,12 @@ public:
                 balance += currentPrice3;
                 qDebug() << "Sold 1 share of" << stockNameThang3 << "at $" << currentPrice3;
                 bestChange3 = 2;
+                bestChange4 = 2;
                 ownedStock3 = ""; // No stock owned now
                 //currentStock = false;
                 purchasePrice3 = 0.0;
+                logger_->logSell(stockNameThang3, currentPrice3);
+
             } else if(!ownedStock3.isEmpty()){
                 qDebug() << "Holding" << stockNameThang3 << "at $" << currentPrice3 << ". Purchase price was $" << purchasePrice3;
             }
@@ -155,6 +166,7 @@ public:
                 bestChange = 2;
                 bestChange2 = 2;
                 bestChange3 = 2;
+                bestChange4 = 2;
 
 
 
@@ -178,27 +190,30 @@ public:
     double purchasePrice2;
     double purchasePrice3;
 
+
     int counter;
     int stockCounter;
-    QString stockNames [4];
-    double stockPrices[4];
+    QString stockNames [8];
+    double stockPrices[8];
     bool day1 = true;
     double bestDifference;
     QString bestStock;
     QString bestStock2;
     QString bestStock3;
+    QString bestStock4;
 
     //variables to hold 3 best prices
     double bestPrice;
     double bestPrice2;
     double bestPrice3;
+    double bestPrice4;
     bool currentStock = false;
 
     //variables to hold best change percentages
     double bestChange = 2;
     double bestChange2 = 2;
     double bestChange3 = 2;
-
+    double bestChange4 = 2;
     //variables to compare prices
     double ownedStockPrice;
     double ownedStockPrice2;
@@ -221,10 +236,14 @@ public:
                 botInstance.stockNames[botInstance.stockCounter] = stockName;
                 botInstance.stockPrices[botInstance.stockCounter] = newPrice;}
             else{
-                qDebug() << stockName << " | stockCounter: " << botInstance.stockCounter << " " << newPrice << " / " << botInstance.stockPrices[botInstance.stockCounter] << " = " << newPrice/botInstance.stockPrices[botInstance.stockCounter];
+            qDebug() << stockName << " | stockCounter: " << botInstance.stockCounter << " " << newPrice << " / " << botInstance.stockPrices[botInstance.stockCounter] << " = " << newPrice/botInstance.stockPrices[botInstance.stockCounter];
 
 
                 if(newPrice/botInstance.stockPrices[botInstance.stockCounter] < botInstance.bestChange){
+                    botInstance.bestChange4 = botInstance.bestChange3;
+                    botInstance.bestStock4 = botInstance.bestStock3;
+                    botInstance.bestPrice4 = botInstance.bestPrice3;
+
                     botInstance.bestChange3 = botInstance.bestChange2; // moved to third best
                     botInstance.bestStock3 = botInstance.bestStock2;
                     botInstance.bestPrice3 = botInstance.bestPrice2;
@@ -240,6 +259,10 @@ public:
                 }
                 else if(newPrice/botInstance.stockPrices[botInstance.stockCounter] < botInstance.bestChange2)
                 {
+                    botInstance.bestChange4 = botInstance.bestChange3;
+                    botInstance.bestStock4 = botInstance.bestStock3;
+                    botInstance.bestPrice4 = botInstance.bestPrice3;
+
                     botInstance.bestChange3 = botInstance.bestChange2; // moved to third best
                     botInstance.bestStock3 = botInstance.bestStock2;
                     botInstance.bestPrice3 = botInstance.bestPrice2;
@@ -251,10 +274,18 @@ public:
                 }
                 else if(newPrice/botInstance.stockPrices[botInstance.stockCounter] < botInstance.bestChange3)
                 {
+                    botInstance.bestChange4 = botInstance.bestChange3;
+                    botInstance.bestStock4 = botInstance.bestStock3;
+                    botInstance.bestPrice4 = botInstance.bestPrice3;
 
                     botInstance.bestChange3 = newPrice/botInstance.stockPrices[botInstance.stockCounter]; // updated second best
                     botInstance.bestStock3 = stockName;
                     botInstance.bestPrice3 = newPrice;
+                }
+                else if(newPrice/botInstance.stockPrices[botInstance.stockCounter] < botInstance.bestChange4){
+                    botInstance.bestChange4 = newPrice/botInstance.stockPrices[botInstance.stockCounter]; // updated second best
+                    botInstance.bestStock4 = stockName;
+                    botInstance.bestPrice4 = newPrice;
                 }
 
                 botInstance.stockNames[botInstance.stockCounter] = stockName;
@@ -279,15 +310,15 @@ public:
                 if (botInstance.counter <= 0) { // If counter is 0 or negative, make a decision
                     if(botInstance.day1 == true)
                     {
-                        int idx = rand() % 4; // Generates a random number between 0 and 3
+                        int idx = rand() % 8; // Generates a random number between 0 and 3
                         botInstance.bestStock = botInstance.stockNames[idx];
                         botInstance.bestPrice = botInstance.stockPrices[idx];
 
-                        botInstance.bestStock2 = botInstance.stockNames[(idx + 1) %3];
-                        botInstance.bestPrice2 = botInstance.stockPrices[(idx + 1) %3];
+                        botInstance.bestStock2 = botInstance.stockNames[(idx + 1) %7];
+                        botInstance.bestPrice2 = botInstance.stockPrices[(idx + 1) %7];
 
-                        botInstance.bestStock3 = botInstance.stockNames[(idx + 2) %3];
-                        botInstance.bestPrice3 = botInstance.stockPrices[(idx + 2) %3];
+                        botInstance.bestStock3 = botInstance.stockNames[(idx + 2) %7];
+                        botInstance.bestPrice3 = botInstance.stockPrices[(idx + 2) %7];
                         botInstance.day1 = false;
                     }
                     if(botInstance.currentStock == true)
@@ -295,6 +326,83 @@ public:
                         botInstance.makeDecision(botInstance.ownedStock, botInstance.ownedStockPrice, botInstance.ownedStock2, botInstance.ownedStockPrice2, botInstance.ownedStock3, botInstance.ownedStockPrice3); // Make a decision
                     }
                     else{
+                        // Compare the tally values and reorder bestStock, bestStock2, bestStock3
+
+                        qDebug() << "Biggest Drops Today: #1 " << botInstance.bestStock << "; #2 " << botInstance.bestStock2 << "; #3 " << botInstance.bestStock3 << "; #4 " << botInstance.bestStock4;
+                        // Compare bestStock, bestStock2, bestStock3, and bestStock4 and reorder them by their tally values
+
+                        // Compare bestStock and bestStock2
+                        if (botInstance.logger_->getTally(botInstance.bestStock) < botInstance.logger_->getTally(botInstance.bestStock2)) {
+                            // Swap bestStock and bestStock2
+                            QString tempStock = botInstance.bestStock;
+                            double tempPrice = botInstance.bestPrice;
+                            botInstance.bestStock = botInstance.bestStock2;
+                            botInstance.bestPrice = botInstance.bestPrice2;
+                            botInstance.bestStock2 = tempStock;
+                            botInstance.bestPrice2 = tempPrice;
+                        }
+
+                        // Compare bestStock and bestStock3
+                        if (botInstance.logger_->getTally(botInstance.bestStock) < botInstance.logger_->getTally(botInstance.bestStock3)) {
+                            // Swap bestStock and bestStock3
+                            QString tempStock = botInstance.bestStock;
+                            double tempPrice = botInstance.bestPrice;
+                            botInstance.bestStock = botInstance.bestStock3;
+                            botInstance.bestPrice = botInstance.bestPrice3;
+                            botInstance.bestStock3 = tempStock;
+                            botInstance.bestPrice3 = tempPrice;
+                        }
+
+                        // Compare bestStock and bestStock4
+                        if (botInstance.logger_->getTally(botInstance.bestStock) < botInstance.logger_->getTally(botInstance.bestStock4)) {
+                            // Swap bestStock and bestStock4
+                            QString tempStock = botInstance.bestStock;
+                            double tempPrice = botInstance.bestPrice;
+                            botInstance.bestStock = botInstance.bestStock4;
+                            botInstance.bestPrice = botInstance.bestPrice4;
+                            botInstance.bestStock4 = tempStock;
+                            botInstance.bestPrice4 = tempPrice;
+                        }
+
+                        // Compare bestStock2 and bestStock3
+                        if (botInstance.logger_->getTally(botInstance.bestStock2) < botInstance.logger_->getTally(botInstance.bestStock3)) {
+                            // Swap bestStock2 and bestStock3
+                            QString tempStock = botInstance.bestStock2;
+                            double tempPrice = botInstance.bestPrice2;
+                            botInstance.bestStock2 = botInstance.bestStock3;
+                            botInstance.bestPrice2 = botInstance.bestPrice3;
+                            botInstance.bestStock3 = tempStock;
+                            botInstance.bestPrice3 = tempPrice;
+                        }
+
+                        // Compare bestStock2 and bestStock4
+                        if (botInstance.logger_->getTally(botInstance.bestStock2) < botInstance.logger_->getTally(botInstance.bestStock4)) {
+                            // Swap bestStock2 and bestStock4
+                            QString tempStock = botInstance.bestStock2;
+                            double tempPrice = botInstance.bestPrice2;
+                            botInstance.bestStock2 = botInstance.bestStock4;
+                            botInstance.bestPrice2 = botInstance.bestPrice4;
+                            botInstance.bestStock4 = tempStock;
+                            botInstance.bestPrice4 = tempPrice;
+                        }
+
+                        // Compare bestStock3 and bestStock4
+                        if (botInstance.logger_->getTally(botInstance.bestStock3) < botInstance.logger_->getTally(botInstance.bestStock4)) {
+                            // Swap bestStock3 and bestStock4
+                            QString tempStock = botInstance.bestStock3;
+                            double tempPrice = botInstance.bestPrice3;
+                            botInstance.bestStock3 = botInstance.bestStock4;
+                            botInstance.bestPrice3 = botInstance.bestPrice4;
+                            botInstance.bestStock4 = tempStock;
+                            botInstance.bestPrice4 = tempPrice;
+                        }
+
+
+                        qDebug() << "After taking into account the profit history: ";
+                        qDebug() << "#1 " << botInstance.bestStock << " with tally count -> " << botInstance.logger_->getTally(botInstance.bestStock);
+                        qDebug() << "#2 " << botInstance.bestStock2 << " with tally count -> " << botInstance.logger_->getTally(botInstance.bestStock2);
+                        qDebug() << "#3 " << botInstance.bestStock3 << " with tally count -> " << botInstance.logger_->getTally(botInstance.bestStock3);
+
                         botInstance.makeDecision(botInstance.bestStock, botInstance.bestPrice, botInstance.bestStock2, botInstance.bestPrice2, botInstance.bestStock3, botInstance.bestPrice3); // Make a decision
 
                     }
@@ -302,7 +410,7 @@ public:
                     botInstance.counter = 1; // Make a decision every day
 
                 }
-                botInstance.stockCounter = 4;
+                botInstance.stockCounter = 8;
             }
             botInstance.stockCounter--;
         }
