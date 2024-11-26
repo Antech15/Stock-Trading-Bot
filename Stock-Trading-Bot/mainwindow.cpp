@@ -130,17 +130,20 @@ void MainWindow::on_goBackButton_2_clicked()
 
 void MainWindow::on_dailyButton_clicked()
 {
-    //set the strategy
-    Bot::getInstance().setStrategy(Bot::Strategy::Daily);
+    Daily *dailyStrategy = new Daily();   // Use Daily strategy
+    Bot::getInstance().setStrategy(dailyStrategy); // Setting Daily strategy
+
     ui->stackedWidget->setCurrentIndex(0);
 }
 
 
 void MainWindow::on_weeklyButton_clicked()
 {
-    //set the strategy
-    Bot::getInstance().setStrategy(Bot::Strategy::Weekly);
+
+    Weekly *weeklyStrategy = new Weekly();   // Use Daily strategy
+    Bot::getInstance().setStrategy(weeklyStrategy); // Setting Daily strategy
     ui->stackedWidget->setCurrentIndex(0);
+
 }
 
 

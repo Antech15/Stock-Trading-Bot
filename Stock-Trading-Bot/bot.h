@@ -6,10 +6,16 @@
 #include <QString>
 #include <cstdlib> // For rand()
 
+class BotStrategy {
+public:
+    virtual void onPriceUpdate(const QString &stockName, double newPrice) = 0;
+};
+
+
 
 class Bot : public Observer {
 public:
-    enum class Strategy { Daily, Weekly }; // Declare Strategy enum here
+    //enum class Strategy { Daily, Weekly }; // Declare Strategy enum here
 
     static Bot &getInstance() { //Apparently this is SINGLETON
         static Bot instance;
@@ -17,7 +23,11 @@ public:
     }
 
     void onPriceUpdate(const QString &stockName, double newPrice) override {
-        if(day1){
+        if(strategy_ != nullptr){
+           return strategy_->onPriceUpdate(stockName, newPrice);
+        }
+        return void();
+        /*if(day1){
             stockNames[stockCounter] = stockName;
             stockPrices[stockCounter] = newPrice;}
         else{
@@ -44,7 +54,6 @@ public:
                 ownedStockPrice = newPrice;
             }
         }
-
         if(stockCounter <= 0)
         {
             counter--; // Decrement counter
@@ -64,8 +73,6 @@ public:
                     makeDecision(bestStock, bestPrice); // Make a decision
 
                 }
-
-
                 // Reset the counter based on the strategy
                 if (strategy == Strategy::Daily) {
                     counter = 1; // Make a decision every day
@@ -77,16 +84,10 @@ public:
             if (strategy == Strategy::Weekly && counter > 0) {
                 qDebug() << counter << "days left until bot is active on the Stock Market";
             }
-
             stockCounter = 4;
-
         }
-
-
-
             stockCounter--;
-
-
+*/
 }
 
     void deposit(double num) {
@@ -105,10 +106,10 @@ public:
 
 
     double getBalance() const { return balance; }
-    void setStrategy(Strategy newStrategy) { strategy = newStrategy; } // No more error
+    void setStrategy(BotStrategy *strategy) { strategy_ = strategy; } // No more error
 
-private:
-    Bot() : balance(1000.0), ownedStock(""), purchasePrice(0.0), counter(1), strategy(Strategy::Daily), stockCounter(3) {}
+
+    Bot() : balance(1000.0), ownedStock(""), purchasePrice(0.0), counter(1), stockCounter(3), strategy_(nullptr) {}
 
     // Prevent copying
     Bot(const Bot &) = delete;
@@ -146,7 +147,7 @@ private:
     QString ownedStock;
     double purchasePrice;
     int counter;         // Counter to handle daily/bi-daily logic
-    Strategy strategy;   // Current strategy (Daily or Bi-Daily)
+    //Strategy strategy;   // Current strategy (Daily or Bi-Daily)
     int stockCounter;
     QString stockNames [4];
     double stockPrices[4];
@@ -157,6 +158,129 @@ private:
     bool currentStock = false;
     double bestChange = 2;
     double ownedStockPrice;
+    BotStrategy* strategy_;
+};
+
+class Daily : public BotStrategy {
+public:
+    Daily(){}
+
+    void onPriceUpdate(const QString &stockName, double newPrice)
+    {
+        Bot &botInstance = Bot::getInstance();  // Always get the singleton instance
+
+        {
+            if(botInstance.day1){
+                botInstance.stockNames[botInstance.stockCounter] = stockName;
+                botInstance.stockPrices[botInstance.stockCounter] = newPrice;}
+            else{
+                qDebug() << stockName << " | stockCounter: " << botInstance.stockCounter << " " << newPrice << " / " << botInstance.stockPrices[botInstance.stockCounter] << " = " << newPrice/botInstance.stockPrices[botInstance.stockCounter];
+
+                if(newPrice/botInstance.stockPrices[botInstance.stockCounter] < botInstance.bestChange){
+                    botInstance.bestChange = newPrice/botInstance.stockPrices[botInstance.stockCounter];
+                    botInstance.bestStock = stockName;
+                    botInstance.bestPrice = newPrice;
+                }
+
+
+                botInstance.stockNames[botInstance.stockCounter] = stockName;
+                botInstance.stockPrices[botInstance.stockCounter] = newPrice;
+                if(stockName == botInstance.ownedStock)
+                {
+                    botInstance.ownedStockPrice = newPrice;
+                }
+            }
+            if(botInstance.stockCounter <= 0)
+            {
+                botInstance.counter--; // Decrement counter
+                if (botInstance.counter <= 0) { // If counter is 0 or negative, make a decision
+                    if(botInstance.day1 == true)
+                    {
+                        int idx = rand() % 4; // Generates a random number between 0 and 3
+                        botInstance.bestStock = botInstance.stockNames[idx];
+                        botInstance.bestPrice = botInstance.stockPrices[idx];
+                        botInstance.day1 = false;
+                    }
+                    if(botInstance.currentStock == true)
+                    {
+                        botInstance.makeDecision(botInstance.ownedStock, botInstance.ownedStockPrice); // Make a decision
+                    }
+                    else{
+                        botInstance.makeDecision(botInstance.bestStock, botInstance.bestPrice); // Make a decision
+
+                    }
+                    // Reset the counter based on the strategy
+                    botInstance.counter = 1; // Make a decision every day
+
+                }
+                botInstance.stockCounter = 4;
+            }
+            botInstance.stockCounter--;
+        }
+    }
+
+
+};
+
+class Weekly : public BotStrategy {
+public:
+    Weekly() {}
+    void onPriceUpdate(const QString &stockName, double newPrice)
+    {
+        Bot &botInstance = Bot::getInstance();  // Always get the singleton instance
+
+        if(botInstance.day1){
+            botInstance.stockNames[botInstance.stockCounter] = stockName;
+            botInstance.stockPrices[botInstance.stockCounter] = newPrice;}
+        else{
+            qDebug() << stockName << " | stockCounter: " << botInstance.stockCounter << " " << newPrice << " / " << botInstance.stockPrices[botInstance.stockCounter] << " = " << newPrice/botInstance.stockPrices[botInstance.stockCounter];
+            if (botInstance.counter <= 1){
+                if(newPrice/botInstance.stockPrices[botInstance.stockCounter] < botInstance.bestChange){
+                    botInstance.bestChange = newPrice/botInstance.stockPrices[botInstance.stockCounter];
+                    botInstance.bestStock = stockName;
+                    botInstance.bestPrice = newPrice;
+                }
+            }
+            botInstance.stockNames[botInstance.stockCounter] = stockName;
+            botInstance.stockPrices[botInstance.stockCounter] = newPrice;
+            if(stockName == botInstance.ownedStock)
+            {
+                botInstance.ownedStockPrice = newPrice;
+            }
+        }
+        if(botInstance.stockCounter <= 0)
+        {
+            botInstance.counter--; // Decrement counter
+            if (botInstance.counter <= 0) { // If counter is 0 or negative, make a decision
+                if(botInstance.day1 == true)
+                {
+                    int idx = rand() % 4; // Generates a random number between 0 and 3
+                    botInstance.bestStock = botInstance.stockNames[idx];
+                    botInstance.bestPrice = botInstance.stockPrices[idx];
+                    botInstance.day1 = false;
+                }
+                if(botInstance.currentStock == true)
+                {
+                    botInstance.makeDecision(botInstance.ownedStock, botInstance.ownedStockPrice); // Make a decision
+                }
+                else{
+                    botInstance.makeDecision(botInstance.bestStock, botInstance.bestPrice); // Make a decision
+
+                }
+                botInstance.counter = 7; // Make a decision every 7 days
+
+            }
+            // For weekly strategy, output the number of days left until the bot is active
+            if (botInstance.counter > 0) {
+                qDebug() << botInstance.counter << "days left until bot is active on the Stock Market";
+            }
+            botInstance.stockCounter = 4;
+        }
+        botInstance.stockCounter--;
+    }
+private:
+
+
 };
 
 #endif // BOT_H
