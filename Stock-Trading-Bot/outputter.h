@@ -6,6 +6,7 @@
 #include <QString>
 #include <QDebug>
 #include <map>
+#include <iostream>
 
 class Outputter {
 public:
