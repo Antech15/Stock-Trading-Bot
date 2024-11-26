@@ -22,9 +22,6 @@ int main(int argc, char *argv[])
     logger.addDay();
     logger.addDay();
 
-    // Log summary at the end
-    logger.logSummary();
-
     QApplication a(argc, argv);
     MainWindow w;
 

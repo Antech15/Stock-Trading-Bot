@@ -3,8 +3,3 @@ You traded for: 2 days.
 For the Tech stock, you've purchased 2 shares. It gained you $400
 For the Health stock, you've purchased 1 shares. It gained you $200
 Total Bot Profit was $600.00
-Bot Summary:
-You traded for: 2 days. 
-For the Tech stock, you've purchased 2 shares. It gained you $400
-For the Health stock, you've purchased 1 shares. It gained you $200
-Total Bot Profit was $600.00
