@@ -73,7 +73,7 @@ void MainWindow::initializeStockPrices() {
     auto stocks = simulationManager->getStocks(); // Add a getter for stocks in SimulationManager
 
     if (!stocks.empty()) {
-        ui->stockLabel1->setText(QString("Tech: $%1").arg(stocks[0]->getPrice()));
+        ui->stockLabel1->setText(QString("Regal: $%1").arg(stocks[0]->getPrice()));
         ui->stockLabel2->setText(QString("Health: $%1").arg(stocks[1]->getPrice()));
         ui->stockLabel3->setText(QString("Finance: $%1").arg(stocks[2]->getPrice()));
         ui->stockLabel4->setText(QString("Energy: $%1").arg(stocks[3]->getPrice()));
