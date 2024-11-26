@@ -11,12 +11,8 @@ public:
     virtual void onPriceUpdate(const QString &stockName, double newPrice) = 0;
 };
 
-
-
 class Bot : public Observer {
 public:
-    //enum class Strategy { Daily, Weekly }; // Declare Strategy enum here
-
     static Bot &getInstance() { //Apparently this is SINGLETON
         static Bot instance;
         return instance;
@@ -27,67 +23,7 @@ public:
            return strategy_->onPriceUpdate(stockName, newPrice);
         }
         return void();
-        /*if(day1){
-            stockNames[stockCounter] = stockName;
-            stockPrices[stockCounter] = newPrice;}
-        else{
-            qDebug() << stockName << " | stockCounter: " << stockCounter << " " << newPrice << " / " << stockPrices[stockCounter] << " = " << newPrice/stockPrices[stockCounter];
 
-            if(strategy == Strategy::Daily){
-                if(newPrice/stockPrices[stockCounter] < bestChange){
-                    bestChange = newPrice/stockPrices[stockCounter];
-                    bestStock = stockName;
-                    bestPrice = newPrice;
-                }
-            }
-            if (strategy == Strategy::Weekly && counter <= 1){
-                if(newPrice/stockPrices[stockCounter] < bestChange){
-                    bestChange = newPrice/stockPrices[stockCounter];
-                    bestStock = stockName;
-                    bestPrice = newPrice;
-                }
-            }
-            stockNames[stockCounter] = stockName;
-            stockPrices[stockCounter] = newPrice;
-            if(stockName == ownedStock)
-            {
-                ownedStockPrice = newPrice;
-            }
-        }
-        if(stockCounter <= 0)
-        {
-            counter--; // Decrement counter
-            if (counter <= 0) { // If counter is 0 or negative, make a decision
-                if(day1 == true)
-                {
-                    int idx = rand() % 4; // Generates a random number between 0 and 3
-                    bestStock = stockNames[idx];
-                    bestPrice = stockPrices[idx];
-                    day1 = false;
-                }
-                if(currentStock == true)
-                {
-                    makeDecision(ownedStock, ownedStockPrice); // Make a decision
-                }
-                else{
-                    makeDecision(bestStock, bestPrice); // Make a decision
-
-                }
-                // Reset the counter based on the strategy
-                if (strategy == Strategy::Daily) {
-                    counter = 1; // Make a decision every day
-                } else if (strategy == Strategy::Weekly) {
-                    counter = 7; // Make a decision every 7 days
-                }
-            }
-            // For weekly strategy, output the number of days left until the bot is active
-            if (strategy == Strategy::Weekly && counter > 0) {
-                qDebug() << counter << "days left until bot is active on the Stock Market";
-            }
-            stockCounter = 4;
-        }
-            stockCounter--;
-*/
 }
 
     void deposit(double num) {
@@ -146,8 +82,7 @@ public:
     double balance;
     QString ownedStock;
     double purchasePrice;
-    int counter;         // Counter to handle daily/bi-daily logic
-    //Strategy strategy;   // Current strategy (Daily or Bi-Daily)
+    int counter;
     int stockCounter;
     QString stockNames [4];
     double stockPrices[4];
@@ -181,8 +116,6 @@ public:
                     botInstance.bestStock = stockName;
                     botInstance.bestPrice = newPrice;
                 }
-
-
                 botInstance.stockNames[botInstance.stockCounter] = stockName;
                 botInstance.stockPrices[botInstance.stockCounter] = newPrice;
                 if(stockName == botInstance.ownedStock)
