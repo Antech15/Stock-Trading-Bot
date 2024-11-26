@@ -18,6 +18,7 @@ SOURCES += \
 HEADERS += \
     bot.h \
     mainwindow.h \
+    outputter.h \
     simulationmanager.h \
     stock.h \
     stockfactory.h
