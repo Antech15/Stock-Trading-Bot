@@ -43,6 +43,8 @@ private slots:
 
     void on_hundredButton_clicked();
 
+    void on_doneButton_clicked();
+
 private:
     Ui::MainWindow *ui;
     int dayCounter = 0;

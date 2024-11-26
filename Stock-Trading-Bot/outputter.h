@@ -57,6 +57,22 @@ public:
 
     }
 
+    std::vector<QString> logSummary2() {
+        double total = 0;
+
+        std::vector<QString> vec;
+        vec.push_back("You traded for: " + QString::number(days) + " days. \n");
+        for (std::size_t i = 0; i < stockNames.size(); i++) {
+            vec.push_back("For the "+ stockNames[i] + " stock, you've purchased " + stockTally[stockNames[i]] + " shares. It gained you $"
+                + stockRevenue[stockNames[i]] + "\n");
+
+            total += stockRevenue[stockNames[i]];
+        }
+        vec.push_back("Total Bot Profit was $" + QString::number(total, 'f', 2) + "\n");
+
+        return vec;
+    }
+
     void addDay() {
         days++;
     }

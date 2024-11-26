@@ -189,3 +189,9 @@ void MainWindow::on_hundredButton_clicked()
     updateBankBalance(balance);
 }
 
+
+void MainWindow::on_doneButton_clicked()
+{
+    ui->stackedWidget->setCurrentIndex(0);
+}
+

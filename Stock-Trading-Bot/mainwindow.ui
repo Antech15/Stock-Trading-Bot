@@ -43,10 +43,10 @@
      <widget class="QPushButton" name="nextDayButton">
       <property name="geometry">
        <rect>
-        <x>290</x>
-        <y>330</y>
+        <x>300</x>
+        <y>310</y>
         <width>100</width>
-        <height>32</height>
+        <height>61</height>
        </rect>
       </property>
       <property name="text">
@@ -59,7 +59,7 @@
         <x>70</x>
         <y>220</y>
         <width>141</width>
-        <height>31</height>
+        <height>71</height>
        </rect>
       </property>
       <property name="text">
@@ -72,7 +72,7 @@
         <x>500</x>
         <y>220</y>
         <width>141</width>
-        <height>31</height>
+        <height>71</height>
        </rect>
       </property>
       <property name="text">
@@ -128,13 +128,26 @@
       <property name="geometry">
        <rect>
         <x>410</x>
-        <y>60</y>
-        <width>291</width>
-        <height>191</height>
+        <y>50</y>
+        <width>301</width>
+        <height>201</height>
        </rect>
       </property>
       <property name="text">
        <string/>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="doneButton">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>330</y>
+        <width>100</width>
+        <height>61</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Done</string>
       </property>
      </widget>
      <zorder>label</zorder>
@@ -145,6 +158,7 @@
      <zorder>speechLabel</zorder>
      <zorder>consoleLabel</zorder>
      <zorder>bankButton</zorder>
+     <zorder>doneButton</zorder>
     </widget>
     <widget class="QWidget" name="page_4">
      <widget class="QLabel" name="decisionLabel">
