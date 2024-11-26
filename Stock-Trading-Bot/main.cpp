@@ -15,15 +15,8 @@ int main(int argc, char *argv[])
     QString outputPath = dir.absolutePath() + "/bot_summary.txt";
     Outputter logger(outputPath);
 
-    // Simulate some trades
-    logger.logSell("Tech", 200.00);
-    logger.logSell("Health", 200.00);
-    logger.logSell("Tech", 200.00);
-    logger.addDay();
-    logger.addDay();
-
     QApplication a(argc, argv);
-    MainWindow w;
+    MainWindow w(logger);
 
     QObject::connect(&a, &QApplication::aboutToQuit, [&logger]() {
         logger.logSummary();

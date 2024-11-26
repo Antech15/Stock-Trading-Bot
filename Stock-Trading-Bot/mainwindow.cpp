@@ -6,8 +6,8 @@
 #include "simulationmanager.h"
 #include "bot.h"
 
-MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent)
+MainWindow::MainWindow(Outputter &logger, QWidget *parent)
+    : QMainWindow(parent), logger(logger)
     , ui(new Ui::MainWindow)
     , simulationManager(new SimulationManager)
 {
@@ -39,6 +39,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     // Create stocks and add to simulation
     std::shared_ptr<Bot> bot = std::shared_ptr<Bot>(&Bot::getInstance(), [](Bot*) {});
+    Bot::getInstance().attatchLogger(&logger);
 
     //Bot::getInstance().setStrategy(Bot::Strategy::Daily);   // For daily trading
     //Bot::getInstance().setStrategy(Bot::Strategy::Weekly); // For bi-daily trading
@@ -115,6 +116,8 @@ void MainWindow::on_nextDayButton_clicked() {
     //I think make the string a variable and retreieve it here like in lines 83-86
     ui->consoleLabel->setStyleSheet("color: black;");
     ui->dayLabel->setText(QString("Day: %1").arg(dayCounter));
+
+    logger.addDay();
 }
 
 void MainWindow::on_goBackButton_clicked()

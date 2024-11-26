@@ -5,6 +5,7 @@
 #include <QDebug>
 #include <QString>
 #include <cstdlib> // For rand()
+#include "outputter.h"
 
 class BotStrategy {
 public:
@@ -45,7 +46,7 @@ public:
     void setStrategy(BotStrategy *strategy) { strategy_ = strategy; } // No more error
 
 
-    Bot() : balance(1000.0), ownedStock(""), purchasePrice(0.0), counter(1), stockCounter(3), strategy_(nullptr) {}
+    Bot() : balance(1000.0), ownedStock(""), purchasePrice(0.0), counter(1), stockCounter(3), strategy_(nullptr), logger_(nullptr){}
 
     // Prevent copying
     Bot(const Bot &) = delete;
@@ -79,6 +80,10 @@ public:
         }
     }
 
+    void attatchLogger(Outputter *thang) {
+        logger_ = thang;
+    }
+
     double balance;
     QString ownedStock;
     double purchasePrice;
@@ -94,6 +99,7 @@ public:
     double bestChange = 2;
     double ownedStockPrice;
     BotStrategy* strategy_;
+    Outputter* logger_;
 };
 
 class Daily : public BotStrategy {

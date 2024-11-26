@@ -5,6 +5,7 @@
 #include <memory>
 #include "simulationmanager.h"
 #include "stock.h" // Include Stock class
+#include "outputter.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -16,7 +17,7 @@ class MainWindow : public QMainWindow {
     Q_OBJECT
 
 public:
-    MainWindow(QWidget *parent = nullptr);
+    MainWindow(Outputter &logger, QWidget *parent = nullptr);
     ~MainWindow();
 
 
@@ -54,6 +55,7 @@ private:
     std::shared_ptr<Stock> energyStock;
 
     void initializeStockPrices();
+    Outputter &logger;
 };
 
 #endif // MAINWINDOW_H
