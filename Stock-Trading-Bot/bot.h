@@ -96,9 +96,15 @@ public:
                 purchasePrice2 = currentPrice2;
                 purchasePrice3 = currentPrice3;
 
-                qDebug() << "Bought 3 new shares of stock!" << "---------------";
+                qDebug() << "Bought 3 new shares of stock!";
+                qDebug() << "-------------------------------";
+                qDebug() << "#1 Ranked Stock: " << stockNameThang;
                 qDebug() << "Purchased 1 share of " << stockNameThang << "at $" << currentPrice;
+                qDebug() << "-------------------------------";
+                qDebug() << "#2 Ranked Stock: " << stockNameThang2;
                 qDebug() << "Purchased 1 share of " << stockNameThang2 << "at $" << currentPrice2;
+                qDebug() << "-------------------------------";
+                qDebug() << "#3 Ranked Stock: " << stockNameThang3;
                 qDebug() << "Purchased 1 share of " << stockNameThang3 << "at $" << currentPrice3;
 
 
@@ -199,6 +205,7 @@ public:
     double ownedStockPrice3;
     BotStrategy* strategy_;
     Outputter* logger_;
+
 };
 
 class Daily : public BotStrategy {
@@ -216,7 +223,12 @@ public:
             else{
                 qDebug() << stockName << " | stockCounter: " << botInstance.stockCounter << " " << newPrice << " / " << botInstance.stockPrices[botInstance.stockCounter] << " = " << newPrice/botInstance.stockPrices[botInstance.stockCounter];
 
+
                 if(newPrice/botInstance.stockPrices[botInstance.stockCounter] < botInstance.bestChange){
+                    botInstance.bestChange3 = botInstance.bestChange2; // moved to third best
+                    botInstance.bestStock3 = botInstance.bestStock2;
+                    botInstance.bestPrice3 = botInstance.bestPrice2;
+
                     botInstance.bestChange2 = botInstance.bestChange; // moved to second best
                     botInstance.bestStock2 = botInstance.bestStock;
                     botInstance.bestPrice2 = botInstance.bestPrice;
@@ -239,6 +251,7 @@ public:
                 }
                 else if(newPrice/botInstance.stockPrices[botInstance.stockCounter] < botInstance.bestChange3)
                 {
+
                     botInstance.bestChange3 = newPrice/botInstance.stockPrices[botInstance.stockCounter]; // updated second best
                     botInstance.bestStock3 = stockName;
                     botInstance.bestPrice3 = newPrice;

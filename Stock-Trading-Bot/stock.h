@@ -34,7 +34,6 @@ public:
 
     QString getName() const { return name; }
     double getPrice() const { return price; }
-
 private:
     QString name;
     double price;
