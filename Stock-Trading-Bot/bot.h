@@ -70,7 +70,7 @@ public:
     void setStrategy(BotStrategy *strategy) { strategy_ = strategy; } // No more error
 
 
-    Bot() : balance(1000.0), ownedStock(""), ownedStock2(""), ownedStock3(""), purchasePrice(0.0), purchasePrice2(0.0), purchasePrice3(0.0), counter(1), stockCounter(3), strategy_(nullptr), logger_(nullptr){}
+    Bot() : balance(1000.0), ownedStock(""), ownedStock2(""), ownedStock3(""), purchasePrice(0.0), purchasePrice2(0.0), purchasePrice3(0.0), counter(1), stockCounter(7), strategy_(nullptr), logger_(nullptr){}
 
     // Prevent copying
     Bot(const Bot &) = delete;
@@ -233,7 +233,6 @@ public:
 
         {
             if(botInstance.day1){
-                qDebug() << newPrice;
                 botInstance.stockNames[botInstance.stockCounter] = stockName;
                 botInstance.stockPrices[botInstance.stockCounter] = newPrice;}
             else{
@@ -311,16 +310,17 @@ public:
                 if (botInstance.counter <= 0) { // If counter is 0 or negative, make a decision
                     if(botInstance.day1 == true)
                     {
-                        int idx = rand() % 8; // Generates a random number between 0 and 3
+                        int idx = std::rand() % 8; // Generates a random number between 0 and 3
                         botInstance.bestStock = botInstance.stockNames[idx];
                         botInstance.bestPrice = botInstance.stockPrices[idx];
-
                         botInstance.bestStock2 = botInstance.stockNames[(idx + 1) %7];
                         botInstance.bestPrice2 = botInstance.stockPrices[(idx + 1) %7];
 
                         botInstance.bestStock3 = botInstance.stockNames[(idx + 2) %7];
                         botInstance.bestPrice3 = botInstance.stockPrices[(idx + 2) %7];
                         botInstance.day1 = false;
+                        qDebug() << botInstance.bestStock << botInstance.bestStock2 << botInstance.bestStock3;
+
                     }
                     if(botInstance.currentStock == true)
                     {
