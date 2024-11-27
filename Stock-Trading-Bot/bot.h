@@ -233,6 +233,7 @@ public:
 
         {
             if(botInstance.day1){
+                qDebug() << newPrice;
                 botInstance.stockNames[botInstance.stockCounter] = stockName;
                 botInstance.stockPrices[botInstance.stockCounter] = newPrice;}
             else{

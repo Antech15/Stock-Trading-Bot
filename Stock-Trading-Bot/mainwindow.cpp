@@ -44,20 +44,37 @@ MainWindow::MainWindow(Outputter &logger, QWidget *parent)
     //Bot::getInstance().setStrategy(Bot::Strategy::Daily);   // For daily trading
     //Bot::getInstance().setStrategy(Bot::Strategy::Weekly); // For bi-daily trading
 
-    techStock = StockFactory::createStock(("Tech"));
-    healthStock = StockFactory::createStock("Health");
-    financeStock = StockFactory::createStock("Finance");
-    energyStock = StockFactory::createStock("Energy");
+    REGAL = StockFactory::createStock(("REGAL"));
+    GAMESTOP = StockFactory::createStock("GAMESTOP");
+    NVIDIA = StockFactory::createStock("NVIDIA");
+    TESLA = StockFactory::createStock("TESLA");
+    NOKIA = StockFactory::createStock("NOKIA");
+    MICROSOFT = StockFactory::createStock("MICROSOFT");
+    AMAZON = StockFactory::createStock("AMAZON");
+    APPLE = StockFactory::createStock("APPLE");
 
-    techStock->attach(bot);
-    healthStock->attach(bot);
-    financeStock->attach(bot);
-    energyStock->attach(bot);
 
-    simulationManager->addStock(techStock);
-    simulationManager->addStock(healthStock);
-    simulationManager->addStock(financeStock);
-    simulationManager->addStock(energyStock);
+
+
+    REGAL->attach(bot);
+    GAMESTOP->attach(bot);
+    NVIDIA->attach(bot);
+    TESLA->attach(bot);
+    NOKIA->attach(bot);
+    MICROSOFT->attach(bot);
+    AMAZON->attach(bot);
+    APPLE->attach(bot);
+
+
+    simulationManager->addStock(REGAL);
+    simulationManager->addStock(GAMESTOP);
+    simulationManager->addStock(NVIDIA);
+    simulationManager->addStock(TESLA);
+    simulationManager->addStock(NOKIA);
+    simulationManager->addStock(MICROSOFT);
+    simulationManager->addStock(AMAZON);
+    simulationManager->addStock(APPLE);
+
 
     initializeStockPrices();
 
@@ -73,18 +90,32 @@ void MainWindow::initializeStockPrices() {
     auto stocks = simulationManager->getStocks(); // Add a getter for stocks in SimulationManager
 
     if (!stocks.empty()) {
-        ui->stockLabel1->setText(QString("Regal: $%1").arg(stocks[0]->getPrice()));
-        ui->stockLabel2->setText(QString("Health: $%1").arg(stocks[1]->getPrice()));
-        ui->stockLabel3->setText(QString("Finance: $%1").arg(stocks[2]->getPrice()));
-        ui->stockLabel4->setText(QString("Energy: $%1").arg(stocks[3]->getPrice()));
+        ui->stockLabel1->setText(QString("REGAL: $%1").arg(stocks[0]->getPrice()));
+        ui->stockLabel2->setText(QString("GAMESTOP: $%1").arg(stocks[1]->getPrice()));
+        ui->stockLabel3->setText(QString("NVIDIA: $%1").arg(stocks[2]->getPrice()));
+        ui->stockLabel4->setText(QString("TESLA: $%1").arg(stocks[3]->getPrice()));
+        ui->stockLabel5->setText(QString("NOKIA: $%1").arg(stocks[4]->getPrice()));
+        ui->stockLabel6->setText(QString("MICROSOFT: $%1").arg(stocks[5]->getPrice()));
+        ui->stockLabel7->setText(QString("AMAZON: $%1").arg(stocks[6]->getPrice()));
+        ui->stockLabel8->setText(QString("APPLE: $%1").arg(stocks[7]->getPrice()));
+
+
+
     }
 }
 
 void MainWindow::updateStocks() {
-    ui->stockLabel1->setText(QString("Tech: $%1").arg(techStock->getPrice()));
-    ui->stockLabel2->setText(QString("Health: $%1").arg(healthStock->getPrice()));
-    ui->stockLabel3->setText(QString("Finance: $%1").arg(financeStock->getPrice()));
-    ui->stockLabel4->setText(QString("Energy: $%1").arg(energyStock->getPrice()));
+    ui->stockLabel1->setText(QString("REGAL: $%1").arg(REGAL->getPrice()));
+    ui->stockLabel2->setText(QString("GAMESTOP: $%1").arg(GAMESTOP->getPrice()));
+    ui->stockLabel3->setText(QString("NVIDIA: $%1").arg(NVIDIA->getPrice()));
+    ui->stockLabel4->setText(QString("TESLA: $%1").arg(TESLA->getPrice()));
+    ui->stockLabel4->setText(QString("NOKIA: $%1").arg(NOKIA->getPrice()));
+    ui->stockLabel4->setText(QString("MICROSOFT: $%1").arg(MICROSOFT->getPrice()));
+    ui->stockLabel4->setText(QString("AMAZON: $%1").arg(AMAZON->getPrice()));
+    ui->stockLabel4->setText(QString("APPLE: $%1").arg(APPLE->getPrice()));
+
+
+
 }
 
 

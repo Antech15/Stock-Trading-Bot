@@ -51,10 +51,15 @@ private:
     std::unique_ptr<SimulationManager> simulationManager;
 
     // Declare stock variables as members
-    std::shared_ptr<Stock> techStock;
-    std::shared_ptr<Stock> healthStock;
-    std::shared_ptr<Stock> financeStock;
-    std::shared_ptr<Stock> energyStock;
+    std::shared_ptr<Stock> REGAL;
+    std::shared_ptr<Stock> GAMESTOP;
+    std::shared_ptr<Stock> NVIDIA;
+    std::shared_ptr<Stock> TESLA;
+    std::shared_ptr<Stock> NOKIA;
+    std::shared_ptr<Stock> MICROSOFT;
+    std::shared_ptr<Stock> AMAZON;
+    std::shared_ptr<Stock> APPLE;
+
 
     void initializeStockPrices();
     Outputter &logger;
