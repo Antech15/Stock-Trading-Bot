@@ -48,7 +48,7 @@ public:
         out << "Bot Summary:\n";
         out << "You traded for: " << days << " days. \n";
         for (std::size_t i = 0; i < stockNames.size(); i++) {
-            out << "For the " << stockNames[i] << " stock, you've purchased " << stockTally[stockNames[i]] << " shares. It gained you $"
+            out << "For the " << stockNames[i] << " stock, you've purchased " << QString::number(stockTally[stockNames[i]]) << " shares. It gained you $"
                 << stockRevenue[stockNames[i]] << "\n";
 
             total += stockRevenue[stockNames[i]];
@@ -63,8 +63,8 @@ public:
         std::vector<QString> vec;
         vec.push_back("You traded for: " + QString::number(days) + " days. \n");
         for (std::size_t i = 0; i < stockNames.size(); i++) {
-            vec.push_back("For the "+ stockNames[i] + " stock, you've purchased " + stockTally[stockNames[i]] + " shares. It gained you $"
-                + stockRevenue[stockNames[i]] + "\n");
+            vec.push_back("For the "+ stockNames[i] + " stock, you've purchased " + QString::number(stockTally[stockNames[i]]) + " shares. It gained you $"
+                + QString::number(stockRevenue[stockNames[i]]) + "\n");
 
             total += stockRevenue[stockNames[i]];
         }
