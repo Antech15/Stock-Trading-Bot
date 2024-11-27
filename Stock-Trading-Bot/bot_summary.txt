@@ -1,6 +1,7 @@
 Bot Summary:
-You traded for: 5 days. 
-For the AMAZON stock, you've purchased 1 shares. It gained you $172.6
-For the MICROSOFT stock, you've purchased 1 shares. It gained you $115.63
-For the APPLE stock, you've purchased 1 shares. It gained you $111.31
-Total Bot Profit was $399.54
+You traded for: 153 days. 
+For the REGAL stock, you've purchased 1 shares. It gained you $0.29
+For the AMAZON stock, you've purchased 1 shares. It gained you $0.57
+For the MICROSOFT stock, you've purchased 2 shares. It gained you $0.88
+For the NVIDIA stock, you've purchased 1 shares. It gained you $0.22
+Total Bot Profit was $1.96

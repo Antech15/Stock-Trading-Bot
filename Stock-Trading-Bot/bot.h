@@ -125,8 +125,8 @@ public:
 
                 ownedStock = ""; // No stock owned now
                 //currentStock = false;
+                logger_->logSell(stockNameThang, currentPrice - purchasePrice);
                 purchasePrice = 0.0;
-                logger_->logSell(stockNameThang, currentPrice);
             } else if(!ownedStock.isEmpty()){
                 qDebug() << "Holding" << stockNameThang << "at $" << currentPrice << ". Purchase price was $" << purchasePrice;
             }
@@ -140,8 +140,8 @@ public:
 
                 ownedStock2 = ""; // No stock owned now
                 //currentStock = false;
+                logger_->logSell(stockNameThang2, currentPrice2 - purchasePrice2);
                 purchasePrice2 = 0.0;
-                logger_->logSell(stockNameThang2, currentPrice2);
 
             } else if(!ownedStock2.isEmpty()){
                 qDebug() << "Holding" << stockNameThang2 << "at $" << currentPrice2 << ". Purchase price was $" << purchasePrice2;
@@ -155,8 +155,8 @@ public:
                 bestChange4 = 2;
                 ownedStock3 = ""; // No stock owned now
                 //currentStock = false;
+                logger_->logSell(stockNameThang3, currentPrice3 - purchasePrice3);
                 purchasePrice3 = 0.0;
-                logger_->logSell(stockNameThang3, currentPrice3);
 
             } else if(!ownedStock3.isEmpty()){
                 qDebug() << "Holding" << stockNameThang3 << "at $" << currentPrice3 << ". Purchase price was $" << purchasePrice3;
