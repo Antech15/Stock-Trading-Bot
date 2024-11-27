@@ -192,6 +192,15 @@ void MainWindow::on_hundredButton_clicked()
 
 void MainWindow::on_doneButton_clicked()
 {
+    std::vector<QString> array = logger.logSummary2();
+
+    QString text;
+    for (const QString &line : array) {
+        text += line;
+    }
+
+    ui->summaryLabel->setText(text);
+
     ui->stackedWidget->setCurrentIndex(0);
 }
 
