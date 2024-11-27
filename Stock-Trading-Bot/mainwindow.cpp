@@ -232,6 +232,6 @@ void MainWindow::on_doneButton_clicked()
 
     ui->summaryLabel->setText(text);
 
-    ui->stackedWidget->setCurrentIndex(0);
+    ui->stackedWidget->setCurrentIndex(4);
 }
 

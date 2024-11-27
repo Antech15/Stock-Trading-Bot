@@ -233,6 +233,7 @@ public:
 
         {
             if(botInstance.day1){
+
                 botInstance.stockNames[botInstance.stockCounter] = stockName;
                 botInstance.stockPrices[botInstance.stockCounter] = newPrice;}
             else{
@@ -510,7 +511,7 @@ public:
             if (botInstance.counter > 0) {
                 qDebug() << botInstance.counter << "days left until bot is active on the Stock Market";
             }
-            botInstance.stockCounter = 4;
+            botInstance.stockCounter = 8;
         }
         botInstance.stockCounter--;
     }
