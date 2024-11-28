@@ -30,14 +30,14 @@
      </size>
     </property>
     <property name="currentIndex">
-     <number>4</number>
+     <number>2</number>
     </property>
     <widget class="QWidget" name="page">
      <widget class="QLabel" name="label">
       <property name="geometry">
        <rect>
-        <x>190</x>
-        <y>30</y>
+        <x>100</x>
+        <y>20</y>
         <width>281</width>
         <height>61</height>
        </rect>
@@ -88,10 +88,10 @@
      <widget class="QLabel" name="imageLabel">
       <property name="geometry">
        <rect>
-        <x>250</x>
-        <y>120</y>
-        <width>191</width>
-        <height>181</height>
+        <x>310</x>
+        <y>150</y>
+        <width>151</width>
+        <height>141</height>
        </rect>
       </property>
       <property name="text">
@@ -101,8 +101,8 @@
      <widget class="QLabel" name="dayLabel">
       <property name="geometry">
        <rect>
-        <x>300</x>
-        <y>90</y>
+        <x>250</x>
+        <y>80</y>
         <width>71</width>
         <height>61</height>
        </rect>
@@ -114,9 +114,9 @@
      <widget class="QLabel" name="consoleLabel">
       <property name="geometry">
        <rect>
-        <x>430</x>
-        <y>80</y>
-        <width>201</width>
+        <x>420</x>
+        <y>30</y>
+        <width>211</width>
         <height>111</height>
        </rect>
       </property>
@@ -133,10 +133,10 @@
      <widget class="QLabel" name="speechLabel">
       <property name="geometry">
        <rect>
-        <x>410</x>
-        <y>50</y>
-        <width>301</width>
-        <height>201</height>
+        <x>400</x>
+        <y>0</y>
+        <width>321</width>
+        <height>211</height>
        </rect>
       </property>
       <property name="text">
@@ -171,7 +171,7 @@
       <property name="geometry">
        <rect>
         <x>180</x>
-        <y>20</y>
+        <y>10</y>
         <width>311</width>
         <height>151</height>
        </rect>
@@ -183,10 +183,10 @@
      <widget class="QPushButton" name="dailyButton">
       <property name="geometry">
        <rect>
-        <x>250</x>
-        <y>190</y>
-        <width>161</width>
-        <height>41</height>
+        <x>230</x>
+        <y>280</y>
+        <width>221</width>
+        <height>91</height>
        </rect>
       </property>
       <property name="text">
@@ -196,10 +196,10 @@
      <widget class="QPushButton" name="weeklyButton">
       <property name="geometry">
        <rect>
-        <x>240</x>
-        <y>240</y>
-        <width>181</width>
-        <height>41</height>
+        <x>230</x>
+        <y>180</y>
+        <width>221</width>
+        <height>91</height>
        </rect>
       </property>
       <property name="text">
@@ -234,7 +234,7 @@
        <string>Go Back</string>
       </property>
      </widget>
-     <widget class="QGraphicsView" name="graphicsView_2">
+     <widget class="QGraphicsView" name="regalView">
       <property name="geometry">
        <rect>
         <x>40</x>

@@ -31,6 +31,10 @@ MainWindow::MainWindow(Outputter &logger, QWidget *parent)
         ui->speechLabel->setPixmap(pix);
     }
 
+    //QPixmap pix{":/images/images/regal.png"};
+    //pix = pix.scaled(ui->regalView->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    //ui->regalView->setPixmap(pix);
+
     ui->stackedWidget->setCurrentIndex(1);
 
     // Connect SimulationManager signals to MainWindow slots
@@ -109,10 +113,10 @@ void MainWindow::updateStocks() {
     ui->stockLabel2->setText(QString("GAMESTOP: $%1").arg(GAMESTOP->getPrice()));
     ui->stockLabel3->setText(QString("NVIDIA: $%1").arg(NVIDIA->getPrice()));
     ui->stockLabel4->setText(QString("TESLA: $%1").arg(TESLA->getPrice()));
-    ui->stockLabel4->setText(QString("NOKIA: $%1").arg(NOKIA->getPrice()));
-    ui->stockLabel4->setText(QString("MICROSOFT: $%1").arg(MICROSOFT->getPrice()));
-    ui->stockLabel4->setText(QString("AMAZON: $%1").arg(AMAZON->getPrice()));
-    ui->stockLabel4->setText(QString("APPLE: $%1").arg(APPLE->getPrice()));
+    ui->stockLabel5->setText(QString("NOKIA: $%1").arg(NOKIA->getPrice()));
+    ui->stockLabel6->setText(QString("MICROSOFT: $%1").arg(MICROSOFT->getPrice()));
+    ui->stockLabel7->setText(QString("AMAZON: $%1").arg(AMAZON->getPrice()));
+    ui->stockLabel8->setText(QString("APPLE: $%1").arg(APPLE->getPrice()));
 
 
 

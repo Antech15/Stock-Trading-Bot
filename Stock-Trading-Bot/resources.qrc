@@ -2,5 +2,6 @@
     <qresource prefix="/images">
         <file>images/yapdolla.png</file>
         <file>images/speech-bubble-png-15286.png</file>
+        <file>images/regal.png</file>
     </qresource>
 </RCC>
