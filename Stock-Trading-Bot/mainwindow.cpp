@@ -54,7 +54,7 @@ MainWindow::MainWindow(Outputter &logger, QWidget *parent)
     ui->microsoftView->setPixmap(pix);
 
     //amazon logo
-    QPixmap pix9{":/images/images/amazon.webp"};
+    QPixmap pix9{":/images/images/amazon.png"};
     pix = pix9.scaled(ui->amazonView->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
     ui->amazonView->setPixmap(pix);
 
