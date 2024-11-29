@@ -10,6 +10,8 @@
 class BotStrategy {
 public:
     virtual void onPriceUpdate(const QString &stockName, double newPrice) = 0;
+    virtual void makeDecision( QString stockNameThang, double currentPrice, QString stockNameThang2, double currentPrice2, QString stockNameThang3, double currentPrice3) = 0;
+
 };
 
 class Bot : public Observer {
@@ -77,113 +79,11 @@ public:
     void operator=(const Bot &) = delete;
 
     void makeDecision( QString stockNameThang, double currentPrice, QString stockNameThang2, double currentPrice2, QString stockNameThang3, double currentPrice3) {
-        if (ownedStock.isEmpty() && ownedStock2.isEmpty() && ownedStock3.isEmpty()) {
-            //buy stock if none is currently owned
-            if (balance >= currentPrice) {
-                balance -= currentPrice;
-                balance -= currentPrice2;
-                balance -= currentPrice3;
-                ownedStock = stockNameThang;
-                ownedStockPrice = currentPrice;
-
-                ownedStock2 = stockNameThang2;
-                ownedStockPrice2 = currentPrice2;
-
-                ownedStock3 = stockNameThang3;
-                ownedStockPrice3 = currentPrice3;
-
-                purchasePrice = currentPrice;
-                purchasePrice2 = currentPrice2;
-                purchasePrice3 = currentPrice3;
-
-                timeHeld1 = 0;
-                timeHeld2 = 0;
-                timeHeld3 = 0;
-
-                qDebug() << "Bought 3 new shares of stock!";
-                qDebug() << "-------------------------------";
-                qDebug() << "#1 Ranked Stock: " << stockNameThang;
-                qDebug() << "Purchased 1 share of " << stockNameThang << "at $" << currentPrice;
-                qDebug() << "-------------------------------";
-                qDebug() << "#2 Ranked Stock: " << stockNameThang2;
-                qDebug() << "Purchased 1 share of " << stockNameThang2 << "at $" << currentPrice2;
-                qDebug() << "-------------------------------";
-                qDebug() << "#3 Ranked Stock: " << stockNameThang3;
-                qDebug() << "Purchased 1 share of " << stockNameThang3 << "at $" << currentPrice3;
-
-
-                currentStock = true;
-                bestChange = 2;
-                bestChange2 = 2;
-                bestChange3 = 2;
-                bestChange4 = 2;
-                day1 = false;
-            }
-        } else  {
-            // Check if we should sell first stock
-            if (currentPrice > purchasePrice && !ownedStock.isEmpty() || timeHeld1 >= 20) {
-                balance += currentPrice;
-                qDebug() << "Sold 1 share of" << stockNameThang << "at $" << currentPrice << ". Held for " << timeHeld1 << " days.";
-                timeHeld1 = 0;
-                bestChange = 2;
-                bestChange4 = 2;
-
-                ownedStock = ""; // No stock owned now
-                //currentStock = false;
-                logger_->logSell(stockNameThang, currentPrice - purchasePrice);
-                purchasePrice = 0.0;
-            } else if(!ownedStock.isEmpty()){
-                qDebug() << "Holding" << stockNameThang << "at $" << currentPrice << ". Purchase price was $" << purchasePrice;
-                timeHeld1++;
-            }
-
-            //checking second stock
-            if (currentPrice2 > purchasePrice2 && !ownedStock2.isEmpty() || timeHeld2 >= 20) {
-                balance += currentPrice2;
-                qDebug() << "Sold 1 share of" << stockNameThang2 << "at $" << currentPrice2 << ". Held for " << timeHeld2 << " days.";
-                timeHeld2 = 0;
-                bestChange2 = 2;
-                bestChange4 = 2;
-
-                ownedStock2 = ""; // No stock owned now
-                //currentStock = false;
-                logger_->logSell(stockNameThang2, currentPrice2 - purchasePrice2);
-                purchasePrice2 = 0.0;
-
-            } else if(!ownedStock2.isEmpty()){
-                qDebug() << "Holding" << stockNameThang2 << "at $" << currentPrice2 << ". Purchase price was $" << purchasePrice2;
-                timeHeld2++;
-            }
-
-            //checking third stock
-            if (currentPrice3 > purchasePrice3 && !ownedStock3.isEmpty() || timeHeld3 >= 20) {
-                balance += currentPrice3;
-                qDebug() << "Sold 1 share of" << stockNameThang3 << "at $" << currentPrice3 << ". Held for " << timeHeld3 << " days.";
-                timeHeld3 = 0;
-                bestChange3 = 2;
-                bestChange4 = 2;
-                ownedStock3 = ""; // No stock owned now
-                //currentStock = false;
-                logger_->logSell(stockNameThang3, currentPrice3 - purchasePrice3);
-                purchasePrice3 = 0.0;
-
-            } else if(!ownedStock3.isEmpty()){
-                qDebug() << "Holding" << stockNameThang3 << "at $" << currentPrice3 << ". Purchase price was $" << purchasePrice3;
-                timeHeld3++;
-            }
-            if (ownedStock.isEmpty() && ownedStock2.isEmpty() && ownedStock3.isEmpty()) {
-                currentStock = false;
-                bestChange = 2;
-                bestChange2 = 2;
-                bestChange3 = 2;
-                bestChange4 = 2;
-
-
-
-            }
-
+        if (strategy_ != nullptr) {
+            strategy_->makeDecision(stockNameThang, currentPrice, stockNameThang2, currentPrice2, stockNameThang3, currentPrice3);  // Delegating the decision-making to the current strategy
         }
     }
+
 
     void attatchLogger(Outputter *thang) {
         logger_ = thang;
@@ -228,6 +128,11 @@ public:
     double ownedStockPrice;
     double ownedStockPrice2;
     double ownedStockPrice3;
+
+    double ownedPriceUpdate;
+    double ownedPriceUpdate2;
+    double ownedPriceUpdate3;
+
     BotStrategy* strategy_;
     Outputter* logger_;
 
@@ -240,13 +145,124 @@ class Daily : public BotStrategy {
 public:
     Daily(){}
 
+    void makeDecision( QString stockNameThang, double currentPrice, QString stockNameThang2, double currentPrice2, QString stockNameThang3, double currentPrice3) {
+        Bot &botInstance = Bot::getInstance();  // Always get the singleton instance
+
+        if (botInstance.ownedStock.isEmpty() && botInstance.ownedStock2.isEmpty() && botInstance.ownedStock3.isEmpty()) {
+            //buy stock if none is currently owned
+            if (botInstance.balance >= currentPrice) {
+                botInstance.balance -= currentPrice;
+                botInstance.balance -= currentPrice2;
+                botInstance.balance -= currentPrice3;
+                botInstance.ownedStock = stockNameThang;
+                botInstance.ownedStockPrice = currentPrice;
+
+                botInstance.ownedStock2 = stockNameThang2;
+                botInstance.ownedStockPrice2 = currentPrice2;
+
+                botInstance.ownedStock3 = stockNameThang3;
+                botInstance.ownedStockPrice3 = currentPrice3;
+
+                botInstance.purchasePrice = currentPrice;
+                botInstance.purchasePrice2 = currentPrice2;
+                botInstance.purchasePrice3 = currentPrice3;
+
+                botInstance.timeHeld1 = 0;
+                botInstance.timeHeld2 = 0;
+                botInstance.timeHeld3 = 0;
+
+                qDebug() << "Bought 3 new shares of stock!";
+                qDebug() << "-------------------------------";
+                qDebug() << "#1 Ranked Stock: " << stockNameThang;
+                qDebug() << "Purchased 1 share of " << stockNameThang << "at $" << currentPrice;
+                qDebug() << "-------------------------------";
+                qDebug() << "#2 Ranked Stock: " << stockNameThang2;
+                qDebug() << "Purchased 1 share of " << stockNameThang2 << "at $" << currentPrice2;
+                qDebug() << "-------------------------------";
+                qDebug() << "#3 Ranked Stock: " << stockNameThang3;
+                qDebug() << "Purchased 1 share of " << stockNameThang3 << "at $" << currentPrice3;
+
+
+                botInstance.currentStock = true;
+                botInstance.bestChange = 2;
+                botInstance.bestChange2 = 2;
+                botInstance.bestChange3 = 2;
+                botInstance.bestChange4 = 2;
+                botInstance.day1 = false;
+            }
+        } else  {
+            // Check if we should sell first stock
+            if ((currentPrice > botInstance.purchasePrice && !botInstance.ownedStock.isEmpty()) || botInstance.timeHeld1 >= 20) {
+                botInstance.balance += currentPrice;
+                qDebug() << "Sold 1 share of" << stockNameThang << "at $" << currentPrice << ". Held for " << botInstance.timeHeld1 << " days.";
+                botInstance.timeHeld1 = 0;
+                botInstance.bestChange = 2;
+                botInstance.bestChange4 = 2;
+
+                botInstance.ownedStock = ""; // No stock owned now
+                //currentStock = false;
+                botInstance.logger_->logSell(stockNameThang, currentPrice - botInstance.purchasePrice);
+                botInstance.purchasePrice = 0.0;
+            } else if(!botInstance.ownedStock.isEmpty()){
+                qDebug() << "Holding" << stockNameThang << "at $" << currentPrice << ". Purchase price was $" << botInstance.purchasePrice;
+                botInstance.timeHeld1++;
+            }
+
+            //checking second stock
+            if (currentPrice2 > botInstance.purchasePrice2 && !botInstance.ownedStock2.isEmpty() || botInstance.timeHeld2 >= 20) {
+                botInstance.balance += currentPrice2;
+                qDebug() << "Sold 1 share of" << stockNameThang2 << "at $" << currentPrice2 << ". Held for " << botInstance.timeHeld2 << " days.";
+                botInstance.timeHeld2 = 0;
+                botInstance.bestChange2 = 2;
+                botInstance.bestChange4 = 2;
+
+                botInstance.ownedStock2 = ""; // No stock owned now
+                //currentStock = false;
+                botInstance.logger_->logSell(stockNameThang2, currentPrice2 - botInstance.purchasePrice2);
+                botInstance.purchasePrice2 = 0.0;
+
+            } else if(!botInstance.ownedStock2.isEmpty()){
+                qDebug() << "Holding" << stockNameThang2 << "at $" << currentPrice2 << ". Purchase price was $" << botInstance.purchasePrice2;
+                botInstance.timeHeld2++;
+            }
+
+            //checking third stock
+            if (currentPrice3 > botInstance.purchasePrice3 && !botInstance.ownedStock3.isEmpty() || botInstance.timeHeld3 >= 20) {
+                botInstance.balance += currentPrice3;
+                qDebug() << "Sold 1 share of" << stockNameThang3 << "at $" << currentPrice3 << ". Held for " << botInstance.timeHeld3 << " days.";
+                botInstance.timeHeld3 = 0;
+                botInstance.bestChange3 = 2;
+                botInstance.bestChange4 = 2;
+                botInstance.ownedStock3 = ""; // No stock owned now
+                //currentStock = false;
+                botInstance.logger_->logSell(stockNameThang3, currentPrice3 - botInstance.purchasePrice3);
+                botInstance.purchasePrice3 = 0.0;
+
+            } else if(!botInstance.ownedStock3.isEmpty()){
+                qDebug() << "Holding" << stockNameThang3 << "at $" << currentPrice3 << ". Purchase price was $" << botInstance.purchasePrice3;
+                botInstance.timeHeld3++;
+            }
+            if (botInstance.ownedStock.isEmpty() && botInstance.ownedStock2.isEmpty() && botInstance.ownedStock3.isEmpty()) {
+                botInstance.currentStock = false;
+                botInstance.bestChange = 2;
+                botInstance.bestChange2 = 2;
+                botInstance.bestChange3 = 2;
+                botInstance.bestChange4 = 2;
+
+
+
+            }
+
+        }
+    }
+
     void onPriceUpdate(const QString &stockName, double newPrice)
     {
         Bot &botInstance = Bot::getInstance();  // Always get the singleton instance
 
         {
             if(botInstance.day1){
-
+                qDebug() << botInstance.day1;
                 botInstance.stockNames[botInstance.stockCounter] = stockName;
                 botInstance.stockPrices[botInstance.stockCounter] = newPrice;}
             else{
@@ -434,9 +450,413 @@ public:
 
 };
 
+class Momentum : public BotStrategy {
+public:
+    Momentum(){}
+
+    void makeDecision( QString stockNameThang, double currentPrice, QString stockNameThang2, double currentPrice2, QString stockNameThang3, double currentPrice3) {
+        Bot &botInstance = Bot::getInstance();  // Always get the singleton instance
+        qDebug() << "new DAY YAYYYYYYY";
+        botInstance.day1 = false;
+        QString sold = "";
+        QString sold2 = "";
+        QString sold3 = "";
+
+        //logic for first stock
+        if(botInstance.ownedStock.isEmpty()){
+            if(!stockNameThang.isEmpty() && stockNameThang!= botInstance.ownedStock2 && stockNameThang != botInstance.ownedStock3){
+                botInstance.balance -= currentPrice;
+                qDebug() << "Purchased 1 share of " << stockNameThang << "at $" << currentPrice;
+                botInstance.ownedStock = stockNameThang;
+                botInstance.ownedStockPrice = currentPrice;
+                botInstance.purchasePrice = currentPrice;
+                stockNameThang = "";
+                botInstance.timeHeld1 = 0;
+
+            }
+            else if(!stockNameThang2.isEmpty() && stockNameThang2!= botInstance.ownedStock2 && stockNameThang2 != botInstance.ownedStock3){
+                botInstance.balance -= currentPrice2;
+                qDebug() << "Purchased 1 share of " << stockNameThang2 << "at $" << currentPrice2;
+                botInstance.ownedStock = stockNameThang2;
+                botInstance.ownedStockPrice = currentPrice2;
+                botInstance.purchasePrice = currentPrice2;
+                stockNameThang2 = "";
+                botInstance.timeHeld1 = 0;
+
+            }
+            else if(!stockNameThang3.isEmpty() && stockNameThang3!= botInstance.ownedStock2 && stockNameThang3 != botInstance.ownedStock3){
+                botInstance.balance -= currentPrice3;
+                qDebug() << "Purchased 1 share of " << stockNameThang3 << "at $" << currentPrice3;
+                botInstance.ownedStock = stockNameThang3;
+                botInstance.ownedStockPrice = currentPrice3;
+                botInstance.purchasePrice = currentPrice3;
+                stockNameThang3 = "";
+                botInstance.timeHeld1 = 0;
+            }
+
+        }
+        else {
+            if ((botInstance.ownedPriceUpdate > botInstance.purchasePrice * 1.01 && !botInstance.ownedStock.isEmpty()) || botInstance.timeHeld1 >= 20) {
+            botInstance.balance += botInstance.ownedPriceUpdate;
+            qDebug() << "Sold 1 share of" << botInstance.ownedStock << "at $" << botInstance.ownedPriceUpdate << ". Held for " << botInstance.timeHeld1 << " days.";
+            botInstance.timeHeld1 = 0;
+            sold = botInstance.ownedStock;
+            botInstance.ownedStock = ""; // No stock owned now
+            botInstance.purchasePrice = 0.0;
+            } else if(!botInstance.ownedStock.isEmpty()){
+            qDebug() << "Holding" << botInstance.ownedStock << "at $" << botInstance.ownedPriceUpdate << ". Purchase price was $" << botInstance.purchasePrice << "; Current days held: " << botInstance.timeHeld1;
+            botInstance.timeHeld1++;
+            }
+        }
+
+
+        //logic for second stock
+        if(botInstance.ownedStock2.isEmpty()){
+
+            if(!stockNameThang.isEmpty() && stockNameThang != botInstance.ownedStock && stockNameThang != botInstance.ownedStock3 && stockNameThang != sold){
+                botInstance.balance -= currentPrice;
+                qDebug() << "Purchased 1 share of " << stockNameThang << "at $" << currentPrice;
+                botInstance.ownedStock2 = stockNameThang;
+                botInstance.ownedStockPrice2 = currentPrice;
+                botInstance.purchasePrice2 = currentPrice;
+                stockNameThang = "";
+                botInstance.timeHeld2 = 0;
+
+            }
+            else if(!stockNameThang2.isEmpty() && stockNameThang2 != botInstance.ownedStock && stockNameThang2 != botInstance.ownedStock3 && stockNameThang2 != sold){
+                botInstance.balance -= currentPrice2;
+                qDebug() << "Purchased 1 share of " << stockNameThang2 << "at $" << currentPrice2;
+                botInstance.ownedStock2 = stockNameThang2;
+                botInstance.ownedStockPrice2 = currentPrice2;
+                botInstance.purchasePrice2 = currentPrice2;
+                stockNameThang2 = "";
+                botInstance.timeHeld2 = 0;
+
+            }
+            else if(!stockNameThang3.isEmpty() && stockNameThang3 != botInstance.ownedStock && stockNameThang3 != botInstance.ownedStock3 && stockNameThang3 != sold){
+                botInstance.balance -= currentPrice3;
+                qDebug() << "Purchased 1 share of " << stockNameThang3 << "at $" << currentPrice3;
+                botInstance.ownedStock2 = stockNameThang3;
+                botInstance.ownedStockPrice2 = currentPrice3;
+                botInstance.purchasePrice2 = currentPrice3;
+                stockNameThang3 = "";
+                botInstance.timeHeld2 = 0;
+            }
+
+        }
+        else {
+            if ((botInstance.ownedPriceUpdate2 > botInstance.purchasePrice2 * 1.01 && !botInstance.ownedStock2.isEmpty()) || botInstance.timeHeld2 >= 20) {
+                botInstance.balance += botInstance.ownedPriceUpdate2;
+                qDebug() << "Sold 1 share of" << botInstance.ownedStock2 << "at $" << botInstance.ownedPriceUpdate2 << ". Held for " << botInstance.timeHeld2 << " days.";
+                botInstance.timeHeld2 = 0;
+                sold2 = botInstance.ownedStock2;
+                botInstance.ownedStock2 = ""; // No stock owned now
+                botInstance.purchasePrice2 = 0.0;
+            } else if(!botInstance.ownedStock2.isEmpty()) {
+                qDebug() << "Holding" << botInstance.ownedStock2 << "at $" << botInstance.ownedPriceUpdate2 << ". Purchase price was $" << botInstance.purchasePrice2 << "; Current days held: " << botInstance.timeHeld2;
+                botInstance.timeHeld2++;
+            }
+        }
+
+        //logic for third stock
+        if(botInstance.ownedStock3.isEmpty()){
+            if(!stockNameThang.isEmpty() && stockNameThang != botInstance.ownedStock && stockNameThang != botInstance.ownedStock2 && stockNameThang != sold && stockNameThang != sold2){
+                botInstance.balance -= currentPrice;
+                qDebug() << "Purchased 1 share of " << stockNameThang << "at $" << currentPrice;
+                botInstance.ownedStock3 = stockNameThang;
+                botInstance.ownedStockPrice3 = currentPrice;
+                botInstance.purchasePrice3 = currentPrice;
+                stockNameThang = "";
+                botInstance.timeHeld3 = 0;
+
+            }
+            else if(!stockNameThang2.isEmpty() && stockNameThang2 != botInstance.ownedStock && stockNameThang2 != botInstance.ownedStock2 && stockNameThang2 != sold && stockNameThang2 != sold2){
+                botInstance.balance -= currentPrice2;
+                qDebug() << "Purchased 1 share of " << stockNameThang2 << "at $" << currentPrice2;
+                botInstance.ownedStock3 = stockNameThang2;
+                botInstance.ownedStockPrice3 = currentPrice2;
+                botInstance.purchasePrice3 = currentPrice2;
+                stockNameThang2 = "";
+                botInstance.timeHeld3 = 0;
+
+            }
+            else if(!stockNameThang3.isEmpty() && stockNameThang3 != botInstance.ownedStock && stockNameThang3 != botInstance.ownedStock2 && stockNameThang3 != sold && stockNameThang3 != sold2){
+                botInstance.balance -= currentPrice3;
+                qDebug() << "Purchased 1 share of " << stockNameThang3 << "at $" << currentPrice3;
+                botInstance.ownedStock3 = stockNameThang3;
+                botInstance.ownedStockPrice3 = currentPrice3;
+                botInstance.purchasePrice3 = currentPrice3;
+                stockNameThang3 = "";
+                botInstance.timeHeld3 = 0;
+            }
+
+        }
+        else {
+            if ((botInstance.ownedPriceUpdate3 > botInstance.purchasePrice3 * 1.01 && !botInstance.ownedStock3.isEmpty()) || botInstance.timeHeld3 >= 20) {
+                botInstance.balance += botInstance.ownedPriceUpdate3;
+                qDebug() << "Sold 1 share of" << botInstance.ownedStock3 << "at $" << botInstance.ownedPriceUpdate3 << ". Held for " << botInstance.timeHeld3 << " days.";
+                botInstance.timeHeld3 = 0;
+                botInstance.ownedStock3 = ""; // No stock owned now
+                botInstance.purchasePrice = 0.0;
+            } else if(!botInstance.ownedStock3.isEmpty()){
+                qDebug() << "Holding" << botInstance.ownedStock3 << "at $" << botInstance.ownedPriceUpdate3 << ". Purchase price was $" << botInstance.purchasePrice3 << "; Current days held: " << botInstance.timeHeld3;
+                botInstance.timeHeld3++;
+            }
+        }
+
+        botInstance.bestStock = "";
+        botInstance.bestStock2 = "";
+        botInstance.bestStock3 = "";
+
+        botInstance.bestPrice = 0.0;
+        botInstance.bestPrice2 = 0.0;
+        botInstance.bestPrice3 = 0.0;
+
+
+    }
+
+
+    void onPriceUpdate(const QString &stockName, double newPrice)
+    {
+        Bot &botInstance = Bot::getInstance();  // Always get the singleton instance
+        double change1 = 0.0;
+        double change2 = 0.0;
+        double change3 = 0.0;
+
+            if(botInstance.day1){
+                botInstance.stockNames[botInstance.stockCounter] = stockName;
+                botInstance.stockPrices[botInstance.stockCounter] = newPrice;
+
+            }
+            else{
+                double currentChange = newPrice / botInstance.stockPrices[botInstance.stockCounter];
+
+                if(botInstance.ownedStock == stockName){
+                    botInstance.ownedPriceUpdate = newPrice;
+                }
+                else if(botInstance.ownedStock2 == stockName){
+                    botInstance.ownedPriceUpdate2 = newPrice;
+                }
+                else if(botInstance.ownedStock3 == stockName){
+                    botInstance.ownedPriceUpdate3 = newPrice;
+                }
+
+                if(currentChange <=.98){
+                    if(botInstance.bestStock.isEmpty())
+                    {
+                        change1 = currentChange;
+                        botInstance.bestStock = stockName;
+                        botInstance.bestPrice = newPrice;
+                    }
+                    else if(botInstance.bestStock2.isEmpty())
+                    {
+                        change2 = currentChange;
+                        botInstance.bestStock2 = stockName;
+                        botInstance.bestPrice2 = newPrice;
+                    }
+                    else if(botInstance.bestStock3.isEmpty())
+                    {
+                        change3 = currentChange;
+                        botInstance.bestStock3 = stockName;
+                        botInstance.bestPrice3 = newPrice;
+                    }
+                    else {
+
+                        if (change1 > change2) {
+                            std::swap(change1, change2);
+                            std::swap(botInstance.bestStock, botInstance.bestStock2);
+                            std::swap(botInstance.bestPrice, botInstance.bestPrice2);
+                        }
+
+                        if (change2 > change3) {
+                            std::swap(change2, change3);
+                            std::swap(botInstance.bestStock2, botInstance.bestStock3);
+                            std::swap(botInstance.bestPrice2, botInstance.bestPrice3);
+                        }
+
+                        if (change1 > change2) {
+                            std::swap(change1, change2);
+                            std::swap(botInstance.bestStock, botInstance.bestStock2);
+                            std::swap(botInstance.bestPrice, botInstance.bestPrice2);
+                        }
+
+                        // All three bestStock, bestStock2, and bestStock3 are filled, so compare to see where the new stock should go
+                        if (currentChange <= change1) {
+                            // Shift down: change1 -> change2, change2 -> change3
+                            change3 = change2;
+                            botInstance.bestStock3 = botInstance.bestStock2;
+                            botInstance.bestPrice3 = botInstance.bestPrice2;
+
+                            change2 = change1;
+                            botInstance.bestStock2 = botInstance.bestStock;
+                            botInstance.bestPrice2 = botInstance.bestPrice;
+
+                            // Now put the current stock in the first position
+                            change1 = currentChange;
+                            botInstance.bestStock = stockName;
+                            botInstance.bestPrice = newPrice;
+                        } else if (currentChange <= change2) {
+                            // Shift down: change2 -> change3
+                            change3 = change2;
+                            botInstance.bestStock3 = botInstance.bestStock2;
+                            botInstance.bestPrice3 = botInstance.bestPrice2;
+
+                            // Now put the current stock in the second position
+                            change2 = currentChange;
+                            botInstance.bestStock2 = stockName;
+                            botInstance.bestPrice2 = newPrice;
+                        } else if (currentChange <= change3) {
+                            // Now put the current stock in the third position
+                            change3 = currentChange;
+                            botInstance.bestStock3 = stockName;
+                            botInstance.bestPrice3 = newPrice;
+                        }
+                    }
+            }
+
+
+        }
+            if(botInstance.stockCounter <= 0)
+            {
+                botInstance.counter--; // Decrement counter
+                if (botInstance.counter <= 0) { // If counter is 0 or negative, make a decision
+                    if(botInstance.day1 == true)
+                    {
+                        botInstance.day1 = false;
+
+                    }
+
+                    botInstance.makeDecision(botInstance.bestStock, botInstance.bestPrice, botInstance.bestStock2, botInstance.bestPrice2, botInstance.bestStock3, botInstance.bestPrice3); // Make a decision
+
+
+                    // Reset the counter based on the strategy
+                    botInstance.counter = 1; // Make a decision every day
+
+                }
+                botInstance.stockCounter = 8;
+            }
+            botInstance.stockCounter--;
+
+
+
+}
+
+};
+
+
 class Weekly : public BotStrategy {
 public:
     Weekly() {}
+    void makeDecision( QString stockNameThang, double currentPrice, QString stockNameThang2, double currentPrice2, QString stockNameThang3, double currentPrice3) {
+        Bot &botInstance = Bot::getInstance();  // Always get the singleton instance
+
+        if (botInstance.ownedStock.isEmpty() && botInstance.ownedStock2.isEmpty() && botInstance.ownedStock3.isEmpty()) {
+            //buy stock if none is currently owned
+            if (botInstance.balance >= currentPrice) {
+                botInstance.balance -= currentPrice;
+                botInstance.balance -= currentPrice2;
+                botInstance.balance -= currentPrice3;
+                botInstance.ownedStock = stockNameThang;
+                botInstance.ownedStockPrice = currentPrice;
+
+                botInstance.ownedStock2 = stockNameThang2;
+                botInstance.ownedStockPrice2 = currentPrice2;
+
+                botInstance.ownedStock3 = stockNameThang3;
+                botInstance.ownedStockPrice3 = currentPrice3;
+
+                botInstance.purchasePrice = currentPrice;
+                botInstance.purchasePrice2 = currentPrice2;
+                botInstance.purchasePrice3 = currentPrice3;
+
+                botInstance.timeHeld1 = 0;
+                botInstance.timeHeld2 = 0;
+                botInstance.timeHeld3 = 0;
+
+                qDebug() << "Bought 3 new shares of stock!";
+                qDebug() << "-------------------------------";
+                qDebug() << "#1 Ranked Stock: " << stockNameThang;
+                qDebug() << "Purchased 1 share of " << stockNameThang << "at $" << currentPrice;
+                qDebug() << "-------------------------------";
+                qDebug() << "#2 Ranked Stock: " << stockNameThang2;
+                qDebug() << "Purchased 1 share of " << stockNameThang2 << "at $" << currentPrice2;
+                qDebug() << "-------------------------------";
+                qDebug() << "#3 Ranked Stock: " << stockNameThang3;
+                qDebug() << "Purchased 1 share of " << stockNameThang3 << "at $" << currentPrice3;
+
+
+                botInstance.currentStock = true;
+                botInstance.bestChange = 2;
+                botInstance.bestChange2 = 2;
+                botInstance.bestChange3 = 2;
+                botInstance.bestChange4 = 2;
+                botInstance.day1 = false;
+            }
+        } else  {
+            // Check if we should sell first stock
+            if ((currentPrice > botInstance.purchasePrice && !botInstance.ownedStock.isEmpty()) || botInstance.timeHeld1 >= 20) {
+                botInstance.balance += currentPrice;
+                qDebug() << "Sold 1 share of" << stockNameThang << "at $" << currentPrice << ". Held for " << botInstance.timeHeld1 << " days.";
+                botInstance.timeHeld1 = 0;
+                botInstance.bestChange = 2;
+                botInstance.bestChange4 = 2;
+
+                botInstance.ownedStock = ""; // No stock owned now
+                //currentStock = false;
+                botInstance.logger_->logSell(stockNameThang, currentPrice - botInstance.purchasePrice);
+                botInstance.purchasePrice = 0.0;
+            } else if(!botInstance.ownedStock.isEmpty()){
+                qDebug() << "Holding" << stockNameThang << "at $" << currentPrice << ". Purchase price was $" << botInstance.purchasePrice;
+                botInstance.timeHeld1++;
+            }
+
+            //checking second stock
+            if (currentPrice2 > botInstance.purchasePrice2 && !botInstance.ownedStock2.isEmpty() || botInstance.timeHeld2 >= 20) {
+                botInstance.balance += currentPrice2;
+                qDebug() << "Sold 1 share of" << stockNameThang2 << "at $" << currentPrice2 << ". Held for " << botInstance.timeHeld2 << " days.";
+                botInstance.timeHeld2 = 0;
+                botInstance.bestChange2 = 2;
+                botInstance.bestChange4 = 2;
+
+                botInstance.ownedStock2 = ""; // No stock owned now
+                //currentStock = false;
+                botInstance.logger_->logSell(stockNameThang2, currentPrice2 - botInstance.purchasePrice2);
+                botInstance.purchasePrice2 = 0.0;
+
+            } else if(!botInstance.ownedStock2.isEmpty()){
+                qDebug() << "Holding" << stockNameThang2 << "at $" << currentPrice2 << ". Purchase price was $" << botInstance.purchasePrice2;
+                botInstance.timeHeld2++;
+            }
+
+            //checking third stock
+            if (currentPrice3 > botInstance.purchasePrice3 && !botInstance.ownedStock3.isEmpty() || botInstance.timeHeld3 >= 20) {
+                botInstance.balance += currentPrice3;
+                qDebug() << "Sold 1 share of" << stockNameThang3 << "at $" << currentPrice3 << ". Held for " << botInstance.timeHeld3 << " days.";
+                botInstance.timeHeld3 = 0;
+                botInstance.bestChange3 = 2;
+                botInstance.bestChange4 = 2;
+                botInstance.ownedStock3 = ""; // No stock owned now
+                //currentStock = false;
+                botInstance.logger_->logSell(stockNameThang3, currentPrice3 - botInstance.purchasePrice3);
+                botInstance.purchasePrice3 = 0.0;
+
+            } else if(!botInstance.ownedStock3.isEmpty()){
+                qDebug() << "Holding" << stockNameThang3 << "at $" << currentPrice3 << ". Purchase price was $" << botInstance.purchasePrice3;
+                botInstance.timeHeld3++;
+            }
+            if (botInstance.ownedStock.isEmpty() && botInstance.ownedStock2.isEmpty() && botInstance.ownedStock3.isEmpty()) {
+                botInstance.currentStock = false;
+                botInstance.bestChange = 2;
+                botInstance.bestChange2 = 2;
+                botInstance.bestChange3 = 2;
+                botInstance.bestChange4 = 2;
+
+
+
+            }
+
+        }
+    }
     void onPriceUpdate(const QString &stockName, double newPrice)
     {
         Bot &botInstance = Bot::getInstance();  // Always get the singleton instance
@@ -532,4 +952,6 @@ private:
 
 
 };
+
+
 #endif

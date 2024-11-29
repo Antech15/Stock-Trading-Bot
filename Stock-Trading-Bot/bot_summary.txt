@@ -1,8 +1,3 @@
 Bot Summary:
-You traded for: 22 days. 
-For the AMAZON stock, you've sold 1 share(s). It gained you $0.6
-For the MICROSOFT stock, you've sold 1 share(s). It gained you $0.57
-For the NOKIA stock, you've sold 1 share(s). It gained you $0.09
-For the NVIDIA stock, you've sold 1 share(s). It gained you $0.79
-For the APPLE stock, you've sold 1 share(s). It gained you $0.29
-Total Bot Profit was $2.34
+You traded for: 54 days. 
+Total Bot Profit was $0.00
