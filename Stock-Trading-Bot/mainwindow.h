@@ -45,6 +45,8 @@ private slots:
 
     void on_doneButton_clicked();
 
+    void on_hMomentumButton_clicked();
+
 private:
     Ui::MainWindow *ui;
     int dayCounter = 0;
