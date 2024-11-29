@@ -136,7 +136,6 @@ void MainWindow::updateStocks() {
 }
 
 void MainWindow::updateBankBalance(double newBalance) {
-    // Update the bank label with the new balance
     ui->bankLabel->setText(QString("Amount: $%1").arg(newBalance, 0, 'f', 2));
 }
 
@@ -177,8 +176,8 @@ void MainWindow::on_goBackButton_2_clicked()
 
 void MainWindow::on_dailyButton_clicked()
 {
-    Daily *dailyStrategy = new Daily();   // Use Daily strategy
-    Bot::getInstance().setStrategy(dailyStrategy); // Setting Daily strategy
+    Daily *dailyStrategy = new Daily();
+    Bot::getInstance().setStrategy(dailyStrategy);
 
     ui->stackedWidget->setCurrentIndex(0);
 }
@@ -186,8 +185,8 @@ void MainWindow::on_dailyButton_clicked()
 void MainWindow::on_weeklyButton_clicked()
 {
 
-    Weekly *weeklyStrategy = new Weekly();   // Use Daily strategy
-    Bot::getInstance().setStrategy(weeklyStrategy); // Setting Daily strategy
+    Weekly *weeklyStrategy = new Weekly();
+    Bot::getInstance().setStrategy(weeklyStrategy);
     ui->stackedWidget->setCurrentIndex(0);
 }
 

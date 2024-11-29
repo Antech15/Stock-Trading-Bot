@@ -4,7 +4,7 @@
 #include "stock.h"
 #include <QDebug>
 #include <QString>
-#include <cstdlib> // For rand()
+#include <cstdlib>
 #include "outputter.h"
 
 class BotStrategy {
@@ -14,7 +14,7 @@ public:
 
 class Bot : public Observer {
 public:
-    static Bot &getInstance() { //Apparently this is SINGLETON
+    static Bot &getInstance() { //this is SINGLETON
         static Bot instance;
         return instance;
     }
@@ -67,7 +67,7 @@ public:
 
 
     double getBalance() const { return balance; }
-    void setStrategy(BotStrategy *strategy) { strategy_ = strategy; } // No more error
+    void setStrategy(BotStrategy *strategy) { strategy_ = strategy; }
 
 
     Bot() : balance(1000.0), ownedStock(""), ownedStock2(""), ownedStock3(""), purchasePrice(0.0), purchasePrice2(0.0), purchasePrice3(0.0), counter(1), stockCounter(7), strategy_(nullptr), logger_(nullptr){}
@@ -78,7 +78,7 @@ public:
 
     void makeDecision( QString stockNameThang, double currentPrice, QString stockNameThang2, double currentPrice2, QString stockNameThang3, double currentPrice3) {
         if (ownedStock.isEmpty() && ownedStock2.isEmpty() && ownedStock3.isEmpty()) {
-            // Buy stock if none is currently owned
+            //buy stock if none is currently owned
             if (balance >= currentPrice) {
                 balance -= currentPrice;
                 balance -= currentPrice2;
