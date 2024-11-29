@@ -48,14 +48,9 @@ public:
     }
 
     void nextDay() {
-        qDebug() << "We are here, the length of stocks are " << stocks.size();
-
-
         for (auto &stock : stocks) {
             stock->updatePrice();
-            qDebug() << "We are here with: " << stock->getName();
         }
-        qDebug() << "We are here";
 
         emit stocksUpdated();
         emit bankBalanceUpdated(Bot::getInstance().getBalance());
