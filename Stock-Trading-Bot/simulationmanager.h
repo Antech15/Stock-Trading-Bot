@@ -18,6 +18,7 @@ public:
     void addStock(Outputter &logger) {
         std::shared_ptr<Bot> bot = std::shared_ptr<Bot>(&Bot::getInstance(), [](Bot*) {});
         Bot::getInstance().attatchLogger(&logger);
+        logger_ = &logger;
 
        std::shared_ptr<Stock> REGAL = StockFactory::createStock(("REGAL"));
        std::shared_ptr<Stock> GAMESTOP = StockFactory::createStock("GAMESTOP");
@@ -48,6 +49,7 @@ public:
     }
 
     void nextDay() {
+        logger_->addDay();
         for (auto &stock : stocks) {
             stock->updatePrice();
         }
@@ -62,6 +64,7 @@ signals:
 
 private:
     std::vector<std::shared_ptr<Stock>> stocks;
+    Outputter* logger_;
 };
 
 #endif // SIMULATIONMANAGER_H

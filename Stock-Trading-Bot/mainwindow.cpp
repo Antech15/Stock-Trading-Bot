@@ -115,11 +115,8 @@ void MainWindow::on_nextDayButton_clicked() {
     QString temp = Bot::getInstance().getBotBubble();
     ui->consoleLabel->setText(temp);
 
-    //I think make the string a variable and retreieve it here like in lines 83-86
     ui->consoleLabel->setStyleSheet("color: black;");
     ui->dayLabel->setText(QString("Day: %1").arg(dayCounter));
-
-    logger.addDay();
 }
 
 void MainWindow::on_goBackButton_clicked()
