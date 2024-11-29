@@ -25,9 +25,6 @@ public:
         } else if (type == "APPLE"){
             return std::make_shared<Stock>("APPLE", std::rand() % 101 + 100);
         }
-
-
     }
 };
-
-#endif // STOCKFACTORY_H
+#endif

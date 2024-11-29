@@ -519,6 +519,4 @@ private:
 
 
 };
-
-
-#endif // BOT_H
+#endif

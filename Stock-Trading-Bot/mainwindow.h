@@ -4,7 +4,7 @@
 #include <QMainWindow>
 #include <memory>
 #include "simulationmanager.h"
-#include "stock.h" // Include Stock class
+#include "stock.h"
 #include "outputter.h"
 
 QT_BEGIN_NAMESPACE
@@ -50,7 +50,6 @@ private:
     int dayCounter = 0;
     std::unique_ptr<SimulationManager> simulationManager;
 
-    // Declare stock variables as members
     std::shared_ptr<Stock> REGAL;
     std::shared_ptr<Stock> GAMESTOP;
     std::shared_ptr<Stock> NVIDIA;
@@ -64,5 +63,4 @@ private:
     void initializeStockPrices();
     Outputter &logger;
 };
-
-#endif // MAINWINDOW_H
+#endif

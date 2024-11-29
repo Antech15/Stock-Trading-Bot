@@ -109,8 +109,7 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow::initializeStockPrices() {
-    // Assuming you use QLabel widgets like stockLabel1, stockLabel2, etc.
-    auto stocks = simulationManager->getStocks(); // Add a getter for stocks in SimulationManager
+    auto stocks = simulationManager->getStocks();
 
     if (!stocks.empty()) {
         ui->stockLabel1->setText(QString("REGAL: $%1").arg(stocks[0]->getPrice()));
@@ -236,5 +235,10 @@ void MainWindow::on_doneButton_clicked()
     }
 
     ui->summaryLabel->setText(text);
+    ui->summaryLabel->setAlignment(Qt::AlignCenter);
+    QFont font = ui->summaryLabel->font();
+    font.setPointSize(14);
+    ui->summaryLabel->setFont(font);
+
     ui->stackedWidget->setCurrentIndex(4);
 }
