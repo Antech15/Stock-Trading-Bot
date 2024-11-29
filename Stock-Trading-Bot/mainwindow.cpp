@@ -140,9 +140,9 @@ void MainWindow::on_dailyButton_clicked()
 
 void MainWindow::on_weeklyButton_clicked()
 {
-
     lightMomentum *lightMomentumStrategy = new lightMomentum();
     Bot::getInstance().setStrategy(lightMomentumStrategy);
+
     ui->stackedWidget->setCurrentIndex(0);
 }
 
@@ -199,3 +199,11 @@ void MainWindow::on_doneButton_clicked()
 
     ui->stackedWidget->setCurrentIndex(4);
 }
+
+void MainWindow::on_hMomentumButton_clicked()
+{
+    heavyMomentum *hmomentumStrategy = new heavyMomentum();
+    Bot::getInstance().setStrategy(hmomentumStrategy);
+    ui->stackedWidget->setCurrentIndex(0);
+}
+
