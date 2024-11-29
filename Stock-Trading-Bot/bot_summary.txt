@@ -1,0 +1,7 @@
+Bot Summary:
+You traded for: 13 days. 
+For the REGAL stock, you've sold 1 share(s). It gained you $0.29
+For the AMAZON stock, you've sold 1 share(s). It gained you $0.57
+For the MICROSOFT stock, you've sold 2 share(s). It gained you $0.88
+For the NVIDIA stock, you've sold 1 share(s). It gained you $0.22
+Total Bot Profit was $1.96

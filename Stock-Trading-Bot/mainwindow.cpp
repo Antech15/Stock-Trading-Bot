@@ -69,38 +69,9 @@ MainWindow::MainWindow(Outputter &logger, QWidget *parent)
     connect(simulationManager.get(), &SimulationManager::stocksUpdated, this, &MainWindow::updateStocks);
     connect(simulationManager.get(), &SimulationManager::bankBalanceUpdated, this, &MainWindow::updateBankBalance);
 
-    // Create stocks and add to simulation
-    std::shared_ptr<Bot> bot = std::shared_ptr<Bot>(&Bot::getInstance(), [](Bot*) {});
-    Bot::getInstance().attatchLogger(&logger);
+    simulationManager->addStock(logger);
 
-    REGAL = StockFactory::createStock(("REGAL"));
-    GAMESTOP = StockFactory::createStock("GAMESTOP");
-    NVIDIA = StockFactory::createStock("NVIDIA");
-    TESLA = StockFactory::createStock("TESLA");
-    NOKIA = StockFactory::createStock("NOKIA");
-    MICROSOFT = StockFactory::createStock("MICROSOFT");
-    AMAZON = StockFactory::createStock("AMAZON");
-    APPLE = StockFactory::createStock("APPLE");
-
-    REGAL->attach(bot);
-    GAMESTOP->attach(bot);
-    NVIDIA->attach(bot);
-    TESLA->attach(bot);
-    NOKIA->attach(bot);
-    MICROSOFT->attach(bot);
-    AMAZON->attach(bot);
-    APPLE->attach(bot);
-
-    simulationManager->addStock(REGAL);
-    simulationManager->addStock(GAMESTOP);
-    simulationManager->addStock(NVIDIA);
-    simulationManager->addStock(TESLA);
-    simulationManager->addStock(NOKIA);
-    simulationManager->addStock(MICROSOFT);
-    simulationManager->addStock(AMAZON);
-    simulationManager->addStock(APPLE);
-
-    initializeStockPrices();
+    updateStocks();
 }
 
 MainWindow::~MainWindow()
@@ -108,7 +79,7 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::initializeStockPrices() {
+void MainWindow::updateStocks() {
     auto stocks = simulationManager->getStocks();
 
     if (!stocks.empty()) {
@@ -121,17 +92,6 @@ void MainWindow::initializeStockPrices() {
         ui->stockLabel7->setText(QString("AMAZON: $%1").arg(stocks[6]->getPrice()));
         ui->stockLabel8->setText(QString("APPLE: $%1").arg(stocks[7]->getPrice()));
     }
-}
-
-void MainWindow::updateStocks() {
-    ui->stockLabel1->setText(QString("REGAL: $%1").arg(REGAL->getPrice()));
-    ui->stockLabel2->setText(QString("GAMESTOP: $%1").arg(GAMESTOP->getPrice()));
-    ui->stockLabel3->setText(QString("NVIDIA: $%1").arg(NVIDIA->getPrice()));
-    ui->stockLabel4->setText(QString("TESLA: $%1").arg(TESLA->getPrice()));
-    ui->stockLabel5->setText(QString("NOKIA: $%1").arg(NOKIA->getPrice()));
-    ui->stockLabel6->setText(QString("MICROSOFT: $%1").arg(MICROSOFT->getPrice()));
-    ui->stockLabel7->setText(QString("AMAZON: $%1").arg(AMAZON->getPrice()));
-    ui->stockLabel8->setText(QString("APPLE: $%1").arg(APPLE->getPrice()));
 }
 
 void MainWindow::updateBankBalance(double newBalance) {
