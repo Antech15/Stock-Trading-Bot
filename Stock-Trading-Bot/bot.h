@@ -96,6 +96,10 @@ public:
                 purchasePrice2 = currentPrice2;
                 purchasePrice3 = currentPrice3;
 
+                timeHeld1 = 0;
+                timeHeld2 = 0;
+                timeHeld3 = 0;
+
                 qDebug() << "Bought 3 new shares of stock!";
                 qDebug() << "-------------------------------";
                 qDebug() << "#1 Ranked Stock: " << stockNameThang;
@@ -117,9 +121,10 @@ public:
             }
         } else  {
             // Check if we should sell first stock
-            if (currentPrice > purchasePrice && !ownedStock.isEmpty()) {
+            if (currentPrice > purchasePrice && !ownedStock.isEmpty() || timeHeld1 >= 20) {
                 balance += currentPrice;
-                qDebug() << "Sold 1 share of" << stockNameThang << "at $" << currentPrice;
+                qDebug() << "Sold 1 share of" << stockNameThang << "at $" << currentPrice << ". Held for " << timeHeld1 << " days.";
+                timeHeld1 = 0;
                 bestChange = 2;
                 bestChange4 = 2;
 
@@ -129,12 +134,14 @@ public:
                 purchasePrice = 0.0;
             } else if(!ownedStock.isEmpty()){
                 qDebug() << "Holding" << stockNameThang << "at $" << currentPrice << ". Purchase price was $" << purchasePrice;
+                timeHeld1++;
             }
 
             //checking second stock
-            if (currentPrice2 > purchasePrice2 && !ownedStock2.isEmpty()) {
+            if (currentPrice2 > purchasePrice2 && !ownedStock2.isEmpty() || timeHeld2 >= 20) {
                 balance += currentPrice2;
-                qDebug() << "Sold 1 share of" << stockNameThang2 << "at $" << currentPrice2;
+                qDebug() << "Sold 1 share of" << stockNameThang2 << "at $" << currentPrice2 << ". Held for " << timeHeld2 << " days.";
+                timeHeld2 = 0;
                 bestChange2 = 2;
                 bestChange4 = 2;
 
@@ -145,12 +152,14 @@ public:
 
             } else if(!ownedStock2.isEmpty()){
                 qDebug() << "Holding" << stockNameThang2 << "at $" << currentPrice2 << ". Purchase price was $" << purchasePrice2;
+                timeHeld2++;
             }
 
             //checking third stock
-            if (currentPrice3 > purchasePrice3 && !ownedStock3.isEmpty()) {
+            if (currentPrice3 > purchasePrice3 && !ownedStock3.isEmpty() || timeHeld3 >= 20) {
                 balance += currentPrice3;
-                qDebug() << "Sold 1 share of" << stockNameThang3 << "at $" << currentPrice3;
+                qDebug() << "Sold 1 share of" << stockNameThang3 << "at $" << currentPrice3 << ". Held for " << timeHeld3 << " days.";
+                timeHeld3 = 0;
                 bestChange3 = 2;
                 bestChange4 = 2;
                 ownedStock3 = ""; // No stock owned now
@@ -160,6 +169,7 @@ public:
 
             } else if(!ownedStock3.isEmpty()){
                 qDebug() << "Holding" << stockNameThang3 << "at $" << currentPrice3 << ". Purchase price was $" << purchasePrice3;
+                timeHeld3++;
             }
             if (ownedStock.isEmpty() && ownedStock2.isEmpty() && ownedStock3.isEmpty()) {
                 currentStock = false;
@@ -221,6 +231,9 @@ public:
     BotStrategy* strategy_;
     Outputter* logger_;
 
+    int timeHeld1;
+    int timeHeld2;
+    int timeHeld3;
 };
 
 class Daily : public BotStrategy {

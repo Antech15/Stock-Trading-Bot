@@ -5,7 +5,7 @@
 #include <QtCore/qdebug.h>
 #include <vector>
 #include <memory>
-#include <cstdlib> // For rand()
+#include <cstdlib>
 
 class Observer {
 public:
