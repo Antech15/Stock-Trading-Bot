@@ -1,4 +1,9 @@
 Bot Summary:
+<<<<<<< Updated upstream
 You traded for: 31 days. 
 For the APPLE stock, you've sold 1 share(s). It gained you $-0.32
 Total Bot Profit was $-0.32
+=======
+You traded for: 50 days. 
+Total Bot Profit was $0.00
+>>>>>>> Stashed changes
