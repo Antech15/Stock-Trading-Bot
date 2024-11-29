@@ -1,9 +1,6 @@
 Bot Summary:
-<<<<<<< Updated upstream
-You traded for: 31 days. 
-For the APPLE stock, you've sold 1 share(s). It gained you $-0.32
-Total Bot Profit was $-0.32
-=======
-You traded for: 50 days. 
-Total Bot Profit was $0.00
->>>>>>> Stashed changes
+You traded for: 55 days. 
+For the AMAZON stock, you've sold 2 share(s). It gained you $3.88
+For the APPLE stock, you've sold 2 share(s). It gained you $2.73
+For the GAMESTOP stock, you've sold 2 share(s). It gained you $3.42
+Total Bot Profit was $10.03
