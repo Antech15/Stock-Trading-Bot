@@ -3,5 +3,12 @@
         <file>images/yapdolla.png</file>
         <file>images/speech-bubble-png-15286.png</file>
         <file>images/regal.png</file>
+        <file>images/gamestop.png</file>
+        <file>images/amazon.webp</file>
+        <file>images/apple.png</file>
+        <file>images/microsoft.png</file>
+        <file>images/nokia.png</file>
+        <file>images/nvidia.png</file>
+        <file>images/tesla.png</file>
     </qresource>
 </RCC>

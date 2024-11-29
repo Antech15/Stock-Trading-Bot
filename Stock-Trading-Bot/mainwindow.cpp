@@ -13,27 +13,55 @@ MainWindow::MainWindow(Outputter &logger, QWidget *parent)
 {
     ui->setupUi(this);
 
-    QFile file(":/images/images/yapdolla.png");
-    if (!file.exists()) {
-        qDebug() << "File does not exist at the specified path";
-    } else {
-        QPixmap pix{":/images/images/yapdolla.png"};
-        pix = pix.scaled(ui->imageLabel->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
-        ui->imageLabel->setPixmap(pix);
-    }
+    //dolla image
+    QPixmap pix{":/images/images/yapdolla.png"};
+    pix = pix.scaled(ui->imageLabel->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    ui->imageLabel->setPixmap(pix);
 
-    QFile file2(":/images/images/speech-bubble-png-15286.png");
-    if (!file2.exists()) {
-        qDebug() << "File does not exist at the specified path";
-    } else {
-        QPixmap pix{":/images/images/speech-bubble-png-15286.png"};
-        pix = pix.scaled(ui->speechLabel->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
-        ui->speechLabel->setPixmap(pix);
-    }
+    //speech bubble image
+    QPixmap pix2{":/images/images/speech-bubble-png-15286.png"};
+    pix = pix2.scaled(ui->speechLabel->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    ui->speechLabel->setPixmap(pix);
 
-    //QPixmap pix{":/images/images/regal.png"};
-    //pix = pix.scaled(ui->regalView->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
-    //ui->regalView->setPixmap(pix);
+    //regal logo
+    QPixmap pix3{":/images/images/regal.png"};
+    pix = pix3.scaled(ui->regalView->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    ui->regalView->setPixmap(pix);
+
+    //gamestop logo
+    QPixmap pix4{":/images/images/gamestop.png"};
+    pix = pix4.scaled(ui->gamestopView->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    ui->gamestopView->setPixmap(pix);
+
+    //nvidia logo
+    QPixmap pix5{":/images/images/nvidia.png"};
+    pix = pix5.scaled(ui->nvidiaView->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    ui->nvidiaView->setPixmap(pix);
+
+    //tesla logo
+    QPixmap pix6{":/images/images/tesla.png"};
+    pix = pix6.scaled(ui->teslaView->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    ui->teslaView->setPixmap(pix);
+
+    //nokia logo
+    QPixmap pix7{":/images/images/nokia.png"};
+    pix = pix7.scaled(ui->nokiaView->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    ui->nokiaView->setPixmap(pix);
+
+    //microsoft logo
+    QPixmap pix8{":/images/images/microsoft.png"};
+    pix = pix8.scaled(ui->microsoftView->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    ui->microsoftView->setPixmap(pix);
+
+    //amazon logo
+    QPixmap pix9{":/images/images/amazon.webp"};
+    pix = pix9.scaled(ui->amazonView->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    ui->amazonView->setPixmap(pix);
+
+    //apple logo
+    QPixmap pix10{":/images/images/apple.png"};
+    pix = pix10.scaled(ui->appleView->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    ui->appleView->setPixmap(pix);
 
     ui->stackedWidget->setCurrentIndex(1);
 
@@ -45,9 +73,6 @@ MainWindow::MainWindow(Outputter &logger, QWidget *parent)
     std::shared_ptr<Bot> bot = std::shared_ptr<Bot>(&Bot::getInstance(), [](Bot*) {});
     Bot::getInstance().attatchLogger(&logger);
 
-    //Bot::getInstance().setStrategy(Bot::Strategy::Daily);   // For daily trading
-    //Bot::getInstance().setStrategy(Bot::Strategy::Weekly); // For bi-daily trading
-
     REGAL = StockFactory::createStock(("REGAL"));
     GAMESTOP = StockFactory::createStock("GAMESTOP");
     NVIDIA = StockFactory::createStock("NVIDIA");
@@ -56,9 +81,6 @@ MainWindow::MainWindow(Outputter &logger, QWidget *parent)
     MICROSOFT = StockFactory::createStock("MICROSOFT");
     AMAZON = StockFactory::createStock("AMAZON");
     APPLE = StockFactory::createStock("APPLE");
-
-
-
 
     REGAL->attach(bot);
     GAMESTOP->attach(bot);
@@ -69,7 +91,6 @@ MainWindow::MainWindow(Outputter &logger, QWidget *parent)
     AMAZON->attach(bot);
     APPLE->attach(bot);
 
-
     simulationManager->addStock(REGAL);
     simulationManager->addStock(GAMESTOP);
     simulationManager->addStock(NVIDIA);
@@ -79,9 +100,7 @@ MainWindow::MainWindow(Outputter &logger, QWidget *parent)
     simulationManager->addStock(AMAZON);
     simulationManager->addStock(APPLE);
 
-
     initializeStockPrices();
-
 }
 
 MainWindow::~MainWindow()
@@ -102,9 +121,6 @@ void MainWindow::initializeStockPrices() {
         ui->stockLabel6->setText(QString("MICROSOFT: $%1").arg(stocks[5]->getPrice()));
         ui->stockLabel7->setText(QString("AMAZON: $%1").arg(stocks[6]->getPrice()));
         ui->stockLabel8->setText(QString("APPLE: $%1").arg(stocks[7]->getPrice()));
-
-
-
     }
 }
 
@@ -117,11 +133,7 @@ void MainWindow::updateStocks() {
     ui->stockLabel6->setText(QString("MICROSOFT: $%1").arg(MICROSOFT->getPrice()));
     ui->stockLabel7->setText(QString("AMAZON: $%1").arg(AMAZON->getPrice()));
     ui->stockLabel8->setText(QString("APPLE: $%1").arg(APPLE->getPrice()));
-
-
-
 }
-
 
 void MainWindow::updateBankBalance(double newBalance) {
     // Update the bank label with the new balance
@@ -133,13 +145,10 @@ void MainWindow::on_chooseStocksButton_clicked()
     ui->stackedWidget->setCurrentIndex(2);
 }
 
-
 void MainWindow::on_bankButton_clicked()
 {
     ui->stackedWidget->setCurrentIndex(3);
 }
-
-
 
 void MainWindow::on_nextDayButton_clicked() {
     simulationManager->nextDay();
@@ -174,16 +183,13 @@ void MainWindow::on_dailyButton_clicked()
     ui->stackedWidget->setCurrentIndex(0);
 }
 
-
 void MainWindow::on_weeklyButton_clicked()
 {
 
     Weekly *weeklyStrategy = new Weekly();   // Use Daily strategy
     Bot::getInstance().setStrategy(weeklyStrategy); // Setting Daily strategy
     ui->stackedWidget->setCurrentIndex(0);
-
 }
-
 
 void MainWindow::on_tenButton_clicked()
 {
@@ -194,7 +200,6 @@ void MainWindow::on_tenButton_clicked()
     updateBankBalance(balance);
 }
 
-
 void MainWindow::on_twentyButton_clicked()
 {
     Bot::getInstance().deposit(20.0);
@@ -203,7 +208,6 @@ void MainWindow::on_twentyButton_clicked()
 
     updateBankBalance(balance);
 }
-
 
 void MainWindow::on_fiftyButton_clicked()
 {
@@ -214,7 +218,6 @@ void MainWindow::on_fiftyButton_clicked()
     updateBankBalance(balance);
 }
 
-
 void MainWindow::on_hundredButton_clicked()
 {
     Bot::getInstance().deposit(100.0);
@@ -223,7 +226,6 @@ void MainWindow::on_hundredButton_clicked()
 
     updateBankBalance(balance);
 }
-
 
 void MainWindow::on_doneButton_clicked()
 {
@@ -235,7 +237,5 @@ void MainWindow::on_doneButton_clicked()
     }
 
     ui->summaryLabel->setText(text);
-
     ui->stackedWidget->setCurrentIndex(4);
 }
-

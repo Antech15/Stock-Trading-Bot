@@ -420,7 +420,7 @@ public:
 
 
 };
-/*
+
 class Weekly : public BotStrategy {
 public:
     Weekly() {}
@@ -519,6 +519,6 @@ private:
 
 
 };
-*/
+
 
 #endif // BOT_H
