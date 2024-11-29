@@ -141,8 +141,8 @@ void MainWindow::on_dailyButton_clicked()
 void MainWindow::on_weeklyButton_clicked()
 {
 
-    Momentum *momentumStrategy = new Momentum();
-    Bot::getInstance().setStrategy(momentumStrategy);
+    lightMomentum *lightMomentumStrategy = new lightMomentum();
+    Bot::getInstance().setStrategy(lightMomentumStrategy);
     ui->stackedWidget->setCurrentIndex(0);
 }
 
