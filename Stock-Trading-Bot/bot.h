@@ -743,6 +743,7 @@ public:
 
 };
 
+/*
 
 class Weekly : public BotStrategy {
 public:
@@ -952,6 +953,6 @@ private:
 
 
 };
-
+*/
 
 #endif
