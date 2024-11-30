@@ -94,23 +94,40 @@ void MainWindow::updateStocks() {
     }
 }
 
-void MainWindow::updateBankBalance(double newBalance, double one, double two, double three, QString onee, QString twoo, QString threee) {
+void MainWindow::updateBankBalance(double newBalance, QString onee, QString twoo, QString threee) {
     QString temp = QString("Amount: $%1").arg(newBalance, 0, 'f', 2);
+    auto stocks = simulationManager->getStocks();
+
     double total = newBalance;
 
     if (!onee.isEmpty()) {
-        temp += QString("\n\n your %1 share is worth: $%2").arg(onee).arg(one, 0, 'f', 2);
-        total += one;
+        double price = 0;
+        for (auto &stock : stocks) {
+            if(stock->getName() == onee)
+                price = stock->getPrice();
+        }
+        temp += QString("\n\n your %1 share is worth: $%2").arg(onee).arg(price, 0, 'f', 2);
+        total += price;
     }
 
     if (!twoo.isEmpty()) {
-        temp += QString("\n\n your %1 share is worth: $%2").arg(twoo).arg(two, 0, 'f', 2);
-        total += two;
+        double price = 0;
+        for (auto &stock : stocks) {
+            if(stock->getName() == twoo)
+                price = stock->getPrice();
+        }
+        temp += QString("\n\n your %1 share is worth: $%2").arg(twoo).arg(price, 0, 'f', 2);
+        total += price;
     }
 
     if (!threee.isEmpty()) {
-        temp += QString("\n\n your %1 share is worth: $%2").arg(threee).arg(three, 0, 'f', 2);
-        total += three;
+        double price = 0;
+        for (auto &stock : stocks) {
+            if(stock->getName() == threee)
+                price = stock->getPrice();
+        }
+        temp += QString("\n\n your %1 share is worth: $%2").arg(threee).arg(price, 0, 'f', 2);
+        total += price;
     }
 
     if (total != newBalance)

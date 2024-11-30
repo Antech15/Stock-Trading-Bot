@@ -55,28 +55,31 @@ public:
         }
 
         emit stocksUpdated();
-        emit bankBalanceUpdated(Bot::getInstance().getBalance(), Bot::getInstance().ownedPriceUpdate, Bot::getInstance().ownedPriceUpdate2, Bot::getInstance().ownedPriceUpdate3, Bot::getInstance().ownedStock, Bot::getInstance().ownedStock2, Bot::getInstance().ownedStock3);
+        updateBank();
     }
 
     void updateBank() {
+        int onee = Bot::getInstance().timeHeld1;
         double one = Bot::getInstance().ownedPriceUpdate;
-        if(!one)
+        if(!onee)
             one = Bot::getInstance().purchasePrice;
 
+        double twoo = Bot::getInstance().timeHeld2;
         double two = Bot::getInstance().ownedPriceUpdate2;
-        if(!two)
+        if(!twoo)
             two = Bot::getInstance().purchasePrice2;
 
+        double threee = Bot::getInstance().timeHeld3;
         double three = Bot::getInstance().ownedPriceUpdate3;
-        if(!three)
+        if(!threee)
             three = Bot::getInstance().purchasePrice3;
 
-        emit bankBalanceUpdated(Bot::getInstance().getBalance(), one, two, three, Bot::getInstance().ownedStock, Bot::getInstance().ownedStock2, Bot::getInstance().ownedStock3);
+        emit bankBalanceUpdated(Bot::getInstance().getBalance(), Bot::getInstance().ownedStock, Bot::getInstance().ownedStock2, Bot::getInstance().ownedStock3);
     }
 
 signals:
     void stocksUpdated();
-    void bankBalanceUpdated(double newBalance, double one, double two, double three, QString onee, QString twoo, QString threee);
+    void bankBalanceUpdated(double newBalance, QString onee, QString twoo, QString threee);
 
 private:
     std::vector<std::shared_ptr<Stock>> stocks;

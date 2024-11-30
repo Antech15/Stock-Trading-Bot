@@ -23,7 +23,7 @@ public:
 
 private slots:
     void updateStocks();
-    void updateBankBalance(double newBalance, double one, double two, double three, QString onee, QString twoo, QString threee);
+    void updateBankBalance(double newBalance, QString onee, QString twoo, QString threee);
 
     void on_chooseStocksButton_clicked();
     void on_bankButton_clicked();
