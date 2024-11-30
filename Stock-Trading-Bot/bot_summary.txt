@@ -1,4 +1,3 @@
 Bot Summary:
-You traded for: 25 days. 
-For the APPLE stock, you've sold 1 share(s). It gained you $1.25
-Total Bot Profit was $1.25
+You traded for: 14 days. 
+Total Bot Profit was $0.00

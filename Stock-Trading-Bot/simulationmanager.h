@@ -59,7 +59,19 @@ public:
     }
 
     void updateBank() {
-        emit bankBalanceUpdated(Bot::getInstance().getBalance(), Bot::getInstance().ownedPriceUpdate, Bot::getInstance().ownedPriceUpdate2, Bot::getInstance().ownedPriceUpdate3, Bot::getInstance().ownedStock, Bot::getInstance().ownedStock2, Bot::getInstance().ownedStock3);
+        double one = Bot::getInstance().ownedPriceUpdate;
+        if(!one)
+            one = Bot::getInstance().purchasePrice;
+
+        double two = Bot::getInstance().ownedPriceUpdate2;
+        if(!two)
+            two = Bot::getInstance().purchasePrice2;
+
+        double three = Bot::getInstance().ownedPriceUpdate3;
+        if(!three)
+            three = Bot::getInstance().purchasePrice3;
+
+        emit bankBalanceUpdated(Bot::getInstance().getBalance(), one, two, three, Bot::getInstance().ownedStock, Bot::getInstance().ownedStock2, Bot::getInstance().ownedStock3);
     }
 
 signals:
