@@ -44,7 +44,7 @@ public:
         else if(!ownedStock.isEmpty())
         {
             temp += ownedStock + " at " + QString::number(ownedPriceUpdate);
-
+            firstStock = true;
         }
 
         if (!ownedStock2.isEmpty() && timeHeld2 == 0) {
