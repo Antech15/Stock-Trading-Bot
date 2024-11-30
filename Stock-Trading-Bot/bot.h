@@ -44,14 +44,16 @@ public:
             if(timeHeld2)
                 logger_->logSell(ownedStock2, ownedPriceUpdate2 - purchasePrice2);
             else
-                logger_->logSell(ownedStock2, 0);        }
+                logger_->logSell(ownedStock2, 0);
+        }
         if(ownedStock3 != "") {
             qDebug() << "joe mama sold " << ownedStock3 << "at price " << ownedPriceUpdate3;
             balance += ownedPriceUpdate3;
             if(timeHeld3)
                 logger_->logSell(ownedStock3, ownedPriceUpdate3 - purchasePrice3);
             else
-                logger_->logSell(ownedStock3, 0);        }
+                logger_->logSell(ownedStock3, 0);
+        }
     }
 
     void deposit(double num) {
@@ -570,7 +572,7 @@ public:
         else {
             if ((botInstance.ownedPriceUpdate > botInstance.purchasePrice * 1.005 && !botInstance.ownedStock.isEmpty()) || botInstance.timeHeld1 >= 20) {
             botInstance.balance += botInstance.ownedPriceUpdate;
-            qDebug() << "Sold 1 share of" << botInstance.ownedStock << "at $" << botInstance.ownedPriceUpdate << ". Held for " << botInstance.timeHeld1 << " days.";
+            qDebug() << "Sold 1 share of" << botInstance.ownedStock << "at $" << botInstance.ownedPriceUpdate << ". Held for " << botInstance.timeHeld1 << " days. Previous price was: " << botInstance.purchasePrice << "one";
             botInstance.logger_->logSell(botInstance.ownedStock, botInstance.ownedPriceUpdate - botInstance.purchasePrice);
             botInstance.timeHeld1 = 0;
             sold = botInstance.ownedStock;
@@ -620,7 +622,7 @@ public:
         else {
             if ((botInstance.ownedPriceUpdate2 > botInstance.purchasePrice2 * 1.005 && !botInstance.ownedStock2.isEmpty()) || botInstance.timeHeld2 >= 20) {
                 botInstance.balance += botInstance.ownedPriceUpdate2;
-                qDebug() << "Sold 1 share of" << botInstance.ownedStock2 << "at $" << botInstance.ownedPriceUpdate2 << ". Held for " << botInstance.timeHeld2 << " days.";
+                qDebug() << "Sold 1 share of" << botInstance.ownedStock2 << "at $" << botInstance.ownedPriceUpdate2 << ". Held for " << botInstance.timeHeld2 << " days. Previous price was: " << botInstance.purchasePrice2 << "two";
                 botInstance.logger_->logSell(botInstance.ownedStock2, botInstance.ownedPriceUpdate2 - botInstance.purchasePrice2);
                 botInstance.timeHeld2 = 0;
                 sold2 = botInstance.ownedStock2;
@@ -668,11 +670,11 @@ public:
         else {
             if ((botInstance.ownedPriceUpdate3 > botInstance.purchasePrice3 * 1.005 && !botInstance.ownedStock3.isEmpty()) || botInstance.timeHeld3 >= 20) {
                 botInstance.balance += botInstance.ownedPriceUpdate3;
-                qDebug() << "Sold 1 share of" << botInstance.ownedStock3 << "at $" << botInstance.ownedPriceUpdate3 << ". Held for " << botInstance.timeHeld3 << " days.";
+                qDebug() << "Sold 1 share of" << botInstance.ownedStock3 << "at $" << botInstance.ownedPriceUpdate3 << ". Held for " << botInstance.timeHeld3 << " days. Previous price was: " << botInstance.purchasePrice3 << "one";
                 botInstance.logger_->logSell(botInstance.ownedStock3, botInstance.ownedPriceUpdate3 - botInstance.purchasePrice3);
                 botInstance.timeHeld3 = 0;
                 botInstance.ownedStock3 = ""; // No stock owned now
-                botInstance.purchasePrice = 0.0;
+                botInstance.purchasePrice3 = 0.0;
             } else if(!botInstance.ownedStock3.isEmpty()){
                 qDebug() << "Holding" << botInstance.ownedStock3 << "at $" << botInstance.ownedPriceUpdate3 << ". Purchase price was $" << botInstance.purchasePrice3 << "; Current days held: " << botInstance.timeHeld3;
                 botInstance.timeHeld3++;
@@ -873,7 +875,7 @@ public:
         else {
             if ((botInstance.ownedPriceUpdate > botInstance.purchasePrice * 1.01 && !botInstance.ownedStock.isEmpty()) || botInstance.timeHeld1 >= 20) {
                 botInstance.balance += botInstance.ownedPriceUpdate;
-                qDebug() << "Sold 1 share of" << botInstance.ownedStock << "at $" << botInstance.ownedPriceUpdate << ". Held for " << botInstance.timeHeld1 << " days.";
+                qDebug() << "Sold 1 share of" << botInstance.ownedStock << "at $" << botInstance.ownedPriceUpdate << ". Held for " << botInstance.timeHeld1 << " days. Previous price was: " << botInstance.purchasePrice << "one";
                 botInstance.logger_->logSell(botInstance.ownedStock, botInstance.ownedPriceUpdate - botInstance.purchasePrice);
                 botInstance.timeHeld1 = 0;
                 sold = botInstance.ownedStock;
@@ -923,7 +925,7 @@ public:
         else {
             if ((botInstance.ownedPriceUpdate2 > botInstance.purchasePrice2 * 1.01 && !botInstance.ownedStock2.isEmpty()) || botInstance.timeHeld2 >= 20) {
                 botInstance.balance += botInstance.ownedPriceUpdate2;
-                qDebug() << "Sold 1 share of" << botInstance.ownedStock2 << "at $" << botInstance.ownedPriceUpdate2 << ". Held for " << botInstance.timeHeld2 << " days.";
+                qDebug() << "Sold 1 share of" << botInstance.ownedStock2 << "at $" << botInstance.ownedPriceUpdate2 << ". Held for " << botInstance.timeHeld2 << " days. Previous price was: " << botInstance.purchasePrice2 << "one";
                 botInstance.logger_->logSell(botInstance.ownedStock2, botInstance.ownedPriceUpdate2 - botInstance.purchasePrice2);
                 botInstance.timeHeld2 = 0;
                 sold2 = botInstance.ownedStock2;
@@ -971,11 +973,11 @@ public:
         else {
             if ((botInstance.ownedPriceUpdate3 > botInstance.purchasePrice3 * 1.01 && !botInstance.ownedStock3.isEmpty()) || botInstance.timeHeld3 >= 20) {
                 botInstance.balance += botInstance.ownedPriceUpdate3;
-                qDebug() << "Sold 1 share of" << botInstance.ownedStock3 << "at $" << botInstance.ownedPriceUpdate3 << ". Held for " << botInstance.timeHeld3 << " days.";
+                qDebug() << "Sold 1 share of" << botInstance.ownedStock3 << "at $" << botInstance.ownedPriceUpdate3 << ". Held for " << botInstance.timeHeld3 << " days. Previous price was: " << botInstance.purchasePrice3 << "one";
                 botInstance.logger_->logSell(botInstance.ownedStock3, botInstance.ownedPriceUpdate3 - botInstance.purchasePrice3);
                 botInstance.timeHeld3 = 0;
                 botInstance.ownedStock3 = ""; // No stock owned now
-                botInstance.purchasePrice = 0.0;
+                botInstance.purchasePrice3 = 0.0;
             } else if(!botInstance.ownedStock3.isEmpty()){
                 qDebug() << "Holding" << botInstance.ownedStock3 << "at $" << botInstance.ownedPriceUpdate3 << ". Purchase price was $" << botInstance.purchasePrice3 << "; Current days held: " << botInstance.timeHeld3;
                 botInstance.timeHeld3++;
