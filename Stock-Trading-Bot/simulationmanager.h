@@ -59,22 +59,16 @@ public:
     }
 
     void updateBank() {
-        int onee = Bot::getInstance().timeHeld1;
-        double one = Bot::getInstance().ownedPriceUpdate;
-        if(!onee)
-            one = Bot::getInstance().purchasePrice;
+        emit bankBalanceUpdated(Bot::getInstance().getBalance(),
+                                Bot::getInstance().ownedStock,
+                                Bot::getInstance().ownedStock2,
+                                Bot::getInstance().ownedStock3);
+    }
 
-        double twoo = Bot::getInstance().timeHeld2;
-        double two = Bot::getInstance().ownedPriceUpdate2;
-        if(!twoo)
-            two = Bot::getInstance().purchasePrice2;
+    std::vector<QString> endSimulation() {
+        //sell remaining bots shid here
 
-        double threee = Bot::getInstance().timeHeld3;
-        double three = Bot::getInstance().ownedPriceUpdate3;
-        if(!threee)
-            three = Bot::getInstance().purchasePrice3;
-
-        emit bankBalanceUpdated(Bot::getInstance().getBalance(), Bot::getInstance().ownedStock, Bot::getInstance().ownedStock2, Bot::getInstance().ownedStock3);
+        return logger_->logSummary2();
     }
 
 signals:
