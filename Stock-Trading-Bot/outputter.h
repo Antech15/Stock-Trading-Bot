@@ -32,6 +32,8 @@ public:
         stockTally[stockName] += 1;
         stockRevenue[stockName] += price;
 
+        qDebug() << "Logged a sell for " << stockName << " with a profit of " << price;
+
         for(std::size_t i = 0; i < stockNames.size(); i++) {
             if(stockName == stockNames[i])
                 return;
