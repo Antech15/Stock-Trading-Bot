@@ -96,17 +96,23 @@ void MainWindow::updateStocks() {
 
 void MainWindow::updateBankBalance(double newBalance, double one, double two, double three, QString onee, QString twoo, QString threee) {
     QString temp = QString("Amount: $%1").arg(newBalance, 0, 'f', 2);
+    double total = newBalance;
 
-    if (!onee.isEmpty())
+    if (!onee.isEmpty()) {
         temp += QString("\n\n your %1 share is worth: $%2").arg(onee).arg(one, 0, 'f', 2);
+        total += one;
+    }
 
-    if (!twoo.isEmpty())
+    if (!twoo.isEmpty()) {
         temp += QString("\n\n your %1 share is worth: $%2").arg(twoo).arg(two, 0, 'f', 2);
+        total += two;
+    }
 
-    if (!threee.isEmpty())
+    if (!threee.isEmpty()) {
         temp += QString("\n\n your %1 share is worth: $%2").arg(threee).arg(three, 0, 'f', 2);
+        total += three;
+    }
 
-    double total = newBalance + one + two + three;
     if (total != newBalance)
         temp += QString("\n\n Total bank and assets values is: $%1").arg(total, 0, 'f', 2);
 
