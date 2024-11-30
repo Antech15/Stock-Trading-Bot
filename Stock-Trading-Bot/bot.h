@@ -146,9 +146,9 @@ public:
     double ownedStockPrice2;
     double ownedStockPrice3;
 
-    double ownedPriceUpdate;
-    double ownedPriceUpdate2;
-    double ownedPriceUpdate3;
+    double ownedPriceUpdate = 0.0;
+    double ownedPriceUpdate2 = 0.0;
+    double ownedPriceUpdate3 = 0.0;
 
     BotStrategy* strategy_;
     Outputter* logger_;
@@ -298,6 +298,15 @@ public:
             else{
             qDebug() << stockName << " | stockCounter: " << botInstance.stockCounter << " " << newPrice << " / " << botInstance.stockPrices[botInstance.stockCounter] << " = " << newPrice/botInstance.stockPrices[botInstance.stockCounter];
 
+                if(botInstance.ownedStock == stockName){
+                    botInstance.ownedPriceUpdate = newPrice;
+                }
+                else if(botInstance.ownedStock2 == stockName){
+                    botInstance.ownedPriceUpdate2 = newPrice;
+                }
+                else if(botInstance.ownedStock3 == stockName){
+                    botInstance.ownedPriceUpdate3 = newPrice;
+                }
 
                 if(newPrice/botInstance.stockPrices[botInstance.stockCounter] < botInstance.bestChange){
                     botInstance.bestChange4 = botInstance.bestChange3;

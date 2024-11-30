@@ -1,4 +1,4 @@
 Bot Summary:
-You traded for: 11 days. 
-For the APPLE stock, you've sold 1 share(s). It gained you $0.66
-Total Bot Profit was $0.66
+You traded for: 26 days. 
+For the AMAZON stock, you've sold 1 share(s). It gained you $1.25
+Total Bot Profit was $1.25
