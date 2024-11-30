@@ -15,8 +15,9 @@ public:
     SimulationManager(QObject *parent = nullptr) : QObject(parent) {}
     const std::vector<std::shared_ptr<Stock>>& getStocks() const { return stocks; }
 
-    void addStock(Outputter &logger) {
+    void addStock(Outputter &logger, BotStrategy *strategy) {
         std::shared_ptr<Bot> bot = std::shared_ptr<Bot>(&Bot::getInstance(), [](Bot*) {});
+        Bot::getInstance().setStrategy(strategy);
         Bot::getInstance().attatchLogger(&logger);
         logger_ = &logger;
 
@@ -48,7 +49,7 @@ public:
         stocks.push_back(APPLE);
     }
 
-    void nextDay() {
+    QString nextDay() {
         logger_->addDay();
         for (auto &stock : stocks) {
             stock->updatePrice();
@@ -56,6 +57,7 @@ public:
 
         emit stocksUpdated();
         updateBank();
+        return Bot::getInstance().getBotBubble();
     }
 
     void updateBank() {

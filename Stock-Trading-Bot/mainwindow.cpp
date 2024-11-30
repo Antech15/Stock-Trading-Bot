@@ -69,8 +69,6 @@ MainWindow::MainWindow(Outputter &logger, QWidget *parent)
     connect(simulationManager.get(), &SimulationManager::stocksUpdated, this, &MainWindow::updateStocks);
     connect(simulationManager.get(), &SimulationManager::bankBalanceUpdated, this, &MainWindow::updateBankBalance);
 
-    simulationManager->addStock(logger);
-
     updateStocks();
 }
 
@@ -147,10 +145,9 @@ void MainWindow::on_bankButton_clicked()
 }
 
 void MainWindow::on_nextDayButton_clicked() {
-    simulationManager->nextDay();
+    QString temp = simulationManager->nextDay();
     dayCounter++;
 
-    QString temp = Bot::getInstance().getBotBubble();
     ui->consoleLabel->setText(temp);
 
     ui->consoleLabel->setStyleSheet("color: black;");
@@ -171,7 +168,8 @@ void MainWindow::on_goBackButton_2_clicked()
 void MainWindow::on_dailyButton_clicked()
 {
     Daily *dailyStrategy = new Daily();
-    Bot::getInstance().setStrategy(dailyStrategy);
+
+    simulationManager->addStock(logger, dailyStrategy);
 
     ui->stackedWidget->setCurrentIndex(0);
 }
@@ -179,7 +177,8 @@ void MainWindow::on_dailyButton_clicked()
 void MainWindow::on_weeklyButton_clicked()
 {
     lightMomentum *lightMomentumStrategy = new lightMomentum();
-    Bot::getInstance().setStrategy(lightMomentumStrategy);
+
+    simulationManager->addStock(logger, lightMomentumStrategy);
 
     ui->stackedWidget->setCurrentIndex(0);
 }
@@ -233,7 +232,7 @@ void MainWindow::on_doneButton_clicked()
 void MainWindow::on_hMomentumButton_clicked()
 {
     heavyMomentum *hmomentumStrategy = new heavyMomentum();
-    Bot::getInstance().setStrategy(hmomentumStrategy);
+    simulationManager->addStock(logger, hmomentumStrategy);
     ui->stackedWidget->setCurrentIndex(0);
 }
 
