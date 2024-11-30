@@ -27,7 +27,32 @@ public:
         }
         return void();
 
-}
+    }
+
+    void sellRemaining() {
+        if(ownedStock != "") {
+            qDebug() << "joe mama sold " << ownedStock << "at price " << ownedPriceUpdate;
+            balance += ownedPriceUpdate;
+            if(timeHeld1)
+                logger_->logSell(ownedStock, ownedPriceUpdate - purchasePrice);
+            else
+                logger_->logSell(ownedStock, 0);
+        }
+        if(ownedStock2 != "") {
+            qDebug() << "joe mama sold " << ownedStock2 << "at price " << ownedPriceUpdate2;
+            balance += ownedPriceUpdate2;
+            if(timeHeld2)
+                logger_->logSell(ownedStock2, ownedPriceUpdate2 - purchasePrice2);
+            else
+                logger_->logSell(ownedStock2, 0);        }
+        if(ownedStock3 != "") {
+            qDebug() << "joe mama sold " << ownedStock3 << "at price " << ownedPriceUpdate3;
+            balance += ownedPriceUpdate3;
+            if(timeHeld3)
+                logger_->logSell(ownedStock3, ownedPriceUpdate3 - purchasePrice3);
+            else
+                logger_->logSell(ownedStock3, 0);        }
+    }
 
     void deposit(double num) {
         balance += num;
