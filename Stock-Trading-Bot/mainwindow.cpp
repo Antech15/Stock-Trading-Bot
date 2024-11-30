@@ -4,7 +4,6 @@
 #include<QFile>
 #include "stockfactory.h"
 #include "simulationmanager.h"
-#include "bot.h"
 
 MainWindow::MainWindow(Outputter &logger, QWidget *parent)
     : QMainWindow(parent), logger(logger)
@@ -185,30 +184,22 @@ void MainWindow::on_weeklyButton_clicked()
 
 void MainWindow::on_tenButton_clicked()
 {
-    Bot::getInstance().deposit(10.0);
-
-    simulationManager->updateBank();
+    simulationManager->addMoney(10.0);
 }
 
 void MainWindow::on_twentyButton_clicked()
 {
-    Bot::getInstance().deposit(20.0);
-
-    simulationManager->updateBank();
+    simulationManager->addMoney(20.0);
 }
 
 void MainWindow::on_fiftyButton_clicked()
 {
-    Bot::getInstance().deposit(50.0);
-
-    simulationManager->updateBank();
+    simulationManager->addMoney(50.0);
 }
 
 void MainWindow::on_hundredButton_clicked()
 {
-    Bot::getInstance().deposit(100.0);
-
-    simulationManager->updateBank();
+    simulationManager->addMoney(100.0);
 }
 
 void MainWindow::on_doneButton_clicked()

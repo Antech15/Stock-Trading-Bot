@@ -60,6 +60,11 @@ public:
         return Bot::getInstance().getBotBubble();
     }
 
+    void addMoney(double chaching) {
+        Bot::getInstance().deposit(chaching);
+        updateBank();
+    }
+
     void updateBank() {
         emit bankBalanceUpdated(Bot::getInstance().getBalance(),
                                 Bot::getInstance().ownedStock,
