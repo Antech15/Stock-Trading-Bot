@@ -2,7 +2,6 @@
 #include "ui_mainwindow.h"
 #include <QPixmap>
 #include<QFile>
-#include "stockfactory.h"
 #include "simulationmanager.h"
 
 MainWindow::MainWindow(Outputter &logger, QWidget *parent)
@@ -148,7 +147,6 @@ void MainWindow::on_nextDayButton_clicked() {
     dayCounter++;
 
     ui->consoleLabel->setText(temp);
-
     ui->consoleLabel->setStyleSheet("color: black;");
     ui->dayLabel->setText(QString("Day: %1").arg(dayCounter));
 }
@@ -169,7 +167,6 @@ void MainWindow::on_dailyButton_clicked()
     Daily *dailyStrategy = new Daily();
 
     simulationManager->addStock(logger, dailyStrategy);
-
     ui->stackedWidget->setCurrentIndex(0);
 }
 
@@ -178,7 +175,6 @@ void MainWindow::on_weeklyButton_clicked()
     lightMomentum *lightMomentumStrategy = new lightMomentum();
 
     simulationManager->addStock(logger, lightMomentumStrategy);
-
     ui->stackedWidget->setCurrentIndex(0);
 }
 
