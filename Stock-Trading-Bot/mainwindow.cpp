@@ -94,8 +94,23 @@ void MainWindow::updateStocks() {
     }
 }
 
-void MainWindow::updateBankBalance(double newBalance) {
-    ui->bankLabel->setText(QString("Amount: $%1").arg(newBalance, 0, 'f', 2));
+void MainWindow::updateBankBalance(double newBalance, double one, double two, double three, QString onee, QString twoo, QString threee) {
+    QString temp = QString("Amount: $%1").arg(newBalance, 0, 'f', 2);
+
+    if (!onee.isEmpty())
+        temp += QString("\n\n your %1 share is worth: $%2").arg(onee).arg(one, 0, 'f', 2);
+
+    if (!twoo.isEmpty())
+        temp += QString("\n\n your %1 share is worth: $%2").arg(twoo).arg(two, 0, 'f', 2);
+
+    if (!threee.isEmpty())
+        temp += QString("\n\n your %1 share is worth: $%2").arg(threee).arg(three, 0, 'f', 2);
+
+    double total = newBalance + one + two + three;
+    if (total != newBalance)
+        temp += QString("\n\n Total bank and assets values is: $%1").arg(total, 0, 'f', 2);
+
+    ui->bankLabel->setText(temp);
 }
 
 void MainWindow::on_chooseStocksButton_clicked()
@@ -150,36 +165,28 @@ void MainWindow::on_tenButton_clicked()
 {
     Bot::getInstance().deposit(10.0);
 
-    double balance = Bot::getInstance().getBalance();
-
-    updateBankBalance(balance);
+    simulationManager->updateBank();
 }
 
 void MainWindow::on_twentyButton_clicked()
 {
     Bot::getInstance().deposit(20.0);
 
-    double balance = Bot::getInstance().getBalance();
-
-    updateBankBalance(balance);
+    simulationManager->updateBank();
 }
 
 void MainWindow::on_fiftyButton_clicked()
 {
     Bot::getInstance().deposit(50.0);
 
-    double balance = Bot::getInstance().getBalance();
-
-    updateBankBalance(balance);
+    simulationManager->updateBank();
 }
 
 void MainWindow::on_hundredButton_clicked()
 {
     Bot::getInstance().deposit(100.0);
 
-    double balance = Bot::getInstance().getBalance();
-
-    updateBankBalance(balance);
+    simulationManager->updateBank();
 }
 
 void MainWindow::on_doneButton_clicked()

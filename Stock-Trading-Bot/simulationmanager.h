@@ -55,12 +55,16 @@ public:
         }
 
         emit stocksUpdated();
-        emit bankBalanceUpdated(Bot::getInstance().getBalance());
+        emit bankBalanceUpdated(Bot::getInstance().getBalance(), Bot::getInstance().ownedPriceUpdate, Bot::getInstance().ownedPriceUpdate2, Bot::getInstance().ownedPriceUpdate3, Bot::getInstance().ownedStock, Bot::getInstance().ownedStock2, Bot::getInstance().ownedStock3);
+    }
+
+    void updateBank() {
+        emit bankBalanceUpdated(Bot::getInstance().getBalance(), Bot::getInstance().ownedPriceUpdate, Bot::getInstance().ownedPriceUpdate2, Bot::getInstance().ownedPriceUpdate3, Bot::getInstance().ownedStock, Bot::getInstance().ownedStock2, Bot::getInstance().ownedStock3);
     }
 
 signals:
     void stocksUpdated();
-    void bankBalanceUpdated(double newBalance);
+    void bankBalanceUpdated(double newBalance, double one, double two, double three, QString onee, QString twoo, QString threee);
 
 private:
     std::vector<std::shared_ptr<Stock>> stocks;
