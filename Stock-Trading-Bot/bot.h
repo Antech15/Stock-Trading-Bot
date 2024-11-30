@@ -468,6 +468,8 @@ public:
 /*
  * This strategy will buy a stock when it drops 2% from its day one price.
  *
+ * The bot can own anywhere up to 3 stocks at one time.
+ *
  * It will sell when it gets a profit of .5% and/or the stock has been held for 20 days
  *
  */
@@ -768,6 +770,8 @@ public:
 
 /*
  * This strategy buys when the price of a stock drops 3% from its day one price.
+ *
+ * The bot can own anywhere up to 3 stocks at one time.
  *
  * It will only sell the stock when it makes a 1% profit and/or it has been held for 20 days.
  *
