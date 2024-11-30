@@ -29,6 +29,9 @@ public:
     }
 
     void logSell(const QString &stockName, double price) {
+        if(price>0){
+            stockTally[stockName] += 1;
+        }
         stockTally[stockName] += 1;
         stockRevenue[stockName] += price;
 
