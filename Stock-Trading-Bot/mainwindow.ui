@@ -88,8 +88,8 @@
      <widget class="QLabel" name="imageLabel">
       <property name="geometry">
        <rect>
-        <x>310</x>
-        <y>150</y>
+        <x>290</x>
+        <y>160</y>
         <width>151</width>
         <height>141</height>
        </rect>
