@@ -37,12 +37,23 @@ public:
         QString temp = "I currently own ";
         bool firstStock = false;
 
-        if (!ownedStock.isEmpty()) {
-            temp += ownedStock + " at " + QString::number(ownedPriceUpdate);
+        if (!ownedStock.isEmpty() && timeHeld1 == 0) {
+            temp += ownedStock + " at " + QString::number(purchasePrice);
             firstStock = true;
         }
+        else if(!ownedStock.isEmpty())
+        {
+            temp += ownedStock + " at " + QString::number(ownedPriceUpdate);
 
-        if (!ownedStock2.isEmpty()) {
+        }
+
+        if (!ownedStock2.isEmpty() && timeHeld2 == 0) {
+            if (firstStock) {
+                temp += ",\nand ";
+            }
+            temp += ownedStock2 + " at " + QString::number(purchasePrice2);
+            firstStock = true;
+        } else if (!ownedStock2.isEmpty()) {
             if (firstStock) {
                 temp += ",\nand ";
             }
@@ -50,7 +61,13 @@ public:
             firstStock = true;
         }
 
-        if (!ownedStock3.isEmpty()) {
+        if (!ownedStock3.isEmpty() && timeHeld3 == 0) {
+            if (firstStock) {
+                temp += ",\nand ";
+            }
+            temp += ownedStock3 + " at " + QString::number(purchasePrice3);
+        }
+        else if (!ownedStock3.isEmpty()) {
             if (firstStock) {
                 temp += ",\nand ";
             }
@@ -1058,7 +1075,6 @@ public:
 
                 // Reset the counter based on the strategy
                 botInstance.counter = 1; // Make a decision every day
-
             }
             botInstance.stockCounter = 8;
         }
