@@ -38,7 +38,7 @@ public:
         bool firstStock = false;
 
         if (!ownedStock.isEmpty()) {
-            temp += ownedStock + " at " + QString::number(ownedStockPrice);
+            temp += ownedStock + " at " + QString::number(ownedPriceUpdate);
             firstStock = true;
         }
 
@@ -46,7 +46,7 @@ public:
             if (firstStock) {
                 temp += ",\nand ";
             }
-            temp += ownedStock2 + " at " + QString::number(ownedStockPrice2);
+            temp += ownedStock2 + " at " + QString::number(ownedPriceUpdate2);
             firstStock = true;
         }
 
@@ -54,7 +54,7 @@ public:
             if (firstStock) {
                 temp += ",\nand ";
             }
-            temp += ownedStock3 + " at " + QString::number(ownedStockPrice3);
+            temp += ownedStock3 + " at " + QString::number(ownedPriceUpdate3);
         }
 
         if (temp == "I currently own ") {
