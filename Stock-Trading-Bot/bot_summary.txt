@@ -1,6 +1,3 @@
 Bot Summary:
-You traded for: 50 days. 
-For the APPLE stock, you've sold 12 share(s). It gained you $4.18
-For the NVIDIA stock, you've sold 5 share(s). It gained you $1.41
-For the REGAL stock, you've sold 2 share(s). It gained you $1
-Total Bot Profit was $6.59
+You traded for: 0 days. 
+Total Bot Profit was $0.00
