@@ -10,6 +10,7 @@ MainWindow::MainWindow(Outputter &logger, QWidget *parent)
     , simulationManager(new SimulationManager)
 {
     ui->setupUi(this);
+    ui->consoleLabel->setStyleSheet("color: black; background: transparent;");
 
     //dolla image
     QPixmap pix{":/images/images/yapdolla.png"};
@@ -147,7 +148,7 @@ void MainWindow::on_nextDayButton_clicked() {
     dayCounter++;
 
     ui->consoleLabel->setText(temp);
-    ui->consoleLabel->setStyleSheet("color: black;");
+    ui->consoleLabel->setStyleSheet("color: black; background: transparent;");
     ui->dayLabel->setText(QString("Day: %1").arg(dayCounter));
 }
 

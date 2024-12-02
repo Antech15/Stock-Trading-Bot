@@ -124,7 +124,7 @@
        <string>&lt;html&gt;
 &lt;head/&gt;
 &lt;body&gt;
-    &lt;p align=&quot;center&quot; style=&quot;color: black;&quot;&gt;Hello, I will trade stocks for you&lt;/p&gt;
+    &lt;p align=&quot;center&quot; style=&quot;color: black; background: transparent;&quot;&gt;Hello, I will trade stocks for you&lt;/p&gt;
 &lt;/body&gt;
 &lt;/html&gt;
 </string>
