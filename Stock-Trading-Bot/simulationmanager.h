@@ -82,7 +82,7 @@ public:
     }
 
     std::vector<QString> endSimulation() {
-        //sell remaining bots shid here
+        //sell remaining bots' stocks here
         Bot::getInstance().sellRemaining();
 
         return logger_->logSummary2();
