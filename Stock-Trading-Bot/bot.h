@@ -7,6 +7,28 @@
 #include <cstdlib>
 #include "outputter.h"
 
+/*
+ * This file has 3 design patterns
+ *
+ * Strategy (the bot has 3 different trading strategies
+ * ***** (Daily, light-momentum, heavy-momentum)
+ *
+ * Observer
+ * ***** (bot is an observer, taken from the observer class in stock.h)
+ *
+ * Singleton
+ * *****(there is only one bot instance at all times)
+ *
+ */
+
+
+
+/*
+ * BotStrategy virtual class
+ *
+ * onPriceUpdate & makeDecision
+ * are both pure virtual functions in order to have their own implementation for each trading strategy
+ */
 class BotStrategy {
 public:
     virtual void onPriceUpdate(const QString &stockName, double newPrice) = 0;
@@ -14,13 +36,24 @@ public:
 
 };
 
+
+/*
+ * Bot class is an observer for every stock.
+ *
+ */
 class Bot : public Observer {
 public:
-    static Bot &getInstance() { //this is SINGLETON
+
+    static Bot &getInstance() { //this is singleton, making sure there is only one instance of the bot at all times.
         static Bot instance;
         return instance;
     }
 
+
+    /*
+     * onPriceUpdate calls the correct strategy implementation
+     *
+     */
     void onPriceUpdate(const QString &stockName, double newPrice) override {
         if(strategy_ != nullptr){
            return strategy_->onPriceUpdate(stockName, newPrice);
@@ -29,6 +62,10 @@ public:
 
     }
 
+    /*
+     * Function to sell the remaining stocks once the user hits "Done"
+     *
+     */
     void sellRemaining() {
         if(ownedStock != "") {
             qDebug() << "joe mama sold " << ownedStock << "at price " << ownedPriceUpdate;
@@ -56,10 +93,18 @@ public:
         }
     }
 
+    /*
+     * Simple function for the user to deposit money into their bank account
+     *
+     */
     void deposit(double num) {
         balance += num;
     }
 
+    /*
+     * This is the function used to correctly display the currently owned stocks onto the front end.
+     *
+     */
     QString getBotBubble() {
         QString temp = "I currently own ";
         bool firstStock = false;
@@ -115,20 +160,21 @@ public:
     double getBalance() const { return balance; }
     void setStrategy(BotStrategy *strategy) { strategy_ = strategy; }
 
-
+    //Initialized values for the bot
     Bot() : balance(1000.0), ownedStock(""), ownedStock2(""), ownedStock3(""), purchasePrice(0.0), purchasePrice2(0.0), purchasePrice3(0.0), counter(1), stockCounter(7), strategy_(nullptr), logger_(nullptr){}
 
     // Prevent copying
     Bot(const Bot &) = delete;
     void operator=(const Bot &) = delete;
 
+    //Calls the correct implementation of makeDecision based on the strategy
     void makeDecision( QString stockNameThang, double currentPrice, QString stockNameThang2, double currentPrice2, QString stockNameThang3, double currentPrice3) {
         if (strategy_ != nullptr) {
             strategy_->makeDecision(stockNameThang, currentPrice, stockNameThang2, currentPrice2, stockNameThang3, currentPrice3);  // Delegating the decision-making to the current strategy
         }
     }
 
-
+    //attaching logger to correctly output items for bot
     void attatchLogger(Outputter *thang) {
         logger_ = thang;
     }
@@ -144,7 +190,7 @@ public:
     double purchasePrice2;
     double purchasePrice3;
 
-
+    //helper variables
     int counter;
     int stockCounter;
     QString stockNames [8];
@@ -173,13 +219,17 @@ public:
     double ownedStockPrice2;
     double ownedStockPrice3;
 
+    //variables to owned the daily price update of owned stocks
     double ownedPriceUpdate = 0.0;
     double ownedPriceUpdate2 = 0.0;
     double ownedPriceUpdate3 = 0.0;
 
+    //Strategy implementation
     BotStrategy* strategy_;
+
     Outputter* logger_;
 
+    //variables to hold how many days a the bot has owned a stock
     int timeHeld1;
     int timeHeld2;
     int timeHeld3;
@@ -202,6 +252,11 @@ class Daily : public BotStrategy {
 public:
     Daily(){}
 
+
+    /*
+     * makeDecision implementation for Daily Strategy
+     *
+     */
     void makeDecision( QString stockNameThang, double currentPrice, QString stockNameThang2, double currentPrice2, QString stockNameThang3, double currentPrice3) {
         Bot &botInstance = Bot::getInstance();  // Always get the singleton instance
 
@@ -248,7 +303,7 @@ public:
                 botInstance.day1 = false;
             }
         } else  {
-            // Check if we should sell first stock
+            //Check if we should sell first stock
             if ((currentPrice > botInstance.purchasePrice && !botInstance.ownedStock.isEmpty()) || botInstance.timeHeld1 >= 20) {
                 botInstance.balance += currentPrice;
                 qDebug() << "Sold 1 share of" << stockNameThang << "at $" << currentPrice << ". Held for " << botInstance.timeHeld1 << " days.";
@@ -256,8 +311,7 @@ public:
                 botInstance.bestChange = 2;
                 botInstance.bestChange4 = 2;
 
-                botInstance.ownedStock = ""; // No stock owned now
-                //currentStock = false;
+                botInstance.ownedStock = "";
                 botInstance.logger_->logSell(stockNameThang, currentPrice - botInstance.purchasePrice);
                 botInstance.purchasePrice = 0.0;
             } else if(!botInstance.ownedStock.isEmpty()){
@@ -273,8 +327,7 @@ public:
                 botInstance.bestChange2 = 2;
                 botInstance.bestChange4 = 2;
 
-                botInstance.ownedStock2 = ""; // No stock owned now
-                //currentStock = false;
+                botInstance.ownedStock2 = "";
                 botInstance.logger_->logSell(stockNameThang2, currentPrice2 - botInstance.purchasePrice2);
                 botInstance.purchasePrice2 = 0.0;
 
@@ -290,8 +343,7 @@ public:
                 botInstance.timeHeld3 = 0;
                 botInstance.bestChange3 = 2;
                 botInstance.bestChange4 = 2;
-                botInstance.ownedStock3 = ""; // No stock owned now
-                //currentStock = false;
+                botInstance.ownedStock3 = ""; //No stock owned now
                 botInstance.logger_->logSell(stockNameThang3, currentPrice3 - botInstance.purchasePrice3);
                 botInstance.purchasePrice3 = 0.0;
 
@@ -306,13 +358,16 @@ public:
                 botInstance.bestChange3 = 2;
                 botInstance.bestChange4 = 2;
 
-
-
             }
 
         }
     }
 
+
+    /*
+     * onPriceUpdate implementation for Daily strategy
+     *
+     */
     void onPriceUpdate(const QString &stockName, double newPrice)
     {
         Bot &botInstance = Bot::getInstance();  // Always get the singleton instance
@@ -402,11 +457,11 @@ public:
             }
             if(botInstance.stockCounter <= 0)
             {
-                botInstance.counter--; // Decrement counter
-                if (botInstance.counter <= 0) { // If counter is 0 or negative, make a decision
+                botInstance.counter--; //decrement counter
+                if (botInstance.counter <= 0) { //if counter is 0 or negative, make decision
                     if(botInstance.day1 == true)
                     {
-                        int idx = std::rand() % 8; // Generates a random number between 0 and 3
+                        int idx = std::rand() % 8; //generates a random number between 0 and 7
                         botInstance.bestStock = botInstance.stockNames[idx];
                         botInstance.bestPrice = botInstance.stockPrices[idx];
                         botInstance.bestStock2 = botInstance.stockNames[(idx + 1) %7];
@@ -423,14 +478,11 @@ public:
                         botInstance.makeDecision(botInstance.ownedStock, botInstance.ownedStockPrice, botInstance.ownedStock2, botInstance.ownedStockPrice2, botInstance.ownedStock3, botInstance.ownedStockPrice3); // Make a decision
                     }
                     else{
-                        // Compare the tally values and reorder bestStock, bestStock2, bestStock3
-
                         qDebug() << "Biggest Drops Today: #1 " << botInstance.bestStock << "; #2 " << botInstance.bestStock2 << "; #3 " << botInstance.bestStock3 << "; #4 " << botInstance.bestStock4;
-                        // Compare bestStock, bestStock2, bestStock3, and bestStock4 and reorder them by their tally values
+                        //compare bestStock, bestStock2, bestStock3, and bestStock4
 
-                        // Compare bestStock and bestStock2
+                        //compare bestStock and bestStock2
                         if (botInstance.logger_->getTally(botInstance.bestStock) < botInstance.logger_->getTally(botInstance.bestStock2)) {
-                            // Swap bestStock and bestStock2
                             QString tempStock = botInstance.bestStock;
                             double tempPrice = botInstance.bestPrice;
                             botInstance.bestStock = botInstance.bestStock2;
@@ -439,9 +491,8 @@ public:
                             botInstance.bestPrice2 = tempPrice;
                         }
 
-                        // Compare bestStock and bestStock3
+                        //compare bestStock and bestStock3
                         if (botInstance.logger_->getTally(botInstance.bestStock) < botInstance.logger_->getTally(botInstance.bestStock3)) {
-                            // Swap bestStock and bestStock3
                             QString tempStock = botInstance.bestStock;
                             double tempPrice = botInstance.bestPrice;
                             botInstance.bestStock = botInstance.bestStock3;
@@ -450,9 +501,8 @@ public:
                             botInstance.bestPrice3 = tempPrice;
                         }
 
-                        // Compare bestStock and bestStock4
+                        //compare bestStock and bestStock4
                         if (botInstance.logger_->getTally(botInstance.bestStock) < botInstance.logger_->getTally(botInstance.bestStock4)) {
-                            // Swap bestStock and bestStock4
                             QString tempStock = botInstance.bestStock;
                             double tempPrice = botInstance.bestPrice;
                             botInstance.bestStock = botInstance.bestStock4;
@@ -461,9 +511,8 @@ public:
                             botInstance.bestPrice4 = tempPrice;
                         }
 
-                        // Compare bestStock2 and bestStock3
+                        //compare bestStock2 and bestStock3
                         if (botInstance.logger_->getTally(botInstance.bestStock2) < botInstance.logger_->getTally(botInstance.bestStock3)) {
-                            // Swap bestStock2 and bestStock3
                             QString tempStock = botInstance.bestStock2;
                             double tempPrice = botInstance.bestPrice2;
                             botInstance.bestStock2 = botInstance.bestStock3;
@@ -472,9 +521,8 @@ public:
                             botInstance.bestPrice3 = tempPrice;
                         }
 
-                        // Compare bestStock2 and bestStock4
+                        //compare bestStock2 and bestStock4
                         if (botInstance.logger_->getTally(botInstance.bestStock2) < botInstance.logger_->getTally(botInstance.bestStock4)) {
-                            // Swap bestStock2 and bestStock4
                             QString tempStock = botInstance.bestStock2;
                             double tempPrice = botInstance.bestPrice2;
                             botInstance.bestStock2 = botInstance.bestStock4;
@@ -483,9 +531,8 @@ public:
                             botInstance.bestPrice4 = tempPrice;
                         }
 
-                        // Compare bestStock3 and bestStock4
+                        //compare bestStock3 and bestStock4
                         if (botInstance.logger_->getTally(botInstance.bestStock3) < botInstance.logger_->getTally(botInstance.bestStock4)) {
-                            // Swap bestStock3 and bestStock4
                             QString tempStock = botInstance.bestStock3;
                             double tempPrice = botInstance.bestPrice3;
                             botInstance.bestStock3 = botInstance.bestStock4;
@@ -500,11 +547,10 @@ public:
                         qDebug() << "#2 " << botInstance.bestStock2 << " with tally count -> " << botInstance.logger_->getTally(botInstance.bestStock2);
                         qDebug() << "#3 " << botInstance.bestStock3 << " with tally count -> " << botInstance.logger_->getTally(botInstance.bestStock3);
 
-                        botInstance.makeDecision(botInstance.bestStock, botInstance.bestPrice, botInstance.bestStock2, botInstance.bestPrice2, botInstance.bestStock3, botInstance.bestPrice3); // Make a decision
+                        botInstance.makeDecision(botInstance.bestStock, botInstance.bestPrice, botInstance.bestStock2, botInstance.bestPrice2, botInstance.bestStock3, botInstance.bestPrice3); //makeDecision called
 
                     }
-                    // Reset the counter based on the strategy
-                    botInstance.counter = 1; // Make a decision every day
+                    botInstance.counter = 1; //Make a decision every day
 
                 }
                 botInstance.stockCounter = 8;
@@ -531,6 +577,10 @@ class lightMomentum : public BotStrategy {
 public:
     lightMomentum(){}
 
+    /*
+     * makeDecision implementation for lightyMomentum strategy
+     *
+     */
     void makeDecision( QString stockNameThang, double currentPrice, QString stockNameThang2, double currentPrice2, QString stockNameThang3, double currentPrice3) {
         Bot &botInstance = Bot::getInstance();  // Always get the singleton instance
         qDebug() << "new DAY YAYYYYYYY";
@@ -583,7 +633,6 @@ public:
             botInstance.timeHeld1++;
             }
         }
-
 
         //logic for second stock
         if(botInstance.ownedStock2.isEmpty()){
@@ -673,7 +722,7 @@ public:
                 qDebug() << "Sold 1 share of" << botInstance.ownedStock3 << "at $" << botInstance.ownedPriceUpdate3 << ". Held for " << botInstance.timeHeld3 << " days. Previous price was: " << botInstance.purchasePrice3 << "one";
                 botInstance.logger_->logSell(botInstance.ownedStock3, botInstance.ownedPriceUpdate3 - botInstance.purchasePrice3);
                 botInstance.timeHeld3 = 0;
-                botInstance.ownedStock3 = ""; // No stock owned now
+                botInstance.ownedStock3 = ""; //no stock owned now
                 botInstance.purchasePrice3 = 0.0;
             } else if(!botInstance.ownedStock3.isEmpty()){
                 qDebug() << "Holding" << botInstance.ownedStock3 << "at $" << botInstance.ownedPriceUpdate3 << ". Purchase price was $" << botInstance.purchasePrice3 << "; Current days held: " << botInstance.timeHeld3;
@@ -693,9 +742,14 @@ public:
     }
 
 
+
+    /*
+     * onPriceUpdate implementation for lightMomentum strategy
+     *
+     */
     void onPriceUpdate(const QString &stockName, double newPrice)
     {
-        Bot &botInstance = Bot::getInstance();  // Always get the singleton instance
+        Bot &botInstance = Bot::getInstance();  //get the singleton instance
         double change1 = 0.0;
         double change2 = 0.0;
         double change3 = 0.0;
@@ -738,7 +792,6 @@ public:
                         botInstance.bestPrice3 = newPrice;
                     }
                     else {
-
                         if (change1 > change2) {
                             std::swap(change1, change2);
                             std::swap(botInstance.bestStock, botInstance.bestStock2);
@@ -757,9 +810,8 @@ public:
                             std::swap(botInstance.bestPrice, botInstance.bestPrice2);
                         }
 
-                        // All three bestStock, bestStock2, and bestStock3 are filled, so compare to see where the new stock should go
+                        //All three bestStock, bestStock2, and bestStock3 are filled so compare to see where the new stock should go
                         if (currentChange <= change1) {
-                            // Shift down: change1 -> change2, change2 -> change3
                             change3 = change2;
                             botInstance.bestStock3 = botInstance.bestStock2;
                             botInstance.bestPrice3 = botInstance.bestPrice2;
@@ -768,22 +820,18 @@ public:
                             botInstance.bestStock2 = botInstance.bestStock;
                             botInstance.bestPrice2 = botInstance.bestPrice;
 
-                            // Now put the current stock in the first position
                             change1 = currentChange;
                             botInstance.bestStock = stockName;
                             botInstance.bestPrice = newPrice;
                         } else if (currentChange <= change2) {
-                            // Shift down: change2 -> change3
                             change3 = change2;
                             botInstance.bestStock3 = botInstance.bestStock2;
                             botInstance.bestPrice3 = botInstance.bestPrice2;
 
-                            // Now put the current stock in the second position
                             change2 = currentChange;
                             botInstance.bestStock2 = stockName;
                             botInstance.bestPrice2 = newPrice;
                         } else if (currentChange <= change3) {
-                            // Now put the current stock in the third position
                             change3 = currentChange;
                             botInstance.bestStock3 = stockName;
                             botInstance.bestPrice3 = newPrice;
@@ -791,24 +839,18 @@ public:
                     }
             }
 
-
         }
             if(botInstance.stockCounter <= 0)
             {
-                botInstance.counter--; // Decrement counter
-                if (botInstance.counter <= 0) { // If counter is 0 or negative, make a decision
+                botInstance.counter--; //decrement counter
+                if (botInstance.counter <= 0) { //if counter is 0 or negative, make a decision
                     if(botInstance.day1 == true)
                     {
                         botInstance.day1 = false;
 
                     }
-
-                    botInstance.makeDecision(botInstance.bestStock, botInstance.bestPrice, botInstance.bestStock2, botInstance.bestPrice2, botInstance.bestStock3, botInstance.bestPrice3); // Make a decision
-
-
-                    // Reset the counter based on the strategy
-                    botInstance.counter = 1; // Make a decision every day
-
+                    botInstance.makeDecision(botInstance.bestStock, botInstance.bestPrice, botInstance.bestStock2, botInstance.bestPrice2, botInstance.bestStock3, botInstance.bestPrice3); //make a decision
+                    botInstance.counter = 1; //make a decision every day
                 }
                 botInstance.stockCounter = 8;
             }
@@ -834,6 +876,12 @@ class heavyMomentum : public BotStrategy {
 public:
     heavyMomentum(){}
 
+
+
+    /*
+     * makeDecision implementation for heavyMomentum strategy
+     *
+     */
     void makeDecision( QString stockNameThang, double currentPrice, QString stockNameThang2, double currentPrice2, QString stockNameThang3, double currentPrice3) {
         Bot &botInstance = Bot::getInstance();  // Always get the singleton instance
         qDebug() << "new DAY YAYYYYYYY";
@@ -879,7 +927,7 @@ public:
                 botInstance.logger_->logSell(botInstance.ownedStock, botInstance.ownedPriceUpdate - botInstance.purchasePrice);
                 botInstance.timeHeld1 = 0;
                 sold = botInstance.ownedStock;
-                botInstance.ownedStock = ""; // No stock owned now
+                botInstance.ownedStock = ""; //no stock owned now
                 botInstance.purchasePrice = 0.0;
             } else if(!botInstance.ownedStock.isEmpty()){
                 qDebug() << "Holding" << botInstance.ownedStock << "at $" << botInstance.ownedPriceUpdate << ". Purchase price was $" << botInstance.purchasePrice << "; Current days held: " << botInstance.timeHeld1;
@@ -929,7 +977,7 @@ public:
                 botInstance.logger_->logSell(botInstance.ownedStock2, botInstance.ownedPriceUpdate2 - botInstance.purchasePrice2);
                 botInstance.timeHeld2 = 0;
                 sold2 = botInstance.ownedStock2;
-                botInstance.ownedStock2 = ""; // No stock owned now
+                botInstance.ownedStock2 = ""; //no stock owned now
                 botInstance.purchasePrice2 = 0.0;
             } else if(!botInstance.ownedStock2.isEmpty()) {
                 qDebug() << "Holding" << botInstance.ownedStock2 << "at $" << botInstance.ownedPriceUpdate2 << ". Purchase price was $" << botInstance.purchasePrice2 << "; Current days held: " << botInstance.timeHeld2;
@@ -976,7 +1024,7 @@ public:
                 qDebug() << "Sold 1 share of" << botInstance.ownedStock3 << "at $" << botInstance.ownedPriceUpdate3 << ". Held for " << botInstance.timeHeld3 << " days. Previous price was: " << botInstance.purchasePrice3 << "one";
                 botInstance.logger_->logSell(botInstance.ownedStock3, botInstance.ownedPriceUpdate3 - botInstance.purchasePrice3);
                 botInstance.timeHeld3 = 0;
-                botInstance.ownedStock3 = ""; // No stock owned now
+                botInstance.ownedStock3 = ""; //no stock owned now
                 botInstance.purchasePrice3 = 0.0;
             } else if(!botInstance.ownedStock3.isEmpty()){
                 qDebug() << "Holding" << botInstance.ownedStock3 << "at $" << botInstance.ownedPriceUpdate3 << ". Purchase price was $" << botInstance.purchasePrice3 << "; Current days held: " << botInstance.timeHeld3;
@@ -995,10 +1043,13 @@ public:
 
     }
 
-
+    /*
+     * onPriceUpdate implementation for heavyMomentum strategy
+     *
+     */
     void onPriceUpdate(const QString &stockName, double newPrice)
     {
-        Bot &botInstance = Bot::getInstance();  // Always get the singleton instance
+        Bot &botInstance = Bot::getInstance();  //get the singleton instance
         double change1 = 0.0;
         double change2 = 0.0;
         double change3 = 0.0;
@@ -1060,9 +1111,7 @@ public:
                         std::swap(botInstance.bestPrice, botInstance.bestPrice2);
                     }
 
-                    // All three bestStock, bestStock2, and bestStock3 are filled, so compare to see where the new stock should go
                     if (currentChange <= change1) {
-                        // Shift down: change1 -> change2, change2 -> change3
                         change3 = change2;
                         botInstance.bestStock3 = botInstance.bestStock2;
                         botInstance.bestPrice3 = botInstance.bestPrice2;
@@ -1071,22 +1120,21 @@ public:
                         botInstance.bestStock2 = botInstance.bestStock;
                         botInstance.bestPrice2 = botInstance.bestPrice;
 
-                        // Now put the current stock in the first position
+                        //put the current stock in the first position
                         change1 = currentChange;
                         botInstance.bestStock = stockName;
                         botInstance.bestPrice = newPrice;
                     } else if (currentChange <= change2) {
-                        // Shift down: change2 -> change3
                         change3 = change2;
                         botInstance.bestStock3 = botInstance.bestStock2;
                         botInstance.bestPrice3 = botInstance.bestPrice2;
 
-                        // Now put the current stock in the second position
+                        //put the current stock in the second position
                         change2 = currentChange;
                         botInstance.bestStock2 = stockName;
                         botInstance.bestPrice2 = newPrice;
                     } else if (currentChange <= change3) {
-                        // Now put the current stock in the third position
+                        //put the current stock in the third position
                         change3 = currentChange;
                         botInstance.bestStock3 = stockName;
                         botInstance.bestPrice3 = newPrice;
@@ -1105,19 +1153,12 @@ public:
                     botInstance.day1 = false;
 
                 }
-
-                botInstance.makeDecision(botInstance.bestStock, botInstance.bestPrice, botInstance.bestStock2, botInstance.bestPrice2, botInstance.bestStock3, botInstance.bestPrice3); // Make a decision
-
-
-                // Reset the counter based on the strategy
-                botInstance.counter = 1; // Make a decision every day
+                botInstance.makeDecision(botInstance.bestStock, botInstance.bestPrice, botInstance.bestStock2, botInstance.bestPrice2, botInstance.bestStock3, botInstance.bestPrice3); //make a decision
+                botInstance.counter = 1; //make a decision every day
             }
             botInstance.stockCounter = 8;
         }
         botInstance.stockCounter--;
-
-
-
     }
 
 };
