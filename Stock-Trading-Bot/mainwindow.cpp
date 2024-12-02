@@ -164,17 +164,13 @@ void MainWindow::on_goBackButton_2_clicked()
 
 void MainWindow::on_dailyButton_clicked()
 {
-    Daily *dailyStrategy = new Daily();
-
-    simulationManager->addStock(logger, dailyStrategy);
+    simulationManager->startSimulation(logger, "dailyStrategy");
     ui->stackedWidget->setCurrentIndex(0);
 }
 
 void MainWindow::on_weeklyButton_clicked()
 {
-    lightMomentum *lightMomentumStrategy = new lightMomentum();
-
-    simulationManager->addStock(logger, lightMomentumStrategy);
+    simulationManager->startSimulation(logger, "lightMomentumStrategy");
     ui->stackedWidget->setCurrentIndex(0);
 }
 
@@ -218,8 +214,7 @@ void MainWindow::on_doneButton_clicked()
 
 void MainWindow::on_hMomentumButton_clicked()
 {
-    heavyMomentum *hmomentumStrategy = new heavyMomentum();
-    simulationManager->addStock(logger, hmomentumStrategy);
+    simulationManager->startSimulation(logger, "hmomentumStrategy");
     ui->stackedWidget->setCurrentIndex(0);
 }
 

@@ -15,7 +15,16 @@ public:
     SimulationManager(QObject *parent = nullptr) : QObject(parent) {}
     const std::vector<std::shared_ptr<Stock>>& getStocks() const { return stocks; }
 
-    void addStock(Outputter &logger, BotStrategy *strategy) {
+    void startSimulation(Outputter &logger, QString lel) {
+        BotStrategy *strategy = nullptr;
+
+        if(lel == "dailyStrategy")
+            strategy = new Daily();
+        else if(lel == "lightMomentumStrategy")
+            strategy = new lightMomentum();
+        else if(lel == "hmomentumStrategy")
+            strategy = new heavyMomentum();
+
         std::shared_ptr<Bot> bot = std::shared_ptr<Bot>(&Bot::getInstance(), [](Bot*) {});
         Bot::getInstance().setStrategy(strategy);
         Bot::getInstance().attatchLogger(&logger);
