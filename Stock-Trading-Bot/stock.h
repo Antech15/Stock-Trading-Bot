@@ -7,6 +7,11 @@
 #include <memory>
 #include <cstdlib>
 
+
+/*
+ * Observer class
+ *
+ */
 class Observer {
 public:
     virtual void onPriceUpdate(const QString &stockName, double newPrice) = 0;

@@ -8,6 +8,11 @@
 #include <vector>
 #include "outputter.h"
 
+
+/*
+ * This is facade implementation
+ *
+ */
 class SimulationManager : public QObject {
     Q_OBJECT
 

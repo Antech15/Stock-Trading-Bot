@@ -5,6 +5,13 @@
 #include <cstdlib>
 #include <memory>
 
+
+
+/*
+ * Static factory implementation
+ *
+ *
+ */
 class StockFactory {
 public:
     static std::shared_ptr<Stock> createStock(const QString &type) {
