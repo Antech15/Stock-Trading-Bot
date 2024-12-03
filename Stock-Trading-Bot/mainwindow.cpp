@@ -11,6 +11,7 @@ MainWindow::MainWindow(Outputter &logger, QWidget *parent)
 {
     ui->setupUi(this);
     ui->consoleLabel->setStyleSheet("color: black; background: transparent;");
+    ui->bankLabel_3->setStyleSheet("background: transparent;");
 
     //dolla image
     QPixmap pix{":/images/images/yapdolla.png"};
