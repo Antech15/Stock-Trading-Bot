@@ -22,6 +22,7 @@ MainWindow::MainWindow(Outputter &logger, QWidget *parent)
     QPixmap pix2{":/images/images/speech-bubble-png-15286.png"};
     pix = pix2.scaled(ui->speechLabel->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
     ui->speechLabel->setPixmap(pix);
+    ui->speechLabel->setStyleSheet("background: transparent;");
 
     //regal logo
     QPixmap pix3{":/images/images/regal.png"};
