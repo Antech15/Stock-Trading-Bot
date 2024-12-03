@@ -16,10 +16,9 @@ int main(int argc, char *argv[])
     Outputter logger(outputPath);
 
     QApplication a(argc, argv);
-    // Apply a global stylesheet
-    QString styleSheet = "QWidget { background-color: #e9e6d1; }"  // Light grey background
-                         "QPushButton { background-color: #5f714b; color: #e9e6d1; }"  // Blue button with white text
-                         "QLabel { color: #2c3e50; font-size: 16px; }";  // Dark text for labels
+    QString styleSheet = "QWidget { background-color: #e9e6d1; }"  //Light grey background
+                         "QPushButton { background-color: #5f714b; color: #e9e6d1; }"  //Blue button with white text
+                         "QLabel { color: #2c3e50; font-size: 16px; }";  //Dark text for labels
     a.setStyleSheet(styleSheet);
     MainWindow w(logger);
 
